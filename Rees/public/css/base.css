@@ -1,0 +1,84 @@
+body {
+    margin: 0;
+    padding: 0;
+    color :white;
+	background: linear-gradient( #604174,#302336);
+    font-family: Verdana, sans-serif;
+}
+
+
+/** header **/
+li {
+    list-style-type: none;    
+}
+
+a {
+	font-weight: bold;
+}
+header {
+	position: fixed;
+	right: 0;
+	top: 0;
+	z-index: 1000;
+	width: 95%;
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+    padding: 33px 0.5%;
+	background: transparent;
+    margin: 0 , 1px;
+}
+
+
+header h1 {
+    margin-left: 1%;
+}
+a  {
+    text-decoration: none;
+    color : white
+}
+
+.navlist{
+	display: flex;
+}
+.navlist a{
+	margin-left: 60px;
+	font-size: 18px;
+	font-weight: 600;
+	border-bottom: 2px solid transparent;
+	transition: all .55s ease;
+   
+}
+.navlist a:hover{
+	border-bottom: 2px solid white;
+}
+
+
+
+
+/** ScrollBar **/
+
+::-webkit-scrollbar {
+	width: 0;
+	background: transparent;
+
+}
+
+.scrollbar {
+	position: fixed;
+	top : 0;
+	right: 0;
+	width: 15px;
+	height: 0;
+	opacity: 0;
+	background: linear-gradient(to top, #132a39 , #4d8a95  );
+}
+
+
+.clickScrollbar {
+	position: fixed;
+	top: 0;
+	right: 0;
+	width: 15px;
+	height: 100px;
+}

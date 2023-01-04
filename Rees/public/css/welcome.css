@@ -1,0 +1,125 @@
+
+/** header **/
+.selectWindow {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+
+}
+
+.selectWindow h2 {
+    padding-left: 2vw;   
+    padding-right: 2vw; 
+}
+
+/** Arrow down **/
+.scroll-down{
+	position: absolute;
+	bottom: 6%;
+	right: 9%;
+}
+.scroll-down i{
+	display: block;
+	padding: 12px;
+	font-size: 40px;
+	color: white;
+	background: #604174;
+	border-radius: 30px;
+	transition: all .50s ease;
+}
+.scroll-down i:hover{
+	transform: translateY(-5px);
+}
+
+/** Main **/
+main {
+    display: flex;
+    width: 98vw;
+    height: 100vh;
+    flex-wrap: wrap;
+    flex-direction: column;
+    justify-content: center;
+    align-content: space-around;
+}
+
+
+
+main h1 {
+    font-size: 4rem;
+    color : #ffffff;
+}
+main h2 {
+    font-size: 2rem;
+    color : rgb(255, 255, 255);
+}
+
+.welcome , .societyName {
+    margin: 0 auto;
+    max-width: 950px;
+    padding: 50px 0;
+    position: relative;
+    text-align: center;
+    width: 100%;
+    z-index: 1;
+}
+
+/** Series display **/
+.work_container {
+    padding: 0 19%;
+	display: grid;
+	grid-template-columns: repeat(3,330px) ;
+	gap : 1.8rem;
+	justify-content: center;
+	padding-top: 1rem;
+}
+
+
+.series__filter {
+    display: flex;
+	justify-content : center;
+	align-items: center;
+	column-gap: .75rem;
+	margin-bottom: 2rem;
+	padding: 2vh;
+    border-radius: .5rem;
+    -webkit-filter: grayscale(100%);
+	filter: grayscale(100%);
+	-webkit-transition: .3s ease-in-out;
+	transition: .3s ease-in-out;
+}
+
+
+
+.series__filter img {
+    border-radius: 1rem;
+}
+
+
+div.series__filter:hover  {
+    -webkit-filter: grayscale(0);
+	filter: grayscale(0);
+}
+
+/** Pagination **/
+
+.pag {
+    display: flex;
+    flex-wrap: wrap;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-evenly;
+}
+
+.pagination {
+    display: flex;
+    font-weight: bold;
+    margin-bottom: 2%;
+}
+.page, .first , .previous, .next , .last { 
+    margin: 0 7%;
+}
+
+
+.current {
+    color: #604174;
+}

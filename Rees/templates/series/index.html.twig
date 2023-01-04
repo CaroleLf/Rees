@@ -2,22 +2,47 @@
 
 {% block title %}Series index{% endblock %}
 
+{% block stylesheets %}
+    <link href="{{ asset('/css/welcome.css') }}" type="text/css" rel="stylesheet">  
+    
+    <link rel="stylesheet" href="https://unpkg.com/boxicons@latest/css/boxicons.min.css">
+	<link rel="shortcut icon" href="img/logo.png" >
+	<link href='https://css.gg/css' rel='stylesheet'>
+    <link href="https://cdn.jsdelivr.net/npm/remixicon@2.5.0/fonts/remixicon.css" rel="stylesheet">
+	<link rel="stylesheet" href="https://unicons.iconscout.com/release/v4.0.0/css/line.css">
+	<script src="https://kit.fontawesome.com/2b4594a491.js" crossorigin="anonymous"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Permanent+Marker&family=Poppins:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+{% endblock %}
+
+{% block javascripts %}
+    
+           
+{% endblock %}
 {% block body %}
     {{ parent() }}
-    <table class="table">
-        <tbody>
-        {% for serie in series %}
-            <tr>
-                <td> <a href="{{ path('app_series_show', {'id': serie.id}) }}"><img src="{{ path('app_poster',{'id':serie.id}) }}"></a></td>
-                <td> <a href="{{ path('app_series_show', {'id': serie.id}) }}">{{ serie.title }}</a></td>
-            </tr>
+     <main>
+        <h1 class="societyName">Rees</h1>
+        <h2 class="welcome">Welcome on your favorite streaming site</h2>
+    </main>
+    <div class="scroll-down">
+		<a href="#"><i class="ri-arrow-down-s-fill"></i></a>
+	</div>
+         <div class="work_container container grid"> 
+            {% for serie in series %}
+                
+                <div class="series__filter">
+                    <td> <a href="{{ path('app_series_show', {'id': serie.id}) }}"><img src="{{ path('app_poster',{'id':serie.id}) }}"></a></td>
+                </div>
+                
+            
         {% else %}
-            <tr>
                 <td colspan="11">no records found</td>
-            </tr>
         {% endfor %}
-
-        </tbody>
-    </table>
+        </div>
+        
+    <div class="pag"> 
     {{ knp_pagination_render(series) }}
+    </div>
 {% endblock %}

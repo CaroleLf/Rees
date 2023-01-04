@@ -1,0 +1,26 @@
+main {
+    display: flex;
+    flex-direction: column;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-items: center;
+}
+
+tr,td {
+    display: flex;
+    margin: 1%;
+}
+
+
+
+footer {
+    display: flex;
+    margin: 3%;
+    flex-direction: row;
+    justify-content: center;
+}
+
+
+.action {
+    margin: 0 2%;
+}
