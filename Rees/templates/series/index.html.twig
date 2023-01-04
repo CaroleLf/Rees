@@ -3,21 +3,21 @@
 {% block title %}Series index{% endblock %}
 
 {% block body %}
+    {{ parent() }}
     <table class="table">
-
         <tbody>
-        {% for series in series %}
+        {% for serie in series %}
             <tr>
-                <td> <a href="{{ path('app_series_show', {'id': series.id}) }}"><img src="{{ path('app_poster',{'id':series.id}) }}"></a></td>
-                <td> <a href="{{ path('app_series_show', {'id': series.id}) }}">{{ series.title }}</a></td>
+                <td> <a href="{{ path('app_series_show', {'id': serie.id}) }}"><img src="{{ path('app_poster',{'id':serie.id}) }}"></a></td>
+                <td> <a href="{{ path('app_series_show', {'id': serie.id}) }}">{{ serie.title }}</a></td>
             </tr>
         {% else %}
             <tr>
                 <td colspan="11">no records found</td>
             </tr>
         {% endfor %}
+
         </tbody>
     </table>
-
-    <a href="{{ path('app_series_new') }}">Create new</a>
+    {{ knp_pagination_render(series) }}
 {% endblock %}

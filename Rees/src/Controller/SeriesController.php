@@ -6,6 +6,7 @@ use App\Entity\Series;
 use App\Form\Series1Type;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Knp\Component\Pager\PaginatorInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -14,11 +15,17 @@ use Symfony\Component\Routing\Annotation\Route;
 class SeriesController extends AbstractController
 {
     #[Route('/', name: 'app_series_index', methods: ['GET'])]
-    public function index(EntityManagerInterface $entityManager): Response
+    public function index(EntityManagerInterface $entityManager, Request $page, PaginatorInterface $paginator ): Response
     {
-        $series = $entityManager
+        $data = $entityManager
             ->getRepository(Series::class)
             ->findAll();
+
+        $series = $paginator -> paginate(
+            $data,
+            $page->query->getInt('page',1),
+            8
+        );    
 
         return $this->render('series/index.html.twig', [
             'series' => $series,
