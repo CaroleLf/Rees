@@ -1,0 +1,23 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Series index{% endblock %}
+
+{% block body %}
+    <table class="table">
+
+        <tbody>
+        {% for series in series %}
+            <tr>
+                <td> <a href="{{ path('app_series_show', {'id': series.id}) }}"><img src="{{ path('app_poster',{'id':series.id}) }}"></a></td>
+                <td> <a href="{{ path('app_series_show', {'id': series.id}) }}">{{ series.title }}</a></td>
+            </tr>
+        {% else %}
+            <tr>
+                <td colspan="11">no records found</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+    <a href="{{ path('app_series_new') }}">Create new</a>
+{% endblock %}
