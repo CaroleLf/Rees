@@ -46,7 +46,7 @@ name : varchar(255)
 0,n</panel_attributes><additional_attributes>10;20;130;20</additional_attributes></element><element><id>Relation</id><coordinates><x>384</x><y>584</y><w>120</w><h>32</h></coordinates><panel_attributes>lt=-
 0,n</panel_attributes><additional_attributes>10;20;130;20</additional_attributes></element><element><id>Relation</id><coordinates><x>568</x><y>584</y><w>112</w><h>32</h></coordinates><panel_attributes>lt=-
 0,n</panel_attributes><additional_attributes>10;20;120;20</additional_attributes></element><element><id>UMLUseCase</id><coordinates><x>272</x><y>720</y><w>88</w><h>32</h></coordinates><panel_attributes>genre_series</panel_attributes><additional_attributes></additional_attributes></element><element><id>Relation</id><coordinates><x>304</x><y>624</y><w>40</w><h>112</h></coordinates><panel_attributes>lt=-
-0,n</panel_attributes><additional_attributes>10;10;10;120</additional_attributes></element><element><id>Relation</id><coordinates><x>304</x><y>744</y><w>40</w><h>112</h></coordinates><panel_attributes>lt=-
+1,n</panel_attributes><additional_attributes>10;10;10;120</additional_attributes></element><element><id>Relation</id><coordinates><x>304</x><y>744</y><w>40</w><h>112</h></coordinates><panel_attributes>lt=-
 0,n</panel_attributes><additional_attributes>10;10;10;120</additional_attributes></element><element><id>UMLClass</id><coordinates><x>256</x><y>840</y><w>128</w><h>56</h></coordinates><panel_attributes>genre
 --
 __id: int(11)__
