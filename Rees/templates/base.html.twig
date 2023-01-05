@@ -22,8 +22,12 @@
             <ul class="navlist">
 			<li><a href="{{ path('app_series_index') }}"> Home</a></li>
             <li><a href="../index.html#work"> My Series</a></li>
-			<li><a href="../index.html">Inscription</a></li>
-			<li><a href="../index.html#contact">Connexion</a></li>
+            {% if app.user %}
+                <li><a href="{{ path('app_logout') }}">Sign out</a></li>
+            {% else %}
+			    <li><a href="{{ path('app_register') }}">Sign up</a></li>
+			    <li><a href="{{ path('app_login') }}">Sign in</a></li>
+             {% endif %}
         </header>
         {% endblock %}
     </body>
