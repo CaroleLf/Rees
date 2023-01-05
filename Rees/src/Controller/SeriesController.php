@@ -11,10 +11,10 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
-#[Route('/series')]
+#[Route('/')]
 class SeriesController extends AbstractController
 {
-    #[Route('/', name: 'app_series_index', methods: ['GET'])]
+    #[Route(['/','/series'], name: 'app_series_index', methods: ['GET'])]
     public function index(EntityManagerInterface $entityManager, Request $page, PaginatorInterface $paginator ): Response
     {
         $data = $entityManager
@@ -24,7 +24,7 @@ class SeriesController extends AbstractController
         $series = $paginator -> paginate(
             $data,
             $page->query->getInt('page',1),
-            8
+            9
         );    
 
         return $this->render('series/index.html.twig', [
