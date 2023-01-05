@@ -1,0 +1,50 @@
+/** Main **/
+
+main {
+    display: flex;
+    width: 98vw;
+    height: 100vh;
+    flex-wrap: wrap;
+    flex-direction: column;
+    justify-content: center;
+    align-content: space-around;
+    font-size: x-large;
+}
+
+main form {
+    display: flex;
+    flex-direction: column;
+    align-content: space-around;
+    align-items: center;
+    flex-wrap: nowrap;
+}
+
+form div {
+    display: flex;
+    margin: 4%;
+}
+
+form div label {
+    display: flex;
+    margin-right: 10%;
+}
+
+form div input, button {
+    border-radius: 0.5rem;
+}
+
+button {
+    font-weight: bold;
+    min-width: 9vw;
+    max-width: 15vw;
+    min-height: 4vh;
+    max-height: 10vw;
+}
+
+input[type="checkbox"]  {
+  width: 20%;
+}
+
+
+
+
