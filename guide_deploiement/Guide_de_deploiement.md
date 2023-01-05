@@ -31,21 +31,19 @@ Afin de pouvoir travailler sur ce projet, vous aurez besoin d'avoir sur votre or
 
 - et d'exécuter les commandes suivantes sur un terminal : 
 
-    pip install mysql-connector-python
+    ```
+    $ pip install mysql-connector-python 
+    ```
 
-    Cela insinue donc que vous pourrez utiliser les commandes pip -install. 
+    (Cela insinue donc que vous pouvez utiliser les commandes ```pip install```.) 
 
 
 ## Rappel des fonctionnalités disponibles par un administrateur
 
-Tout d’abord voici un rappel des fonctionnalités supplémentaires qu’à un administrateur par rapport à un utilisateur lambda. 
+Tout d’abord, voici un rappel des fonctionnalités supplémentaires qu’a un administrateur par rapport à un utilisateur lambda. 
 Un administrateur peut : 
 - Consulter la liste des utilisateurs inscrits
 - Incarner un utilisateur (**attention** : cette fonctionnalité a été prévue afin qu’un administrateur puisse observer la vue d’un utilisateur, et donc vérifier que la vue est conforme aux souhaits des gérants du site. Si l’administrateur a modifié des données de son incarnation, l’administrateur devra donc être responsable de remettre par lui-même les données de l’utilisateur incarné à son état d’origine à la fin de son incarnation.) 
-
-L'écran de fonctionnalité de l'administrateur devrait ressembler à : 
-
-![image](image/vue_admin.png)
 
 
 ## Rappel des fonctionnalités disponibles par un super-administrateur
@@ -59,29 +57,20 @@ L'écran de fonctionnalité du super-administrateur devrait ressembler à :
 
 ## Nomage d'un administrateur 
 
-Pour nommer un administrateur, veuillez utiliser le script Python ### : 
+Avant d'utiliser le script Python, veuillez vérifier que le fichier **.env** dans le dossier de votre projet Symfony contient la bonne base de données.
 
-![image](image/zoom_rubrique.png) 
+Pour nommer un administrateur, veuillez utiliser le script Python **adminmanager.py**. Il se trouve dans le dossier de votre projet Symfony.
 
-En exécutant ce script, il vous sera demandé de rentrer les informations de votre base. Entrez donc les informations que vous trouvez sur : 
-https://gregwar.com/bdd.u-bordeaux.fr/
+Vous aurez ensuite 3 options se présentant à vous : voir la liste des utilisateurs, promouvoir un utilisateur et rétrograder un administrateur.
 
-Vous aurez ensuite 3 options se présentant à vous : créer un nouvel administrateur (utilisé plus généralement pour créer votre compte), voir la liste des utilisateurs, et promouvoir/ rétrograder un utilisateur ou admin.
-
-Voici un exemple de la demande de création de votre compte : 
-
-![image](image/creation.png) 
-
-Ainsi qu'un exemple de l'affichage des utilisateurs : 
+Voici un exemple de *l'affichage des utilisateurs* : 
 
 ![image](image/affichage.png) 
 
-Enfin, l'un exemple d'une promotion : 
+Ainsi que celui d'une *promotion* : 
 
 ![image](image/promotion.png) 
 
-Ainsi que celui d'une rétrogradation : 
+Enfin, un exemple d'une *rétrogradation* : 
 
-![image](image/promotion.png) 
-
-Confirmez la demande. Vous pouvez faire cela pour toutes les personnes n'étant pas super-administrateur.
+![image](image/retrogradation.png) 
