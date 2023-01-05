@@ -32,7 +32,7 @@
             </tr>
             <tr>
                 <th>Poster</th>
-                <td>{{ series.poster }}</td>
+                <td><img src="{{ path('app_poster',{'id':series.id}) }}"></td>
             </tr>
             <tr>
                 <th>Director</th>
@@ -61,12 +61,6 @@
     <footer>
     <div class="action" >
     <a href="{{ path('app_series_index') }}"> Back to list </a> <br>
-    </div>
-    <div class="action" >
-    <a href="{{ path('app_series_edit', {'id': series.id}) }}"> EDIT </a><br>
-    </div>
-    <div class="action" >
-    {{ include('series/_delete_form.html.twig') }} <br>
     </div>
     </footer>
 {% endblock %}
