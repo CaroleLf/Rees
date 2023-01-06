@@ -120,3 +120,54 @@ div.series__filter:hover  {
 .current {
     color: #604174;
 }
+
+.pagination a{
+    font-size: medium;
+    color: white;
+    text-decoration: none;
+}
+
+
+@media (max-width: 990px){
+    .pagination a{
+        font-size: medium;
+        color: white;
+        text-decoration: none;
+    }
+    main {
+        display: flex;
+    }
+	#logoSociety {
+        display: none;
+    }
+	
+	.work_container {
+		display: grid;
+		grid-template-columns: repeat(2,330px) ;
+		gap : 1.8rem;
+		justify-content: center;
+		padding-top: 1rem;
+	}
+}
+
+@media (max-width: 850px){
+	.work_container {
+		display: grid;
+		grid-template-columns: repeat(2,330px) ;
+		gap : 1.8rem;
+		justify-content: center;
+		padding-top: 1rem;
+	}
+}
+
+@media (max-width: 500px){
+	.work_container {
+		display: grid;
+		grid-template-columns: repeat(1,330px) ;
+		gap : 1.8rem;
+		justify-content: center;
+		padding-top: 1rem;
+	}
+}
+
+
