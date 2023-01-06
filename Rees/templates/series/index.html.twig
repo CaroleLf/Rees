@@ -19,6 +19,7 @@
 {% block body %}
     {{ parent() }}
      <main class="d-flex">
+        <img  class="container w-auto h-auto" src="/media/logo.png" alt="Rees Logo">
         <h1 class="societyName font-weight-bold">Rees</h1>  
         {% if app.user %}
             <h2 class="welcome">Welcome {{app.user.name}}, take a sit and enjoy your favorite series</h2>
