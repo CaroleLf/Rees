@@ -16,7 +16,7 @@ main {
     margin: 5%;
 }
 .boxShadowLogin {
-    height : 300px;
+    height : 350px;
     width : auto;
     border-radius: 2.5rem !important;
     box-shadow: 0 0.1rem 1rem rgba(190, 124, 255, 0.64);
@@ -24,7 +24,7 @@ main {
 
 .boxShadowRegister{
     padding: 25px;
-    height : 420px;
+    height : 520px;
     width : 400px;
     border-radius: 2.5rem !important;
     box-shadow: 0 0.1rem 1rem rgba(190, 124, 255, 0.64);
