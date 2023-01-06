@@ -12,9 +12,7 @@ li {
     list-style-type: none;    
 }
 
-a {
-	font-weight: bold;
-}
+
 header {
 	position: fixed;
 	right: 0;

@@ -7,6 +7,9 @@
 
 }
 
+a {
+	font-weight: bold;
+}
 .selectWindow h2 {
     padding-left: 2vw;   
     padding-right: 2vw; 
@@ -67,7 +70,7 @@ main h2 {
 .work_container {
     padding: 0 19%;
 	display: grid;
-	grid-template-columns: repeat(3,330px) ;
+	grid-template-columns: repeat(4,330px) ;
 	gap : 1.8rem;
 	justify-content: center;
 	padding-top: 1rem;
@@ -103,19 +106,12 @@ div.series__filter:hover  {
 /** Pagination **/
 
 .pag {
-    display: flex;
     flex-wrap: wrap;
-    flex-direction: row;
-    align-items: center;
-    justify-content: space-evenly;
+    
 }
 
 
-.pagination {
-    display: flex;
-    font-weight: bold;
-    margin-bottom: 2%;
-}
+
 .page, .first , .previous, .next , .last { 
     margin: 0 7%;
 }

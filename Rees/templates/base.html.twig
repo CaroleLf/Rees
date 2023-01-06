@@ -18,11 +18,12 @@
     </head>
     <body>
         {% block body %}
+        
         <div class="scrollbar"></div>
 	    <div class="clickScrollbar"></div>
         <header class="d-flex text-white">
-            <h1>Rees</h1>
-             <ul class="navlist d-flex m-3">
+            <h1 class="font-weight-bold">Rees</h1>
+             <ul class="navlist d-flex m-3 p-2">
 			<li><a href="{{ path('app_series_index') }}"  class ="text-white text-decoration-none"> Home</a></li>
             {% if app.user %}
                 <li><a href="../index.html#work"  class ="text-white text-decoration-none "> My Series</a></li>
