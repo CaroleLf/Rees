@@ -33,6 +33,9 @@
                     <label for="floatingPassword">Password</label>
                 </div>    
 
+                <input type="hidden" name="_csrf_token"
+                value="{{ csrf_token('authenticate') }}">
+
                 <button class="btn btn-outline-light btn-lg px-4" type="submit">
                     Sign in
                 </button>
