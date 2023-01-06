@@ -1,9 +1,15 @@
+*  {
+	border: none;
+    color: white;
+}
+
 main {
     display: flex;
     flex-direction: column;
     flex-wrap: wrap;
     justify-content: center;
     align-items: center;
+
 }
 
 tr,td {
@@ -15,12 +21,39 @@ tr,td {
 
 footer {
     display: flex;
-    margin: 3%;
+    margin-bottom: 1%;
     flex-direction: row;
     justify-content: center;
 }
 
 
 .action {
+
     margin: 0 2%;
 }
+.action a{
+    color: white;
+    text-decoration: none;
+}
+
+
+.titleTxt {
+   
+	margin-left: 60px;
+	font-size: 47px;
+	font-weight: 600;
+	border-bottom: 2px solid transparent;
+	transition: all .55s ease;
+    color : #302336;
+     z-index: 1000;
+    position: fixed;
+    
+}
+
+
+.LineOne {
+    display: flex;
+}
+
+
+
