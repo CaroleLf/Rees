@@ -1,0 +1,45 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}{% endblock %}
+
+{% block stylesheets %}
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.3.1/dist/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <link href="{{ asset('/css/show.css') }}" type="text/css" rel="stylesheet">  
+{% endblock %}
+
+{% block body %}
+
+    {{ parent()  }}
+    {% if app.user %}
+        {% if app.user.admin ==1 %}
+        <main class="d-flex ">
+            {% for user in users %}
+                <div class="userC">
+                    {% if user.name %} 
+                        <p class="border-0">{{ user.name }}</p>
+                    {% endif %}
+                    {% if user.email %} 
+                        <p class="border-0">{{ user.email }}</p>
+                    {% endif %}
+                    {% if user.country %} 
+                        <p class="border-0">{{ user.country }}</p>
+                    {% endif %}
+                    {% if user.admin %} 
+                        <p class="border-0">{{ user.admin }}</p>
+                    {% endif %}
+                <div class="userC">
+            {% endfor %}
+        </main>
+            <footer>
+            <div class="action" >
+            <a href="{{ path('app_series_index') }}"> <b> Back to list </b> </a> <br>
+            </div>
+            </footer>
+    {% else %}
+            <main class="h-100 m-5 d-flex align-items-center">
+                <h1> Vous n'êtes pas connecter </h1>
+            </main >
+        {% endif %}
+    {% endif %}
+    </body>
+{% endblock %}

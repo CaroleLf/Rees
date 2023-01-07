@@ -26,8 +26,14 @@
              <ul class="navlist d-flex m-3 p-2">
 			    <li><a href="{{ path('app_series_index') }}"  class ="text-white text-decoration-none"> Home</a></li>
             {% if app.user %}
+                {% if app.user.admin == 0 %}
                 <li><a href="../index.html#work"  class ="text-white text-decoration-none "> My Series</a></li>
                 <li><a href="{{ path('app_logout') }} "  class ="text-white text-decoration-none ">Sign out</a></li>
+                {% else %}
+                <li><a href="../index.html#work"  class ="text-white text-decoration-none "> My Series</a></li>
+                <li><a href="{{ path('app_admin')}}"  class ="text-white text-decoration-none "> List Users</a></li>
+                <li><a href="{{ path('app_logout') }} "  class ="text-white text-decoration-none ">Sign out</a></li>
+                {% endif %}
             {% else %}
 			    <li><a href="{{ path('app_register') }}" class ="text-white text-decoration-none">Sign up</a></li>
 			    <li><a href="{{ path('app_login') }}"  class ="text-white text-decoration-none ">Sign in</a></li>
