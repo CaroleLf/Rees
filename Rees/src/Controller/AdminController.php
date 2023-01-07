@@ -17,7 +17,7 @@ class AdminController extends AbstractController
         ->getRepository(User::class)
         ->findBy(array(),array('name'=>'ASC'));
 
-        return $this->render('admin/index.html.twig', [
+        return $this->render('admin/admin.html.twig', [
             'users' => $users,
         ]);
     }
