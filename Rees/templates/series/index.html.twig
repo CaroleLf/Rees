@@ -32,16 +32,14 @@
 		<a href="#series" class="text-white text-decoration-none"><i class="ri-arrow-down-s-fill"></i></a>
 	</div></a>
          <div id="series" class="work_container container grid"> 
-            {% for serie in series %}
-                <div class="series__filter">
-                    {% if app.user %}
-                        <td> <a href="{{ path('app_series_show', {'id': serie.id}) }}"><img src="{{ path('app_poster',{'id':serie.id}) }}"></a></td>
-                    {% else %}
-                       <td> <img src="{{ path('app_poster',{'id':serie.id}) }}"></td>
-                    {% endif %}
+        {% for serie in series %}
+            <div class="series__filter">
+                {% if app.user %}
+                    <td> <a href="{{ path('app_series_show', {'id': serie.id}) }}"><img src="{{ path('app_poster',{'id':serie.id}) }}"></a></td>
+                {% else %}
+                    <td> <img src="{{ path('app_poster',{'id':serie.id}) }}"></td>
+                {% endif %}
                 </div>
-                
-            
         {% else %}
                 <td colspan="11">no records found</td>
         {% endfor %}

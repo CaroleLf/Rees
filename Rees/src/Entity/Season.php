@@ -43,7 +43,7 @@ class Season
     {
         return $this->series;
     }
-
+    
     public function setSeries(?Series $series): self
     {
         $this->series = $series;

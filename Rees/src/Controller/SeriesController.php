@@ -2,6 +2,8 @@
 
 namespace App\Controller;
 
+use App\Entity\Episode;
+use App\Entity\Season;
 use App\Entity\Series;
 use App\Form\Series1Type;
 use Doctrine\ORM\EntityManagerInterface;
@@ -53,12 +55,33 @@ class SeriesController extends AbstractController
     }
 
     #[Route('/{id}', name: 'app_series_show', methods: ['GET'])]
-    public function show(Series $series): Response
+    public function show(EntityManagerInterface $entityManager,Series $series): Response
     {
-        return $this->render('series/show.html.twig', [
-            'series' => $series,
-        ]);
+    $seasons = $entityManager
+    ->getRepository(Season::class)
+    ->findBy(array('series'=>$series),array('number'=>'ASC'));
+
+    $query = $entityManager->createQuery(
+        "SELECT se.number as numberSeason, e.number as nbEpisode
+        FROM App\Entity\Episode e
+        INNER JOIN e.season se
+        INNER JOIN se.series s
+        WHERE s.id = :id
+        GROUP BY numberSeason
+        ORDER BY numberSeason"
+    )->setParameter('id', $series);;
+    
+    $episodesPerSeason = $query->getResult();
+    return $this->render('series/show.html.twig', [
+        'series' => $series,
+        'seasons' => $seasons,
+        'episodes' => $episodesPerSeason,
+    ]);
     }
+
+
+    
+
 
     #[Route('/{id}/edit', name: 'app_series_edit', methods: ['GET', 'POST'])]
     public function edit(Request $request, Series $series, EntityManagerInterface $entityManager): Response
