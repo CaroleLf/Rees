@@ -22,7 +22,20 @@
         <img  id='logoSociety' class="container w-auto h-auto" src="/media/logo.png" alt="Rees Logo">
         <h1 class="societyName font-weight-bold">Rees</h1>  
         {% if app.user %}
-            <h2 class="welcome">Welcome {{app.user.name}}, take a sit and enjoy your favorite series</h2>
+            {% if is_admin == 1 %}
+             <h2 class="welcome">Welcome, administrator!</h2>
+            <form action="{{ path('app_series_index') }}" method="post">
+                <input type="submit" name="interface" value="User interface">
+            </form>
+            {% elseif app.user.admin == 1 %}
+                <h2 class="welcome">Welcome {{app.user.name}}, take a sit and enjoy your favorite series</h2>
+                <form action="{{ path('app_series_index') }}" method="post">
+                <input type="submit" name="interface" value="Admin interface">
+                </form>
+            {% else %}
+                <h2 class="welcome">Welcome {{app.user.name}}, take a sit and enjoy your favorite series</h2>
+            {% endif %}
+            
         {% else %}
             <h2 class="welcome">Welcome on the best stream site that you can found on the world wide web.</h2>
         {% endif %}

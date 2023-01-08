@@ -18,7 +18,7 @@
    </div>
    <main class="d-flex " >
         <div class="info d-flex m-5 flex-column align-items-center" >
-            <div class="LineOne d-flex m-5 align-items-center ">
+            <div class="LineOne d-flex flex-wrap m-5 align-items-center ">
                 <div class="firstPart d-flex d-column m-5">
                         <img src="{{ path('app_poster',{'id':series.id}) }}">
                 </div>
@@ -27,12 +27,14 @@
                     {% if series.director %}
                         <h3 class="border-0">Director</h3>
                         <p class="border-0">{{ series.director }}</p>
-                    {% endif %}
-                        
+                    {% endif %}                        
                 </div>
             </div>
-            <div class="LineOne d-flex ">
+            <div class="LineOne d-flex flex-wrap">
             <div class="ThreePart m-5">
+            {% if series.youtubeTrailer %}
+                        <iframe width="auto" height="auto" src={{ series.youtubeTrailer }} ></iframe>
+            {% endif %} 
                 {% if series.awards %}
                         <h3 class="border-0">Awards</h3>
                         <p class="border-0">{{ series.awards }}</p>
@@ -47,11 +49,9 @@
                 {% endif %}
             </div>
                  <div class="lastPart m-5">
-                {% if series.youtubeTrailer %}
-                        <iframe width="1080" height="720" src={{ series.youtubeTrailer }} ></iframe>
-                {% endif %} 
+                 <h3> Episodes </h3>
                {% for episode in episodes %}
-                    Saison {{ episode.numberSeason }}: {{ episode.nbEpisode }}  épisodes
+                    <p class=""> Saison {{ episode.numberSeason }}: {{ episode.nbEpisode }}  épisodes </p>   
                 {% endfor %}
             </div>
 

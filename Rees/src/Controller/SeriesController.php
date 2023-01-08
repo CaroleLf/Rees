@@ -2,23 +2,37 @@
 
 namespace App\Controller;
 
-use App\Entity\Episode;
+use App\Entity\User;
 use App\Entity\Season;
 use App\Entity\Series;
 use App\Form\Series1Type;
+use App\Controller\ParamConverter;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Knp\Component\Pager\PaginatorInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Security\Core\Annotation\IsGranted;
+use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
 
 #[Route('/')]
 class SeriesController extends AbstractController
 {
-    #[Route(['/','/series'], name: 'app_series_index', methods: ['GET'])]
-    public function index(EntityManagerInterface $entityManager, Request $page, PaginatorInterface $paginator ): Response
+
+
+    private $authorizationChecker;
+
+    public function __construct(AuthorizationCheckerInterface $authorizationChecker)
     {
+        $this->authorizationChecker = $authorizationChecker;
+    }
+
+
+    #[Route(['/','/series'], name: 'app_series_index', methods: ['GET', 'POST'])]
+    public function index(EntityManagerInterface $entityManager,Request $request, Request $page, PaginatorInterface $paginator ): Response
+    {
+
         $data = $entityManager
             ->getRepository(Series::class)
             ->findAll();
@@ -29,10 +43,53 @@ class SeriesController extends AbstractController
             12
         );    
 
+        $user = $this->getUser();
+        if ($user && $user->isAdmin()) {
+            if ($request->isMethod('POST')) {
+                if ($request->request->get('interface') === 'User interface') {
+                    return $this->render('series/index.html.twig', [
+                        'series' => $series,
+                        'is_admin' => false,
+                    ]);
+                } elseif ($request->request->get('interface') === 'Admin interface') {
+                    return $this->render('series/index.html.twig', [
+                        'series' => $series,
+                        'is_admin' => true,
+                    ]);
+                }
+            }
+            return $this->render('series/index.html.twig', [
+                'series' => $series,
+                'is_admin' => true,
+            ]);
+        }
         return $this->render('series/index.html.twig', [
             'series' => $series,
+            'is_admin' => false,
         ]);
     }
+
+    #[Route("/series/toggle-admin-status", name:"impersonate_form", methods:["GET"])]
+    public function impersonateForm(EntityManagerInterface $em)
+    {
+        $user = $this->getUser();
+        if (!$user) {
+            throw $this->createAccessDeniedException();
+        }
+
+        if ($user->isAdmin()) {
+            $user->setAdmin(false);
+        } else {
+            $user->setAdmin(true);
+        }
+        $user = $em->getRepository(User::class)->find($user->getId());
+
+        return $this->render('user/index.html.twig', [
+            'user' => $user,
+        ]);  
+    }
+
+
 
     #[Route('/new', name: 'app_series_new', methods: ['GET', 'POST'])]
     public function new(Request $request, EntityManagerInterface $entityManager): Response
