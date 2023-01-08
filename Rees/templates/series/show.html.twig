@@ -61,7 +61,7 @@
     </main>
     <footer>
     <div class="action" >
-    <a href="{{ path('app_series_index') }}"> <b> Back to list </b> </a> <br>
+    <a href="{{ path('app_series_index', {'is_admin': is_admin}) }}"> <b> Back to list </b> </a> <br>
     </div>
     </footer>
     {% else %}

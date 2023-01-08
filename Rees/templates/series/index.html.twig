@@ -27,7 +27,7 @@
             <form action="{{ path('app_series_index') }}" method="post">
                 <input type="submit" name="interface" value="User interface">
             </form>
-            {% elseif app.user.admin == 1 %}
+            {% elseif app.user.admin == 1 and is_admin == 0 %}
                 <h2 class="welcome">Welcome {{app.user.name}}, take a sit and enjoy your favorite series</h2>
                 <form action="{{ path('app_series_index') }}" method="post">
                 <input type="submit" name="interface" value="Admin interface">
@@ -47,10 +47,13 @@
          <div id="series" class="work_container container grid"> 
         {% for serie in series %}
             <div class="series__filter">
-                {% if app.user %}
-                    <td> <a href="{{ path('app_series_show', {'id': serie.id}) }}"><img src="{{ path('app_poster',{'id':serie.id}) }}"></a></td>
+                {% if app.user %} 
+                    <td>
+                        <td> <a href="{{ path('app_series_show', {'id': serie.id, 'is_admin': is_admin}) }}">
+                        <img src="{{ path('app_poster',{'id':serie.id }) }}"></td> </a>
+                    </td>
                 {% else %}
-                    <td> <img src="{{ path('app_poster',{'id':serie.id}) }}"></td>
+                    <td> <img src="{{ path('app_poster',{'id':serie.id }) }}"></td>
                 {% endif %}
                 </div>
         {% else %}

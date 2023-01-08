@@ -6,15 +6,14 @@ use App\Entity\User;
 use App\Entity\Season;
 use App\Entity\Series;
 use App\Form\Series1Type;
-use App\Controller\ParamConverter;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Knp\Component\Pager\PaginatorInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
-use Symfony\Component\Security\Core\Annotation\IsGranted;
 use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
+
 
 #[Route('/')]
 class SeriesController extends AbstractController
@@ -32,6 +31,8 @@ class SeriesController extends AbstractController
     #[Route(['/','/series'], name: 'app_series_index', methods: ['GET', 'POST'])]
     public function index(EntityManagerInterface $entityManager,Request $request, Request $page, PaginatorInterface $paginator ): Response
     {
+        $is_admin = $request->query->get('is_admin');
+        $user = $this->getUser();
 
         $data = $entityManager
             ->getRepository(Series::class)
@@ -40,10 +41,9 @@ class SeriesController extends AbstractController
         $series = $paginator -> paginate(
             $data,
             $page->query->getInt('page',1),
-            12
-        );    
+            12);    
 
-        $user = $this->getUser();
+   
         if ($user && $user->isAdmin()) {
             if ($request->isMethod('POST')) {
                 if ($request->request->get('interface') === 'User interface') {
@@ -58,38 +58,42 @@ class SeriesController extends AbstractController
                     ]);
                 }
             }
-            return $this->render('series/index.html.twig', [
-                'series' => $series,
-                'is_admin' => true,
-            ]);
         }
+
         return $this->render('series/index.html.twig', [
             'series' => $series,
-            'is_admin' => false,
+            'is_admin' => $is_admin,
         ]);
     }
 
-    #[Route("/series/toggle-admin-status", name:"impersonate_form", methods:["GET"])]
-    public function impersonateForm(EntityManagerInterface $em)
+
+
+    #[Route('/{id}', name: 'app_series_show', methods: ['GET','POST'])]
+    public function show(EntityManagerInterface $entityManager,Series $series,  Request $request): Response
     {
-        $user = $this->getUser();
-        if (!$user) {
-            throw $this->createAccessDeniedException();
-        }
 
-        if ($user->isAdmin()) {
-            $user->setAdmin(false);
-        } else {
-            $user->setAdmin(true);
-        }
-        $user = $em->getRepository(User::class)->find($user->getId());
+    $is_admin = $request->query->get('is_admin');
+    $seasons = $entityManager
+    ->getRepository(Season::class)
+    ->findBy(array('series'=>$series),array('number'=>'ASC'));
 
-        return $this->render('user/index.html.twig', [
-            'user' => $user,
-        ]);  
+    $query = $entityManager->createQuery(
+        "SELECT se.number as numberSeason, e.number as nbEpisode
+        FROM App\Entity\Episode e
+        INNER JOIN e.season se
+        INNER JOIN se.series s
+        WHERE s.id = :id
+        GROUP BY numberSeason
+        ORDER BY numberSeason"
+    )->setParameter('id', $series);;
+    $episodesPerSeason = $query->getResult();
+    return $this->render('series/show.html.twig', [
+        'series' => $series,
+        'seasons' => $seasons,
+        'episodes' => $episodesPerSeason,
+        'is_admin' => $is_admin
+    ]);
     }
-
-
 
     #[Route('/new', name: 'app_series_new', methods: ['GET', 'POST'])]
     public function new(Request $request, EntityManagerInterface $entityManager): Response
@@ -111,33 +115,9 @@ class SeriesController extends AbstractController
         ]);
     }
 
-    #[Route('/{id}', name: 'app_series_show', methods: ['GET'])]
-    public function show(EntityManagerInterface $entityManager,Series $series): Response
-    {
-    $seasons = $entityManager
-    ->getRepository(Season::class)
-    ->findBy(array('series'=>$series),array('number'=>'ASC'));
-
-    $query = $entityManager->createQuery(
-        "SELECT se.number as numberSeason, e.number as nbEpisode
-        FROM App\Entity\Episode e
-        INNER JOIN e.season se
-        INNER JOIN se.series s
-        WHERE s.id = :id
-        GROUP BY numberSeason
-        ORDER BY numberSeason"
-    )->setParameter('id', $series);;
     
-    $episodesPerSeason = $query->getResult();
-    return $this->render('series/show.html.twig', [
-        'series' => $series,
-        'seasons' => $seasons,
-        'episodes' => $episodesPerSeason,
-    ]);
-    }
 
 
-    
 
 
     #[Route('/{id}/edit', name: 'app_series_edit', methods: ['GET', 'POST'])]
