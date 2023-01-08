@@ -161,6 +161,12 @@ div.series__filter:hover  {
 }
 
 @media (max-width: 500px){
+	.pagination a{
+        font-size: large;
+        color: white;
+        text-decoration: none;
+    }
+
 	.work_container {
 		display: grid;
 		grid-template-columns: repeat(1,330px) ;
