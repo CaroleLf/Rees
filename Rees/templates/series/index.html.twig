@@ -18,19 +18,19 @@
 
 {% block body %}
     {{ parent() }}
-     <main class="d-flex flex-wrap">
+     <main class="d-flex align-items-center flex-wrap">
         <img  id='logoSociety' class="container w-auto h-auto" src="/media/logo.png" alt="Rees Logo">
         <h1 class="societyName font-weight-bold">Rees</h1>  
         {% if app.user %}
             {% if is_admin == 1 %}
              <h2 class="welcome">Welcome, administrator!</h2>
             <form action="{{ path('app_series_index') }}" method="post">
-                <input type="submit" name="interface" value="User interface">
+                <input class="btn btn-info" type="submit" name="interface" value="User interface">
             </form>
             {% elseif app.user.admin == 1 and is_admin == 0 %}
                 <h2 class="welcome">Welcome {{app.user.name}}, take a sit and enjoy your favorite series</h2>
                 <form action="{{ path('app_series_index') }}" method="post">
-                <input type="submit" name="interface" value="Admin interface">
+                <input class="btn btn-info" type="submit" name="interface" value="Admin interface">
                 </form>
             {% else %}
                 <h2 class="welcome">Welcome {{app.user.name}}, take a sit and enjoy your favorite series</h2>

@@ -16,13 +16,14 @@
             {{ series.title }}
         </h1>
    </div>
-   <main class="d-flex " >
+   <main class="d-flex flex-wrap" >
         <div class="info d-flex m-5 flex-column align-items-center" >
             <div class="LineOne d-flex flex-wrap m-5 align-items-center ">
                 <div class="firstPart d-flex d-column m-5">
                         <img src="{{ path('app_poster',{'id':series.id}) }}">
                 </div>
-                <div class="secondPart m-2 d-flex align-items-center flex-column">
+                <div class="secondPart m-2 d-flex  flex-column">
+                        <h3 class="border-0">Description </h3>
                         <p  class="border-0">{{ series.plot }}</p>
                     {% if series.director %}
                         <h3 class="border-0">Director</h3>
@@ -32,9 +33,6 @@
             </div>
             <div class="LineOne d-flex flex-wrap">
             <div class="ThreePart m-5">
-            {% if series.youtubeTrailer %}
-                        <iframe width="auto" height="auto" src={{ series.youtubeTrailer }} ></iframe>
-            {% endif %} 
                 {% if series.awards %}
                         <h3 class="border-0">Awards</h3>
                         <p class="border-0">{{ series.awards }}</p>
@@ -54,7 +52,9 @@
                     <p class=""> Saison {{ episode.numberSeason }}: {{ episode.nbEpisode }}  épisodes </p>   
                 {% endfor %}
             </div>
-
+            {% if series.youtubeTrailer %}
+                                    <iframe width="800" height="500" src={{ series.youtubeTrailer }} ></iframe>
+            {% endif %}
              </div>
             </div>
         </div>
