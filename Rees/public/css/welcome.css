@@ -190,7 +190,7 @@ div.series__filter:hover  {
 
 	.work_container {
 		display: grid;
-		grid-template-columns: repeat(1,330px) ;
+		grid-template-columns: repeat(auto,330px) ;
 		gap : 1.8rem;
 		justify-content: center;
 		padding-top: 1rem;
