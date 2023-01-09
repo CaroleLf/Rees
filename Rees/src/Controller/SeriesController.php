@@ -2,7 +2,7 @@
 
 namespace App\Controller;
 
-use App\Entity\User;
+
 use App\Entity\Season;
 use App\Entity\Series;
 use App\Form\Series1Type;
@@ -15,7 +15,7 @@ use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
 
 
-#[Route('/')]
+#[Route('/series')]
 class SeriesController extends AbstractController
 {
 
@@ -28,7 +28,7 @@ class SeriesController extends AbstractController
     }
 
 
-    #[Route(['/','/series'], name: 'app_series_index', methods: ['GET', 'POST'])]
+    #[Route(['/'], name: 'app_series_index', methods: ['GET', 'POST'])]
     public function index(EntityManagerInterface $entityManager,Request $request, Request $page, PaginatorInterface $paginator ): Response
     {
         $is_admin = $request->query->get('is_admin');
@@ -41,7 +41,7 @@ class SeriesController extends AbstractController
         $series = $paginator -> paginate(
             $data,
             $page->query->getInt('page',1),
-            12);    
+            10);    
 
    
         if ($user && $user->isAdmin()) {
