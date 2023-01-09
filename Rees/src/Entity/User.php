@@ -135,6 +135,13 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         return $this;
     }
 
+    public function setUser(): self
+    {
+        $this->admin = 0;
+
+        return $this;
+    }
+
     public function getUserId(): ?string
     {
         return $this->userId;
@@ -210,6 +217,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     public function getUserIdentifier(): string { return $this->getEmail(); }
 
     public function getRoles(): array { return ['ROLE_USER']; }
+    
     
     public function eraseCredentials() { }
 

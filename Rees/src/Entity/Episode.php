@@ -113,6 +113,9 @@ class Episode
         return $this;
     }
 
+
+  
+
     /**
      * @return Collection<int, User>
      */
@@ -151,4 +154,5 @@ class Episode
 
         return $this;
     }
+
 }
