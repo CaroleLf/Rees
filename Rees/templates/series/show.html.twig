@@ -51,7 +51,7 @@
                 {% endfor %}
             </div>
             {% if series.youtubeTrailer %}
-                                    <iframe width="800" height="500" src={{ series.youtubeTrailer }} ></iframe>
+                <iframe width="800" height="500" src={{ series.youtubeTrailer }} ></iframe>
             {% endif %}
              </div>
             </div>
@@ -59,7 +59,7 @@
     </main>
     <footer>
     <div class="action" >
-    <a href="{{ path('app_series_index', {'is_admin': is_admin}) }}"> <b> Back to list </b> </a> <br>
+    <a href="{{ path('app_series_index') }}"> <b> Back to list </b> </a> <br>
     </div>
     </footer>
     </body>
