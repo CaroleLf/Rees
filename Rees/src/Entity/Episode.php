@@ -113,6 +113,9 @@ class Episode
         return $this;
     }
 
+
+  
+
     /**
      * @return Collection<int, User>
      */
@@ -150,5 +153,9 @@ class Episode
         $this->date = $date;
 
         return $this;
+    }
+    public function __toString()
+    {
+        return $this->title;
     }
 }

@@ -29,10 +29,12 @@ class RegistrationController extends AbstractController
                     $form->get('plainPassword')->getData()
                 )
             );
-
+            $registerDate = new \DateTime();
+            $user->setRegisterDate($registerDate);
             $entityManager->persist($user);
             $entityManager->flush();
             // do anything else you need here, like send an email
+            
 
             return $this->redirectToRoute('app_series_index');
         }

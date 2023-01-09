@@ -2,6 +2,8 @@
 
 namespace App\Controller;
 
+use App\Entity\Genre;
+use App\Entity\Season;
 use App\Entity\Series;
 use App\Form\Series1Type;
 use Doctrine\ORM\EntityManagerInterface;
@@ -10,13 +12,28 @@ use Knp\Component\Pager\PaginatorInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
 
-#[Route('/')]
+
+#[Route('/series')]
 class SeriesController extends AbstractController
 {
-    #[Route(['/','/series'], name: 'app_series_index', methods: ['GET'])]
-    public function index(EntityManagerInterface $entityManager, Request $page, PaginatorInterface $paginator ): Response
+
+
+    private $authorizationChecker;
+
+    public function __construct(AuthorizationCheckerInterface $authorizationChecker)
     {
+        $this->authorizationChecker = $authorizationChecker;
+    }
+
+
+    #[Route(['/'], name: 'app_series_index', methods: ['GET', 'POST'])]
+    public function index(EntityManagerInterface $entityManager,Request $request, Request $page, PaginatorInterface $paginator ): Response
+    {
+        $is_admin = $request->query->get('is_admin');
+        $user = $this->getUser();
+
         $data = $entityManager
             ->getRepository(Series::class)
             ->findAll();
@@ -24,12 +41,62 @@ class SeriesController extends AbstractController
         $series = $paginator -> paginate(
             $data,
             $page->query->getInt('page',1),
-            12
-        );    
+            10);    
+
+        
+        if ($user && $user->isAdmin()) {
+            if ($request->isMethod('POST')) {
+                if ($request->request->get('interface') === 'User interface') {
+                    return $this->render('series/index.html.twig', [
+                        'series' => $series,
+                        'is_admin' => false,
+                      
+                    ]);
+                } elseif ($request->request->get('interface') === 'Admin interface') {
+                    return $this->render('series/index.html.twig', [
+                        'series' => $series,
+                        'is_admin' => true,
+                        
+                    ]);
+                }
+            }
+        }
+
+
 
         return $this->render('series/index.html.twig', [
             'series' => $series,
+            'is_admin' => $is_admin,
         ]);
+    }
+
+
+
+    #[Route('/{id}', name: 'app_series_show', methods: ['GET','POST'])]
+    public function show(EntityManagerInterface $entityManager,Series $series,  Request $request): Response
+    {
+
+    $is_admin = $request->query->get('is_admin');
+    $seasons = $entityManager
+    ->getRepository(Season::class)
+    ->findBy(array('series'=>$series),array('number'=>'ASC'));
+
+    $query = $entityManager->createQuery(
+        "SELECT se.number as numberSeason, e.number as nbEpisode
+        FROM App\Entity\Episode e
+        INNER JOIN e.season se
+        INNER JOIN se.series s
+        WHERE s.id = :id
+        GROUP BY numberSeason
+        ORDER BY numberSeason"
+    )->setParameter('id', $series);;
+    $episodesPerSeason = $query->getResult();
+    return $this->render('series/show.html.twig', [
+        'series' => $series,
+        'seasons' => $seasons,
+        'episodes' => $episodesPerSeason,
+        'is_admin' => $is_admin
+    ]);
     }
 
     #[Route('/new', name: 'app_series_new', methods: ['GET', 'POST'])]
@@ -52,13 +119,10 @@ class SeriesController extends AbstractController
         ]);
     }
 
-    #[Route('/{id}', name: 'app_series_show', methods: ['GET'])]
-    public function show(Series $series): Response
-    {
-        return $this->render('series/show.html.twig', [
-            'series' => $series,
-        ]);
-    }
+    
+
+
+
 
     #[Route('/{id}/edit', name: 'app_series_edit', methods: ['GET', 'POST'])]
     public function edit(Request $request, Series $series, EntityManagerInterface $entityManager): Response

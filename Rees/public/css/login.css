@@ -1,6 +1,5 @@
 body {
     display: flex;
-    font-size: 5rem;
     align-items: center;
 }
 main {
@@ -12,12 +11,25 @@ main {
     flex-direction: column;
 }
 
+ul {
+    padding-left : 0;
+    color: red;
+}
 .form-floating {
     margin: 5%;
 }
-.boxShadow {
-    height : 300px;
-    width : auto;
+.boxShadowLogin {
+    padding: 25px;
+    height : auto;
+    width: 350px;
+    border-radius: 2.5rem !important;
+    box-shadow: 0 0.1rem 1rem rgba(190, 124, 255, 0.64);
+}
+
+.boxShadowRegister{
+    padding: 25px;
+    height : auto;
+    width : 400px;
     border-radius: 2.5rem !important;
     box-shadow: 0 0.1rem 1rem rgba(190, 124, 255, 0.64);
 }

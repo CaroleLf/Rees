@@ -10,7 +10,7 @@
 {% block body %}
     {{ parent() }}
         <main class="text-center w-100 m-auto form-signin">
-        <div class="row align-items-center boxShadow">
+        <div class="row align-items-center boxShadowLogin">
             <form method="post">
                 {% if error %}
                     <div class="alert alert-danger">{{ error.messageKey|trans(error.messageData, 'security') }}</div>
@@ -20,7 +20,7 @@
                     <div class="mb-3">
                         You are logged in as {{ app.user.userIdentifier }}, <a href="{{ path('app_logout') }}">Sign out</a>
                     </div>
-                {% endif %}
+                {% endif %}   
                 <h1 class="h3 mb-3 font-weight-normal text-light">Please sign in</h1>
       
                 <div class="form-floating">
@@ -32,6 +32,9 @@
                     <input type="password" class="form-control" id="floatingPassword" placeholder="Password" name="password" required>
                     <label for="floatingPassword">Password</label>
                 </div>    
+
+                <input type="hidden" name="_csrf_token"
+                value="{{ csrf_token('authenticate') }}">
 
                 <button class="btn btn-outline-light btn-lg px-4" type="submit">
                     Sign in
