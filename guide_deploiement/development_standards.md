@@ -7,6 +7,9 @@
 Pour le développement de notre application, nous allons utiliser les
 standards de développement suivants :
 - code (noms des variables et fonctions en anglais) ;
+- éviter les "grands" commits ;
+- supprimer les branches inutiles ;
+- au moins 1 branche par User Story ;
 - notation : camel case ;
 - dépôt GitLab en anglais (commits, issues…) ;
 - charte graphique prédéfinie :
