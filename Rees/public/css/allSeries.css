@@ -34,47 +34,16 @@ a {
 	transform: translateY(-5px);
 }
 
-/** Main **/
-main {
-    display: flex;
-    width: 98vw;
-    height: 100vh;
-    flex-wrap: wrap;
-    flex-direction: column;
-    justify-content: center;
-    align-content: space-around;
-}
-
-
-
-main h1 {
-    font-size: 4rem;
-    color : #ffffff;
-}
-main h2 {
-    font-size: 2rem;
-    color : rgb(255, 255, 255);
-}
-
-.welcome , .societyName {
-    margin: 0 auto;
-    max-width: 950px;
-    padding: 50px 0;
-    position: relative;
-    text-align: center;
-    width: 100%;
-    z-index: 1;
-}
 
 /** Series display **/
 .work_container {
     display: flex;
     padding: 0 19%;
 	display: grid;
-	grid-template-columns: repeat(3,330px) ;
+	grid-template-columns: repeat(5,330px) ;
 	gap : 1.8rem;
 	justify-content: center;
-	padding-top: 1rem;
+	padding-top: 10rem;
 }
 
 

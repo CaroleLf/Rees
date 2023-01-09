@@ -1,20 +1,59 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Hello WelcomeController!{% endblock %}
+{% block title %}Welcome Page{% endblock %}
+
+{% block stylesheets %}
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.3.1/dist/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <link href="{{ asset('/css/welcome.css') }}" type="text/css" rel="stylesheet">  
+	<link rel="shortcut icon" href="img/logo.png" >
+	<link href='https://css.gg/css' rel='stylesheet'>
+    <link href="https://cdn.jsdelivr.net/npm/remixicon@2.5.0/fonts/remixicon.css" rel="stylesheet">
+{% endblock %}
 
 {% block body %}
-<style>
-    .example-wrapper { margin: 1em auto; max-width: 800px; width: 95%; font: 18px/1.5 sans-serif; }
-    .example-wrapper code { background: #F5F5F5; padding: 2px 6px; }
-</style>
-
-<div class="example-wrapper">
-    <h1>Hello {{ controller_name }}! ✅</h1>
-
-    This friendly message is coming from:
-    <ul>
-        <li>Your controller at <code><a href="{{ '/mnt/roost/users/ccrispel/S3/Web/sae_3_01_partie_2/Rees/src/Controller/WelcomeController.php'|file_link(0) }}">src/Controller/WelcomeController.php</a></code></li>
-        <li>Your template at <code><a href="{{ '/mnt/roost/users/ccrispel/S3/Web/sae_3_01_partie_2/Rees/templates/welcome/index.html.twig'|file_link(0) }}">templates/welcome/index.html.twig</a></code></li>
-    </ul>
-</div>
+    {{ parent() }}
+     <main class="d-flex align-items-center flex-wrap">
+        <img  id='logoSociety' class="container w-auto h-auto" src="/media/logo.png" alt="Rees Logo">
+        <h1 class="societyName font-weight-bold">Rees</h1>  
+        {% if app.user %}
+            {% if is_admin == 1 %}
+             <h2 class="welcome">Bienvenue , administrateur!</h2>
+            <form action="{{ path('app_series_index') }}" method="post">
+                <input class="btn btn-info" type="submit" name="interface" value="User interface">
+            </form>
+            {% elseif app.user.admin == 1 and is_admin == 0 %}
+                <h2 class="welcome">Bienvenue {{app.user.name}}, asseyez-vous et profitez de votre série préférée</h2>
+                <form action="{{ path('app_series_index') }}" method="post">
+                <input class="btn btn-info" type="submit" name="interface" value="Admin interface">
+                </form>
+            {% else %}
+                <h2 class="welcome">Bienvenue {{app.user.name}}, asseyez-vous et profitez de votre série préférée</h2>
+            {% endif %}
+            
+        {% else %}
+            <h2 class="welcome">Bienvenue sur le meilleur site de streaming que vous puissiez trouver sur le web.</h2>
+        {% endif %}
+    </main>
+    <div class="scroll-down">
+            <a href="#series" class="text-white text-decoration-none"><i class="ri-arrow-down-s-fill"></i></a>
+        </div></a>
+            <div id="series" class="work_container container grid"> 
+            {% for serie in series %}
+                <div class="series__filter">
+                    {% if app.user %} 
+                       
+                            <td> <a href="{{ path('app_series_show', {'id': serie.id, 'is_admin': is_admin}) }}">
+                            <img src="{{ path('app_poster',{'id':serie.id }) }}"></td> </a>
+                     
+                    {% else %}
+                        <td>
+                            <td> <a href="{{ path('app_series_show', {'id': serie.id, 'is_admin': is_admin}) }}">
+                            <img src="{{ path('app_poster',{'id':serie.id }) }}"></td> </a>
+                        </td>
+                    {% endif %}
+                    </div>
+            {% else %}
+                    <td colspan="11">Pas de série trouvée</td>
+            {% endfor %}
+            </div>
 {% endblock %}

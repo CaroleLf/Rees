@@ -9,7 +9,6 @@
 
 {% block body %}
     {{ parent()  }}
-    {% if app.user %}
     <div class="title d-flex justify-content-center">
         <h1 class="titleTxt " >
             {{ series.title }}
@@ -63,10 +62,5 @@
     <a href="{{ path('app_series_index', {'is_admin': is_admin}) }}"> <b> Back to list </b> </a> <br>
     </div>
     </footer>
-    {% else %}
-        <main class="h-100 m-5 d-flex align-items-center">
-            <h1> Vous n'êtes pas connecter </h1>
-        </main >
-    {% endif %}
     </body>
 {% endblock %}

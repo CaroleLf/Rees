@@ -2,7 +2,7 @@
 
 namespace App\Controller;
 
-use App\Entity\User;
+
 use App\Entity\Season;
 use App\Entity\Series;
 use App\Form\Series1Type;
@@ -41,7 +41,7 @@ class SeriesController extends AbstractController
         $series = $paginator -> paginate(
             $data,
             $page->query->getInt('page',1),
-            12);    
+            10);    
 
    
         if ($user && $user->isAdmin()) {
