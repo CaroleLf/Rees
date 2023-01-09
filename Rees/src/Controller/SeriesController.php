@@ -115,12 +115,7 @@ class SeriesController extends AbstractController
         ]);
     }
 
-    
-
-
-
-
-    #[Route('/{id}/edit', name: 'app_series_edit', methods: ['GET', 'POST'])]
+   /* #[Route('/{id}/edit', name: 'app_series_edit', methods: ['GET', 'POST'])]
     public function edit(Request $request, Series $series, EntityManagerInterface $entityManager): Response
     {
         $form = $this->createForm(Series1Type::class, $series);
@@ -147,7 +142,7 @@ class SeriesController extends AbstractController
         }
 
         return $this->redirectToRoute('app_series_index', [], Response::HTTP_SEE_OTHER);
-    }
+    }*/
 
     #[Route('/poster/{id}', name: 'app_poster', methods: ['GET'])]
     public function poster(Series $series): Response

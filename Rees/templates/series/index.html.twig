@@ -11,15 +11,14 @@
 {% endblock %}
 
 {% block body %}
-    {{ parent() }}    
-         <div id="series" class="work_container container grid "> 
+    {{ parent() }}
+        <div id="series" class="work_container container grid "> 
         {% for serie in series %}
             <div class="series__filter">
-               
                     <td>
                         <td> <a href="{{ path('app_series_show', {'id': serie.id, 'is_admin': is_admin}) }}">
                         <img src="{{ path('app_poster',{'id':serie.id }) }}"></td> </a>
-                    </td>}
+                    </td>
                 </div>
         {% else %}
                 <td colspan="11">Pas de séries trouvée</td>
@@ -27,6 +26,6 @@
         </div>
         
     <div class="pag  d-flex flex-row align-items-center justify-content-center  text-decoration-none text-white ">
-    {{ knp_pagination_render(series,null,{},{'attr':{'class' : 'text-white'}}) }}
+        {{ knp_pagination_render(series,null,{},{'attr':{'class' : 'text-white'}}) }}
     </div>
 {% endblock %}
