@@ -13,7 +13,7 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
-
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
 
 #[Route('/series')]
 class SeriesController extends AbstractController
@@ -26,7 +26,6 @@ class SeriesController extends AbstractController
     {
         $this->authorizationChecker = $authorizationChecker;
     }
-
 
     #[Route(['/'], name: 'app_series_index', methods: ['GET', 'POST'])]
     public function index(EntityManagerInterface $entityManager,Request $page, PaginatorInterface $paginator ): Response
@@ -50,7 +49,25 @@ class SeriesController extends AbstractController
         ]);
     }
 
+    #[Route(['/tracked'], name: 'app_series_tracked', methods: ['GET', 'POST'])]
+    public function tracked(EntityManagerInterface $entityManager, Request $page, PaginatorInterface $paginator ): Response
+    {
+        $data = $entityManager
+            ->getRepository(Series::class)
+            ->findAll();
 
+        $series = $paginator -> paginate(
+            $data,
+            $page->query->getInt('page',1),
+            10);    
+
+
+
+
+        return $this->render('series/tracked/index.html.twig', [
+            'series' => $series,
+        ]);
+    }
 
     #[Route('/{id}', name: 'app_series_show', methods: ['GET','POST'])]
     public function show(EntityManagerInterface $entityManager,Series $series,  Request $request): Response
@@ -153,5 +170,13 @@ class SeriesController extends AbstractController
         $series->removeUser($this->getUser());
         $entityManager->flush();
         return $this->redirectToRoute('app_series_show', ['id' => $series->getId()]);
+    }
+
+    
+
+    #[Route(['/hola'], name: 'app_series_hola')]
+    public function hola(): Response
+    {
+        return $this->render('<h1>Hola</h1>');
     }
 }
