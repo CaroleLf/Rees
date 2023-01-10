@@ -13,7 +13,7 @@
 {% block body %}
     {{ parent() }}    
          <div id="series" class="work_container container grid "> 
-        {% for serie in series %}
+        {% for serie in user.series %}
             <div class="series__filter d-flex flex-column">
                 <td> 
                     <div class="AllPoster"> 
@@ -30,8 +30,4 @@
                 </div>
         {% endfor %}
         </div>
-        
-    <div class="pag  d-flex flex-row align-items-center justify-content-center  text-decoration-none text-white ">
-    {{ knp_pagination_render(series,null,{},{'attr':{'class' : 'text-white'}}) }}
-    </div>
 {% endblock %}
