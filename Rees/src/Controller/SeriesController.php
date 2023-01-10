@@ -31,23 +31,26 @@ class SeriesController extends AbstractController
     #[Route(['/'], name: 'app_series_index', methods: ['GET', 'POST'])]
     public function index(EntityManagerInterface $entityManager,Request $page, PaginatorInterface $paginator ): Response
     {
-        
-
         $data = $entityManager
             ->getRepository(Series::class)
             ->findAll();
 
-        $series = $paginator -> paginate(
-            $data,
-            $page->query->getInt('page',1),
-            10);    
-
-
-
-
-        return $this->render('series/index.html.twig', [
-            'series' => $series,
-        ]);
+        //checking if the number of the page is correct
+        $nbrPage = $page->query->getInt('page', 1);
+        //if the number of the page is below 1, or above (last number of page), it will redirect to an error page
+        if($nbrPage<1 || $nbrPage > (($data[sizeof($data)-1]->getId())/10)-1){
+            return $this->render('series/error_page/index.html.twig');
+        }
+        else{
+            $series = $paginator -> paginate(
+                $data,
+                $nbrPage,
+                10);
+    
+            return $this->render('series/index.html.twig', [
+                'series' => $series,
+            ]);
+        }
     }
 
 
