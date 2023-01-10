@@ -16,6 +16,7 @@ security:
         main:
             lazy: true
             provider: app_user_provider
+            switch_user: { role: ROLE_ADMIN, target_route: app_welcome }
             custom_authenticator: App\Security\UserAuthenticator
             logout:
                 path: app_logout

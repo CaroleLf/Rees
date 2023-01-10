@@ -113,7 +113,10 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 
     public function getRegisterDate()
     {
-        return $this->registerDate;
+        if ($this->registerDate != null) {
+            return $this->registerDate->format('Y-m-d H:i:s');
+        }
+        
     }
 
     public function setRegisterDate($registerDate): self
@@ -216,7 +219,18 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 
     public function getUserIdentifier(): string { return $this->getEmail(); }
 
-    public function getRoles(): array { return ['ROLE_USER']; }
+    public function getRoles(): array 
+        {
+        $roles = [];
+        if ($this->admin) {
+            $roles[] = 'ROLE_ADMIN';
+        }
+        else {
+           $roles[] =  'ROLE_USER';
+        }
+        return $roles;
+    } 
+
     
     
     public function eraseCredentials() { }

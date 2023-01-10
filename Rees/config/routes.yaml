@@ -3,3 +3,6 @@ controllers:
         path: ../src/Controller/
         namespace: App\Controller
     type: attribute
+_switch_user:
+    path: /_switch_user/{id}
+    controller: App\Controller\SecurityController::switchUser

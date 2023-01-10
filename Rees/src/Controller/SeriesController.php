@@ -2,7 +2,6 @@
 
 namespace App\Controller;
 
-
 use App\Entity\Season;
 use App\Entity\Series;
 use App\Form\Series1Type;
@@ -13,6 +12,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 
 use function Symfony\Component\DependencyInjection\Loader\Configurator\service;
 
@@ -39,56 +39,23 @@ class SeriesController extends AbstractController
         return $paginator;
     }
 
-    public function getAllPosts($currentPage = 1,EntityManagerInterface $entityManager)
+    #[Route(['/'], name: 'app_series_index', methods: ['GET', 'POST'])]
+    public function index(EntityManagerInterface $entityManager, Request $page ): Response
     {
-
         $query = $entityManager->createQuery(
             "SELECT s.id FROM App\Entity\Series s");
-        $paginator = $this->paginate($query, $currentPage);
-        $paginator->setUseOutputWalkers(false);
-
-        return $paginator;
-    }
-
-    #[Route(['/'], name: 'app_series_index', methods: ['GET', 'POST'])]
-    public function index(EntityManagerInterface $entityManager,Request $request, Request $page ): Response
-    {
-        $is_admin = $request->query->get('is_admin');
-        $user = $this->getUser();
-
-        $posts = $this->getAllPosts($page->query->getInt('page',1),$entityManager);
+        $posts = $this->paginate($query, $page->query->getInt('page',1));
+        $posts->setUseOutputWalkers(false);
         $series = $posts->getIterator();
 
         $limit = 10;
         $maxPages = ceil($posts->count()/ $limit);
-        $thisPage = $page;
-
-   
-        if ($user && $user->isAdmin()) {
-            if ($request->isMethod('POST')) {
-                if ($request->request->get('interface') === 'User interface') {
-                    return $this->render('series/index.html.twig', [
-                        'series' => $series,
-                        'is_admin' => false,
-                        'maxPages'=> $maxPages,
-                        'thisPage' => $page->query->getInt('page',1)
-                    ]);
-                } elseif ($request->request->get('interface') === 'Admin interface') {
-                    return $this->render('series/index.html.twig', [
-                        'series' => $series,
-                        'is_admin' => false,
-                        'maxPages'=> $maxPages,
-                        'thisPage' => $page->query->getInt('page',1)
-                    ]);
-                }
-            }
-        }
+        $thisPage = $page->query->getInt('page',1);
 
         return $this->render('series/index.html.twig', [
             'series' => $series,
-            'is_admin' => $is_admin,
             'maxPages'=> $maxPages,
-            'thisPage' => $page->query->getInt('page',1)
+            'thisPage' => $thisPage
         ]);
     }
 

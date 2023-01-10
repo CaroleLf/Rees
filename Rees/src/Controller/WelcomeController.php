@@ -8,6 +8,7 @@ use Symfony\Component\Routing\Annotation\Route;
 use Doctrine\ORM\EntityManagerInterface;
 use App\Entity\Series;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\Security\Http\Event\SwitchUserEvent;
 
 
 class WelcomeController extends AbstractController
@@ -16,7 +17,6 @@ class WelcomeController extends AbstractController
     public function index(EntityManagerInterface $entityManager,Request $request): Response
     {
         $SeriesFinal = [];
-        $is_admin = $request->query->get('is_admin');
         $series = $entityManager
         ->getRepository(Series::class)
         ->findAll();
@@ -44,7 +44,9 @@ class WelcomeController extends AbstractController
         
         return $this->render('welcome/index.html.twig', [
            'series'=> $SeriesFinal,
-           'is_admin'=>$is_admin,
         ]);
     }
+
+
+
 }

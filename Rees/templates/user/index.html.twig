@@ -1,0 +1,79 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}User index{% endblock %}
+{% block stylesheets %}
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.3.1/dist/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+
+    <link href="{{ asset('/css/admin.css') }}" type="text/css" rel="stylesheet">  
+
+{% endblock %}
+{% block body %}
+    {{ parent() }}  
+{% if app.user %}
+        {% if app.user.admin ==1 %}
+        <main class="min-vh-100 d-flex flex-column align-items-center "> 
+            <div class="Allinfo__filter ">   
+                <table class="table table-striped">
+                    <thead class="thead-light">
+                        <tr class="border-0">
+                            <th class="border-0 min-vw-20">Id</th>
+                            <th class="border-0 min-vw-20">Name</th>
+                            <th class="email border-0 ">Email</th>
+                            <th class="border-0 min-vw-20">RegisterDate</th>
+                            <th class="border-0 min-vw-20">Admin</th>
+                            <th class="border-0 min-vw-20">UserId</th>
+                            <th class="border-0 min-vw-20 text-center">actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                    {% for user in users %}
+                        <tr>
+                            {% if  user.id %}
+                            <td class="border-0 min-vw-30" >{{ user.id }}</td>
+                            {% endif %}
+                            {% if  user.name %}
+                            <td class="border-0 min-vw-20">{{ user.name }}</td>
+                            {% else %}
+                            <td class="border-0 min-vw-20"> N/A </td>   
+                            {% endif %}
+                            {% if  user.email %}
+                            <td class="email border-0 w-60">{{ user.email }}</td>
+                            {% else %}
+                            <td class="border-0 min-vw-20"> N/A </td>   
+                            {% endif %}
+                            {% if  user.registerDate %}
+                            <td class="border-0 min-vw-20">{{ user.registerDate ? user.registerDate|date('Y-m-d H:i:s') : '' }}</td>
+                            {% else %}
+                            <td class="border-0 min-vw-20"> N/A </td>   
+                            {% endif %}
+                            <td class="border-0 min-vw-20">{{ user.admin ? 'Yes' : 'No' }}</td> 
+                            {% if  user.registerDate %}
+                            <td class="border-0 min-vw-20" >{{ user.userId }}</td>
+                            {% else %}
+                            <td class="border-0 min-vw-20"> N/A </td>   
+                            {% endif %}
+                            <td class="border-0 min-vw-20 inline-block inlineButton" colspan="3">
+                                {% if app.user != user %}
+                                <a class="btn btn-outline-light btn-lg px-4" href="{{ path('app_welcome', {'_switch_user' : user.email }) }} " role='button'>Incarner</a>
+                                {% endif %}
+                                <a class="btn btn-outline-light btn-lg px-4" href="{{ path('app_user_show', {'id': user.id}) }}" role='button'>Voir</a>
+                                <a class="btn btn-outline-light btn-lg px-4" href="{{ path('app_user_edit', {'id': user.id}) }}" role='button'>  Editer</a>
+                             </td>
+                        </tr>
+                    {% else %}
+                        <tr>
+                            <td colspan="8">Aucun utilisateur trouvé</td>
+                        </tr>
+                    {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </main>
+        {% else %}
+            <main class="h-100 m-5 d-flex align-items-center">
+                <h1> ⚠️ ERREUR  :  Vous n'êtes pas administrateur ⚠️</h1>
+            </main >
+        {% endif %}
+    {% endif %}
+
+{% endblock %}

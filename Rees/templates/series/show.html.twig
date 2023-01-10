@@ -9,24 +9,27 @@
 
 {% block body %}
     {{ parent()  }}
-    <div class="title d-flex justify-content-center">
-        <h1 class="titleTxt " >
-            {{ series.title }}
-        </h1>
-   </div>
+    
    <main class="d-flex flex-wrap" >
         <div class="info d-flex m-5 flex-column align-items-center" >
             <div class="LineOne d-flex flex-wrap m-5 align-items-center ">
-                <div class="firstPart d-flex d-column m-5">
+                <div class="firstPart m-5">
                         <img src="{{ path('app_poster',{'id':series.id}) }}">
                 </div>
-                <div class="secondPart m-2 d-flex  flex-column">
-                        <h3 class="border-0">Description </h3>
-                        <p  class="border-0">{{ series.plot }}</p>
-                    {% if series.director %}
-                        <h3 class="border-0">Director</h3>
-                        <p class="border-0">{{ series.director }}</p>
-                    {% endif %}                        
+                <div class="d-flex flex-column">
+                    <div class="title d-flex justify-content-center">
+                        <h1 class="titleTxt ">
+                            {{ series.title }}
+                        </h1>
+                    </div>
+                    <div class="secondPart m-2 d-flex  flex-column">
+                            <h3 class="border-0">Description </h3>
+                            <p  class="border-0">{{ series.plot }}</p>
+                        {% if series.director %}
+                            <h3 class="border-0">Director</h3>
+                            <p class="border-0">{{ series.director }}</p>
+                        {% endif %}                        
+                    </div>
                 </div>
             </div>
             <div class="LineOne d-flex flex-wrap">
@@ -51,7 +54,7 @@
                 {% endfor %}
             </div>
             {% if series.youtubeTrailer %}
-                                    <iframe width="800" height="500" src={{ series.youtubeTrailer }} ></iframe>
+                <iframe width="800" height="500" src={{ series.youtubeTrailer }} ></iframe>
             {% endif %}
              </div>
             </div>
@@ -59,7 +62,7 @@
     </main>
     <footer>
     <div class="action" >
-    <a href="{{ path('app_series_index', {'is_admin': is_admin}) }}"> <b> Back to list </b> </a> <br>
+    <a href="{{ path('app_series_index') }}"> <b> Back to list </b> </a> <br>
     </div>
     </footer>
     </body>

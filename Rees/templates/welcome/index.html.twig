@@ -16,18 +16,11 @@
         <img  id='logoSociety' class="container w-auto h-auto" src="/media/logo.png" alt="Rees Logo">
         <h1 class="societyName font-weight-bold">Rees</h1>  
         {% if app.user %}
-            {% if is_admin == 1 %}
+            {% if is_granted('ROLE_ADMIN') and not is_granted('ROLE_PREVIOUS_ADMIN') %}
              <h2 class="welcome">Bienvenue , administrateur!</h2>
-            <form action="{{ path('app_series_index') }}" method="post">
-                <input class="btn btn-info" type="submit" name="interface" value="User interface">
-            </form>
-            {% elseif app.user.admin == 1 and is_admin == 0 %}
-                <h2 class="welcome">Bienvenue {{app.user.name}}, asseyez-vous et profitez de votre série préférée</h2>
-                <form action="{{ path('app_series_index') }}" method="post">
-                <input class="btn btn-info" type="submit" name="interface" value="Admin interface">
-                </form>
+            <h2 class="welcome">Bienvenue {{app.user.name}}, asseyez-vous et profitez de vos séries préférées</h2>
             {% else %}
-                <h2 class="welcome">Bienvenue {{app.user.name}}, asseyez-vous et profitez de votre série préférée</h2>
+                <h2 class="welcome">Bienvenue {{app.user.name}}, asseyez-vous et profitez de vos séries préférées</h2>
             {% endif %}
             
         {% else %}
@@ -42,12 +35,12 @@
                 <div class="series__filter">
                     {% if app.user %} 
                        
-                            <td> <a href="{{ path('app_series_show', {'id': serie.id, 'is_admin': is_admin}) }}">
+                            <td> <a href="{{ path('app_series_show', {'id': serie.id}) }}">
                             <img src="{{ path('app_poster',{'id':serie.id }) }}"></td> </a>
                      
                     {% else %}
                         <td>
-                            <td> <a href="{{ path('app_series_show', {'id': serie.id, 'is_admin': is_admin}) }}">
+                            <td> <a href="{{ path('app_series_show', {'id': serie.id}) }}">
                             <img src="{{ path('app_poster',{'id':serie.id }) }}"></td> </a>
                         </td>
                     {% endif %}

@@ -22,23 +22,22 @@
         <header class="d-flex text-white">
             <h1 class="navlist font-weight-bold">Rees</h1>
              <ul class="navlist d-flex m-3 p-2">
-			   
             {% if app.user %}
-            	<li><a href="{{ path('app_welcome', {'is_admin': is_admin})}}"  class ="text-white text-decoration-none"> Accueil</a></li>
-                <li><a href="{{ path('app_series_index')}}"  class ="text-white text-decoration-none"> Les séries</a></li>
-                    {% if is_admin == 0 %}
-                        <li><a href="../index.html#work"  class ="text-white text-decoration-none "> Mes Series</a></li>
-                        <li><a href="{{ path('app_logout') }} "  class ="text-white text-decoration-none ">Déconnection</a></li>
-                    {% else %}
-                        <li><a href="../index.html#work"  class ="text-white text-decoration-none "> Mes Series</a></li>
-                        <li><a href="{{ path('app_admin' , {'is_admin': is_admin})}}"  class ="text-white text-decoration-none "> Liste Utilisateurs</a></li>
-                        <li><a href="{{ path('app_logout') }} "  class ="text-white text-decoration-none ">Déconnection</a></li>
+                {% if is_granted('ROLE_PREVIOUS_ADMIN') %}
+                    <a class ="ComeBackAdmin text-white text-decoration-none" href="{{ impersonation_exit_path(path('app_welcome') ) }}"> Revenir en administrateur</a>          
                 {% endif %}
+                    <li><a href="{{ path('app_welcome')}}"  class ="welcomeTest text-white text-decoration-none"> Accueil</a></li>
+                {% if is_granted('ROLE_ADMIN') and not is_granted('ROLE_PREVIOUS_ADMIN') %}
+                    <li><a href="{{ path('app_admin')}}"  class ="ListUsers text-white text-decoration-none "> Liste Utilisateurs</a></li>
+                {% endif %}                   
+                    <li><a href="{{ path('app_series_index')}}"  class ="series text-white text-decoration-none"> Les séries</a></li>
+                    <li><a href="../index.html#work"  class ="personnalSeries text-white text-decoration-none "> Mes Series</a></li>
+                    <li><a href="{{ path('app_logout') }} "  class ="logout text-white text-decoration-none ">Déconnexion</a></li>
             {% else %}
-                <li><a href="{{ path('app_welcome')}}"  class ="text-white text-decoration-none"> Accueil</a></li>
-                 <li><a href="{{ path('app_series_index')}}"  class ="text-white text-decoration-none"> Les séries</a></li>
-			    <li><a href="{{ path('app_register') }}" class ="text-white text-decoration-none">Inscription</a></li>
-			    <li><a href="{{ path('app_login') }}"  class ="text-white text-decoration-none ">Connexion</a></li>
+                <li><a href="{{ path('app_welcome')}}"  class ="welcomeTest text-white text-decoration-none"> Accueil</a></li>
+                 <li><a href="{{ path('app_series_index')}}"  class =" series text-white text-decoration-none"> Les séries</a></li>
+			    <li><a href="{{ path('app_register') }}" class ="registration text-white text-decoration-none">Inscription</a></li>
+			    <li><a href="{{ path('app_login') }}"  class ="login text-white text-decoration-none ">Connexion</a></li>
              {% endif %}
         </header>
         {% endblock %}
