@@ -39,8 +39,7 @@ footer {
 
 
 .titleTxt {
-
-	margin-left: 60px;
+    display: flex;
 	font-size: 47px;
 	font-weight: 600;
 	border-bottom: 2px solid transparent;
@@ -60,4 +59,11 @@ footer {
 h3 {
     color :  #91D7F2;
 
+}
+
+.firstPart {
+    flex : 1;
+}
+.secondPart {
+    flex : 4;
 }

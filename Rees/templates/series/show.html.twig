@@ -16,13 +16,13 @@
                 <div class="firstPart m-5">
                         <img src="{{ path('app_poster',{'id':series.id}) }}">
                 </div>
-                <div class="d-flex flex-column">
-                    <div class="title d-flex justify-content-center">
-                        <h1 class="titleTxt ">
-                            {{ series.title }}
-                        </h1>
-                    </div>
-                    <div class="secondPart m-2 d-flex  flex-column">
+                <div class="d-flex flex-column secondPart">
+                        <div class="title d-flex justify-content-center">
+                            <h1 class="titleTxt ">
+                                {{ series.title }}
+                            </h1>
+                        </div>
+                    <div class="m-2 d-flex  flex-column">
                             <h3 class="border-0">Description </h3>
                             <p  class="border-0">{{ series.plot }}</p>
                         {% if series.director %}
@@ -33,20 +33,20 @@
                 </div>
             </div>
             <div class="LineOne d-flex flex-wrap">
-            <div class="ThreePart m-5">
-                {% if series.awards %}
-                        <h3 class="border-0">Awards</h3>
-                        <p class="border-0">{{ series.awards }}</p>
-                {% endif %}
-                {% if series.yearStart %}
-                        <h3 class="border-0">Year Start</h3>
-                        <p class="border-0">{{ series.yearStart }}</p>
-                {% endif %}
-                {% if series.yearEnd %}
-                        <h3 class="border-0">Year End</h3>
-                        <p class="border-0">{{ series.yearEnd }}</p>
-                {% endif %}
-            </div>
+                <div class="ThreePart m-5">
+                    {% if series.awards %}
+                            <h3 class="border-0">Awards</h3>
+                            <p class="border-0">{{ series.awards }}</p>
+                    {% endif %}
+                    {% if series.yearStart %}
+                            <h3 class="border-0">Year Start</h3>
+                            <p class="border-0">{{ series.yearStart }}</p>
+                    {% endif %}
+                    {% if series.yearEnd %}
+                            <h3 class="border-0">Year End</h3>
+                            <p class="border-0">{{ series.yearEnd }}</p>
+                    {% endif %}
+                </div>
                  <div class="lastPart m-5">
                  <h3> Episodes </h3>
                {% for episode in episodes %}
