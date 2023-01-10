@@ -39,15 +39,14 @@ footer {
 
 
 .titleTxt {
-   
+
 	margin-left: 60px;
 	font-size: 47px;
 	font-weight: 600;
 	border-bottom: 2px solid transparent;
 	transition: all .55s ease;
-    color : #302336;
-     z-index: 1000;
-    position: fixed;
+    color: #91D7F2;
+    z-index: 1000;
     
 }
 
