@@ -6,14 +6,15 @@ use App\Entity\Season;
 use App\Entity\Series;
 use App\Form\Series1Type;
 use Doctrine\ORM\EntityManagerInterface;
+use Doctrine\ORM\Tools\Pagination\Paginator;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
-use Knp\Component\Pager\PaginatorInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
+
+use function Symfony\Component\DependencyInjection\Loader\Configurator\service;
 
 #[Route('/series')]
 class SeriesController extends AbstractController
@@ -27,45 +28,82 @@ class SeriesController extends AbstractController
         $this->authorizationChecker = $authorizationChecker;
     }
 
-    #[Route(['/'], name: 'app_series_index', methods: ['GET', 'POST'])]
-    public function index(EntityManagerInterface $entityManager,Request $page, PaginatorInterface $paginator ): Response
+    public function paginate($dql, $page = 1, $limit = 10)
     {
-        
+        $paginator = new Paginator($dql);
 
-        $data = $entityManager
+        $paginator->getQuery()
+            ->setFirstResult($limit * ($page - 1)) // Offset
+            ->setMaxResults($limit); // Limit
+
+        return $paginator;
+    }
+
+    #[Route(['/'], name: 'app_series_index', methods: ['GET', 'POST'])]
+    public function index(EntityManagerInterface $entityManager, Request $page ): Response
+    {
+        $lastData = $entityManager
             ->getRepository(Series::class)
-            ->findAll();
+            ->findOneBy([], ['id' => 'desc']);
+        $page = $page->query->getInt('page', 1);
+            //if the number of the page is below 1, or above (last number of page), it will redirect to an error page
+        if($page<1){
+            $page = 1;
+        }
+        else if( $page > (($lastData->getId())/10)-1){
+            $page = $lastData->getId()/10 -1.4;
+        }
+        
+        $query = $entityManager->createQuery(
+            "SELECT s FROM App\Entity\Series s
+             INNER JOIN App\Entity\Genre g
+             ORDER BY s.id");
+        $posts = $this->paginate($query, $page);
+        $posts->setUseOutputWalkers(false);
+        $series = $posts->getIterator();
 
-        $series = $paginator -> paginate(
-            $data,
-            $page->query->getInt('page',1),
-            10);    
-
-
-
+        $limit = 10;
+        $maxPages = ceil($posts->count()/ $limit);
+        $thisPage = $page;
 
         return $this->render('series/index.html.twig', [
             'series' => $series,
+            'maxPages'=> $maxPages,
+            'thisPage' => $thisPage
         ]);
     }
 
     #[Route(['/tracked'], name: 'app_series_tracked', methods: ['GET', 'POST'])]
-    public function tracked(EntityManagerInterface $entityManager, Request $page, PaginatorInterface $paginator ): Response
+    public function tracked(EntityManagerInterface $entityManager, Request $page): Response
     {
-        $data = $entityManager
+        $lastData = $entityManager
             ->getRepository(Series::class)
-            ->findAll();
+            ->findOneBy([], ['id' => 'desc']);
+        $page = $page->query->getInt('page', 1);
+            //if the number of the page is below 1, or above (last number of page), it will redirect to an error page
+        if($page<1){
+            $page = 1;
+        }
+        else if( $page > (($lastData->getId())/10)-1){
+            $page = $lastData->getId()/10 -1.4;
+        }
+        
+        $query = $entityManager->createQuery(
+            "SELECT s FROM App\Entity\Series s
+             INNER JOIN App\Entity\Genre g
+             ORDER BY s.id");
+        $posts = $this->paginate($query, $page);
+        $posts->setUseOutputWalkers(false);
+        $series = $posts->getIterator();
 
-        $series = $paginator -> paginate(
-            $data,
-            $page->query->getInt('page',1),
-            10);    
+        $limit = 10;
+        $maxPages = ceil($posts->count()/ $limit);
+        $thisPage = $page;
 
-
-
-
-        return $this->render('series/tracked/index.html.twig', [
+        return $this->render('series/index.html.twig', [
             'series' => $series,
+            'maxPages'=> $maxPages,
+            'thisPage' => $thisPage
         ]);
     }
 
@@ -85,7 +123,7 @@ class SeriesController extends AbstractController
         WHERE s.id = :id
         GROUP BY numberSeason
         ORDER BY numberSeason"
-    )->setParameter('id', $series);;
+    )->setParameter('id', $series);
     $episodesPerSeason = $query->getResult();
     return $this->render('series/show.html.twig', [
         'series' => $series,
@@ -114,12 +152,7 @@ class SeriesController extends AbstractController
             'form' => $form,
         ]);
     }
-
-    
-
-
-
-
+/*
     #[Route('/{id}/edit', name: 'app_series_edit', methods: ['GET', 'POST'])]
     #[IsGranted('ROLE_ADMIN')]
     public function edit(Request $request, Series $series, EntityManagerInterface $entityManager): Response
@@ -149,7 +182,7 @@ class SeriesController extends AbstractController
         }
 
         return $this->redirectToRoute('app_series_index', [], Response::HTTP_SEE_OTHER);
-    }
+    }*/
 
     #[Route('/poster/{id}', name: 'app_poster', methods: ['GET'])]
     public function poster(Series $series): Response
@@ -171,12 +204,5 @@ class SeriesController extends AbstractController
         $entityManager->flush();
         return $this->redirectToRoute('app_series_show', ['id' => $series->getId()]);
     }
-
-    
-
-    #[Route(['/hola'], name: 'app_series_hola')]
-    public function hola(): Response
-    {
-        return $this->render('<h1>Hola</h1>');
-    }
 }
+
