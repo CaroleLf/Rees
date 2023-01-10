@@ -45,7 +45,7 @@ class AdministrationManageCommand extends Command
         // Interactive questions
         $helper = $this->getHelper('question');
         $question1 = new Question("<info>User ID:</info> ");
-        $question2 = new Question("<question>Promote the user to administrator (y/n):</question> ", "y");
+        $question2 = new Question("<question>Promote the user to administrator (y/n) [y]:</question> ", "y");
 
         $ID = $helper->ask($input, $output, $question1);
         $promote = $helper->ask($input, $output, $question2);
