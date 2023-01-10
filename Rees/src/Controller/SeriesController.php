@@ -42,17 +42,29 @@ class SeriesController extends AbstractController
     #[Route(['/'], name: 'app_series_index', methods: ['GET', 'POST'])]
     public function index(EntityManagerInterface $entityManager, Request $page ): Response
     {
+        $lastData = $entityManager
+            ->getRepository(Series::class)
+            ->findOneBy([], ['id' => 'desc']);
+        $page = $page->query->getInt('page', 1);
+            //if the number of the page is below 1, or above (last number of page), it will redirect to an error page
+        if($page<1){
+            $page = 1;
+        }
+        else if( $page > (($lastData->getId())/10)-1){
+            $page = $lastData->getId()/10 -1.4;
+        }
+        
         $query = $entityManager->createQuery(
             "SELECT s FROM App\Entity\Series s
              INNER JOIN App\Entity\Genre g
              ORDER BY s.id");
-        $posts = $this->paginate($query, $page->query->getInt('page',1));
+        $posts = $this->paginate($query, $page);
         $posts->setUseOutputWalkers(false);
         $series = $posts->getIterator();
 
         $limit = 10;
         $maxPages = ceil($posts->count()/ $limit);
-        $thisPage = $page->query->getInt('page',1);
+        $thisPage = $page;
 
         return $this->render('series/index.html.twig', [
             'series' => $series,
