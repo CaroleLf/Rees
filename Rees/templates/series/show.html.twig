@@ -47,7 +47,7 @@
                             <p class="border-0">{{ series.yearEnd }}</p>
                     {% endif %}
                     {% if not is_granted('IS_AUTHENTICATED_FULLY') %}
-                        <a href="{{ path('app_login') }}"> <b> Login to like </b> </a> <br>
+                        <a type="button" class="btn btn-outline-light btn-lg px-4" href="{{ path('app_login') }}"> <b> Connecte toi pour suivre </b> </a> <br>
                     {% endif %}
                     {% if is_granted('IS_AUTHENTICATED_FULLY') %}
                         {% if series.isLikedByUser(app.user) %}
