@@ -50,7 +50,6 @@ class SeriesController extends AbstractController
         return $paginator;
     }
 
-
     #[Route(['/'], name: 'app_series_index', methods: ['GET', 'POST'])]
     public function index(EntityManagerInterface $entityManager,Request $request, Request $page ): Response
     {
@@ -93,13 +92,10 @@ class SeriesController extends AbstractController
         ]);
     }
 
-
-
     #[Route('/{id}', name: 'app_series_show', methods: ['GET','POST'])]
     public function show(EntityManagerInterface $entityManager,Series $series,  Request $request): Response
     {
 
-    $is_admin = $request->query->get('is_admin');
     $seasons = $entityManager
     ->getRepository(Season::class)
     ->findBy(array('series'=>$series),array('number'=>'ASC'));
@@ -112,17 +108,17 @@ class SeriesController extends AbstractController
         WHERE s.id = :id
         GROUP BY numberSeason
         ORDER BY numberSeason"
-    )->setParameter('id', $series);
+    )->setParameter('id', $series);;
     $episodesPerSeason = $query->getResult();
     return $this->render('series/show.html.twig', [
         'series' => $series,
         'seasons' => $seasons,
         'episodes' => $episodesPerSeason,
-        'is_admin' => $is_admin
     ]);
     }
 
     #[Route('/new', name: 'app_series_new', methods: ['GET', 'POST'])]
+    #[IsGranted('ROLE_ADMIN')]
     public function new(Request $request, EntityManagerInterface $entityManager): Response
     {
         $series = new Series();
@@ -141,8 +137,9 @@ class SeriesController extends AbstractController
             'form' => $form,
         ]);
     }
-
-   /* #[Route('/{id}/edit', name: 'app_series_edit', methods: ['GET', 'POST'])]
+/*
+    #[Route('/{id}/edit', name: 'app_series_edit', methods: ['GET', 'POST'])]
+    #[IsGranted('ROLE_ADMIN')]
     public function edit(Request $request, Series $series, EntityManagerInterface $entityManager): Response
     {
         $form = $this->createForm(Series1Type::class, $series);
@@ -161,6 +158,7 @@ class SeriesController extends AbstractController
     }
 
     #[Route('/{id}', name: 'app_series_delete', methods: ['POST'])]
+    #[IsGranted('ROLE_ADMIN')]
     public function delete(Request $request, Series $series, EntityManagerInterface $entityManager): Response
     {
         if ($this->isCsrfTokenValid('delete'.$series->getId(), $request->request->get('_token'))) {
@@ -177,3 +175,4 @@ class SeriesController extends AbstractController
         return new Response(stream_get_contents($series->getPoster()),200,['Content-Type'=>'image/png']);
     }
 }
+
