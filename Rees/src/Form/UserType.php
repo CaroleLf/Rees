@@ -14,13 +14,6 @@ class UserType extends AbstractType
         $builder
             ->add('name')
             ->add('email')
-            ->add('password')
-            ->add('registerDate')
-            ->add('admin')
-            ->add('userId')
-            ->add('country')
-            ->add('series')
-            ->add('episode')
         ;
     }
 

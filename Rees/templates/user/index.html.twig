@@ -67,12 +67,11 @@
                     {% endfor %}
                     </tbody>
                 </table>
-        <a href="{{ path('app_user_new') }}">Créer un nouvel utilisateur</a>
             </div>
         </main>
-{% else %}
+        {% else %}
             <main class="h-100 m-5 d-flex align-items-center">
-                <h1> Vous n'êtes pas administrateur </h1>
+                <h1> ⚠️ ERREUR  :  Vous n'êtes pas administrateur ⚠️</h1>
             </main >
         {% endif %}
     {% endif %}
