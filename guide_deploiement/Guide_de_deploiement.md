@@ -19,23 +19,15 @@ Ce guide de déploiement servira au super-administrateur à se différencier des
 
 Afin de pouvoir travailler sur ce projet, vous aurez besoin d'avoir sur votre ordinateur 
 
-- Python et Symfony d'installés. 
+- Symfony d'installé. 
 
     (Si ce n'est pas le cas, alors : 
-
-    Pour télécharger Python : https://www.python.org/downloads/ 
 
     Pour télécharger Symfony : https://symfony.com/download
 
     Pour Symfony, nous vous recommandons de télécharger la version **binaire AMD64**.)
 
-- et d'exécuter les commandes suivantes sur un terminal : 
-
-    ```
-    $ pip install mysql-connector-python 
-    ```
-
-    (Cela insinue donc que vous pouvez utiliser les commandes ```pip install```.) 
+- et de savoir utiliser votre terminal
 
 
 ## Rappel des fonctionnalités disponibles par un administrateur
@@ -50,27 +42,34 @@ Un administrateur peut :
 
 Le super-administrateur a aussi accès aux fonctionnalités précédentes, ainsi qu’à la fonctionnalité supplémentaire : ajouter des administrateurs. 
 
-L'écran de fonctionnalité du super-administrateur devrait ressembler à : 
-
-![image](image/vue_super_admin.png)  
-
+Cela se fait à partir de son terminal, depuis le dossier du projet symfony.
 
 ## Nomage d'un administrateur 
 
-Avant d'utiliser le script Python, veuillez vérifier que le fichier **.env** dans le dossier de votre projet Symfony contient la bonne base de données.
+Avant d'utiliser le script de commandes, veuillez vérifier que le fichier **.env** dans le dossier de votre projet Symfony contient la bonne base de données.
 
-Pour nommer un administrateur, veuillez utiliser le script Python **adminmanager.py**. Il se trouve dans le dossier de votre projet Symfony.
+Pour nommer un administrateur, veuillez ouvrir un terminal depuis votre dossier symfony. Veuillez ensuite taper la commande suivante : 
 
-Vous aurez ensuite 3 options se présentant à vous : voir la liste des utilisateurs, promouvoir un utilisateur et rétrograder un administrateur.
+```
+symfony console administration:manage
+```
 
-Voici un exemple de *l'affichage des utilisateurs* : 
+Cela permettra de lancer le programme. 
+
+Le script va alors commencer en vous montrant la liste des utilisateurs, avec leur ID, mail, nom, et s'ils sont ou non des administarteurs : 
 
 ![image](image/affichage.png) 
 
-Ainsi que celui d'une *promotion* : 
+Après cela, veuillez entrer l'ID de l'utilisateur auquel vous voulez retoucher. Vous pouvez toujours utiliser CTRL+C si vous voulez annuler votre traitement.
+
+Après avoir saisie l'ID de la personne, vous aurez le choix entre *promouvoir* un utilisateur, ou le *rétrograder*. Envoyez ***y*** pour que la personne soit administrateur, ou ***n*** pour qu'elle soit un simple utilsateur. Choisir de promouvoir un administrateur, ou de retrograder un utilisateur lambda ne changera rien à votre base de donnée. Vous pouvez toujours utiliser CTRL+C pour ne rien changer.  
 
 ![image](image/promotion.png) 
 
-Enfin, un exemple d'une *rétrogradation* : 
-
 ![image](image/retrogradation.png) 
+
+Si vous saisissez un ID non présent dans votre base de donnée, un message d'erreur apparaitra après votre choix.
+
+![image](image/erreur.png) 
+
+La commande n'étant prévue que pour être utilisé pour une seule modification, vous devrez réexécuter la commande si vous voulez faire une autre modification. 
