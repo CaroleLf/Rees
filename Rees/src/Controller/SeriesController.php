@@ -143,5 +143,20 @@ class SeriesController extends AbstractController
     {
         return new Response(stream_get_contents($series->getPoster()),200,['Content-Type'=>'image/png']);
     }
+
+    #[Route('/{id}/like', name: 'app_like_add')]
+    public function like(Series $series, EntityManagerInterface $entityManager): Response
+    {
+        $series->addUser($this->getUser());
+        $entityManager->flush();
+        return $this->redirectToRoute('app_series_show', ['id' => $series->getId()]);
+    }
+    #[Route('/{id}/unlike', name: 'app_like_remove')]
+    public function unlike(Series $series, EntityManagerInterface $entityManager): Response
+    {
+        $series->removeUser($this->getUser());
+        $entityManager->flush();
+        return $this->redirectToRoute('app_series_show', ['id' => $series->getId()]);
+    }
 }
 

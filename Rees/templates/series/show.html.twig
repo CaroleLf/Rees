@@ -46,6 +46,20 @@
                             <h3 class="border-0">Year End</h3>
                             <p class="border-0">{{ series.yearEnd }}</p>
                     {% endif %}
+                    {% if not is_granted('IS_AUTHENTICATED_FULLY') %}
+                        <a type="button" class="btn btn-outline-light btn-lg px-4" href="{{ path('app_login') }}"> <b> Connecte toi pour suivre </b> </a> <br>
+                    {% endif %}
+                    {% if is_granted('IS_AUTHENTICATED_FULLY') %}
+                        {% if series.isLikedByUser(app.user) %}
+                            <div >
+                                <a type="button" class="btn btn-outline-light btn-lg px-4" href="{{ path('app_like_remove', {'id': series.id}) }}"> <b> Ne plus suivre </b> </a> <br>
+                            </div>
+                        {% else %}
+                        <div >
+                            <a type="button" class="btn btn-outline-light btn-lg px-4" href="{{ path('app_like_add', {'id': series.id}) }}"> <b> Suivre </b> </a> <br>
+                        </div>
+                        {% endif %}
+                    {% endif %}
                 </div>
                  <div class="lastPart m-5">
                  <h3> Episodes </h3>
