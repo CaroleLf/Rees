@@ -36,9 +36,10 @@ a {
 
 /** Main **/
 main {
+	padding-top: 5rem;
     display: flex;
     width: 98vw;
-    height: 100vh;
+    height: 110vh;
     flex-wrap: wrap;
     flex-direction: column;
     justify-content: center;
