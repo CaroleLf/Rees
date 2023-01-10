@@ -18,9 +18,9 @@
         {% if app.user %}
             {% if is_granted('ROLE_ADMIN') and not is_granted('ROLE_PREVIOUS_ADMIN') %}
              <h2 class="welcome">Bienvenue , administrateur!</h2>
-            <h2 class="welcome">Bienvenue {{app.user.name}}, asseyez-vous et profitez de votre série préférée</h2>
+            <h2 class="welcome">Bienvenue {{app.user.name}}, asseyez-vous et profitez de vos séries préférées</h2>
             {% else %}
-                <h2 class="welcome">Bienvenue {{app.user.name}}, asseyez-vous et profitez de votre série préférée</h2>
+                <h2 class="welcome">Bienvenue {{app.user.name}}, asseyez-vous et profitez de vos séries préférées</h2>
             {% endif %}
             
         {% else %}
