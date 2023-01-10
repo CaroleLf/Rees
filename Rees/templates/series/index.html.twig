@@ -33,9 +33,14 @@
         {% if maxPages > 1 %}
          <ul class="pagination pagination-sm">
         {# `«` arrow  #}
+            {% if thisPage >= 4 %}
+            <li>
+                <a href="{{ path('app_series_index', {page: 1}) }}"><< &nbsp</a>
+            </li>
+            {% endif %}
             {% if thisPage > 1 %}
             <li>
-                <a href="{{ path('app_series_index', {page: thisPage-1 < 1 ? 1 : thisPage-1}) }}">« &nbsp</a>
+                <a href="{{ path('app_series_index', {page: thisPage-1 < 1 ? 1 : thisPage-1}) }}">< &nbsp</a>
             </li>
             {% endif %}
             {# Render each page number #}
@@ -70,10 +75,15 @@
                     </li>
                 {% endfor %}
             {% endif %}
-            {# `»` arrow #}
             {% if thisPage < maxPages %}
                 <li>
-                    <a href="{{ path('app_series_index', {page: thisPage+1 <= maxPages ? thisPage+1 : thisPage}) }}">»</a>
+                    <a href="{{ path('app_series_index', {page: thisPage+1 <= maxPages ? thisPage+1 : thisPage}) }}">> &nbsp</a>
+                </li>
+            {% endif %}
+            {# `»` arrow #}
+            {% if thisPage <= 19 %}
+                <li>
+                    <a href="{{ path('app_series_index', {page: maxPages}) }}">>></a>
                 </li>
             {% endif %}
         </ul>
