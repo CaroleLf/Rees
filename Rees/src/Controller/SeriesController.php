@@ -2,7 +2,6 @@
 
 namespace App\Controller;
 
-
 use App\Entity\Season;
 use App\Entity\Series;
 use App\Form\Series1Type;
@@ -13,6 +12,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 
 
 #[Route('/series')]
@@ -29,10 +29,9 @@ class SeriesController extends AbstractController
 
 
     #[Route(['/'], name: 'app_series_index', methods: ['GET', 'POST'])]
-    public function index(EntityManagerInterface $entityManager,Request $request, Request $page, PaginatorInterface $paginator ): Response
+    public function index(EntityManagerInterface $entityManager,Request $page, PaginatorInterface $paginator ): Response
     {
-        $is_admin = $request->query->get('is_admin');
-        $user = $this->getUser();
+        
 
         $data = $entityManager
             ->getRepository(Series::class)
@@ -43,26 +42,11 @@ class SeriesController extends AbstractController
             $page->query->getInt('page',1),
             10);    
 
-   
-        if ($user && $user->isAdmin()) {
-            if ($request->isMethod('POST')) {
-                if ($request->request->get('interface') === 'User interface') {
-                    return $this->render('series/index.html.twig', [
-                        'series' => $series,
-                        'is_admin' => false,
-                    ]);
-                } elseif ($request->request->get('interface') === 'Admin interface') {
-                    return $this->render('series/index.html.twig', [
-                        'series' => $series,
-                        'is_admin' => true,
-                    ]);
-                }
-            }
-        }
+
+
 
         return $this->render('series/index.html.twig', [
             'series' => $series,
-            'is_admin' => $is_admin,
         ]);
     }
 
@@ -72,7 +56,6 @@ class SeriesController extends AbstractController
     public function show(EntityManagerInterface $entityManager,Series $series,  Request $request): Response
     {
 
-    $is_admin = $request->query->get('is_admin');
     $seasons = $entityManager
     ->getRepository(Season::class)
     ->findBy(array('series'=>$series),array('number'=>'ASC'));
@@ -91,11 +74,11 @@ class SeriesController extends AbstractController
         'series' => $series,
         'seasons' => $seasons,
         'episodes' => $episodesPerSeason,
-        'is_admin' => $is_admin
     ]);
     }
 
     #[Route('/new', name: 'app_series_new', methods: ['GET', 'POST'])]
+    #[IsGranted('ROLE_ADMIN')]
     public function new(Request $request, EntityManagerInterface $entityManager): Response
     {
         $series = new Series();
@@ -121,6 +104,7 @@ class SeriesController extends AbstractController
 
 
     #[Route('/{id}/edit', name: 'app_series_edit', methods: ['GET', 'POST'])]
+    #[IsGranted('ROLE_ADMIN')]
     public function edit(Request $request, Series $series, EntityManagerInterface $entityManager): Response
     {
         $form = $this->createForm(Series1Type::class, $series);
@@ -139,6 +123,7 @@ class SeriesController extends AbstractController
     }
 
     #[Route('/{id}', name: 'app_series_delete', methods: ['POST'])]
+    #[IsGranted('ROLE_ADMIN')]
     public function delete(Request $request, Series $series, EntityManagerInterface $entityManager): Response
     {
         if ($this->isCsrfTokenValid('delete'.$series->getId(), $request->request->get('_token'))) {

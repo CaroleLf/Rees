@@ -46,18 +46,17 @@
                 {% else %}
                 <td class="border-0 min-vw-20"> N/A </td>   
                 {% endif %}
-                {% if  user.registerDate %}
-                <td class="border-0 min-vw-20">{{ user.admin ? 'Yes' : 'No' }}</td>
-                {% else %}
-                <td class="border-0 min-vw-20" > N/A </td>   
-                {% endif %}
-             
+                <td class="border-0 min-vw-20">{{ user.admin ? 'Yes' : 'No' }}</td> 
                 {% if  user.registerDate %}
                 <td class="border-0 min-vw-20" >{{ user.userId }}</td>
                 {% else %}
                 <td class="border-0 min-vw-20"> N/A </td>   
                 {% endif %}
                 <td class=" border-0 min-vw-20">
+                    {% if app.user != user %}
+                    <a class="ml-1 border-0" href="{{ path('app_welcome', {'_switch_user' : user.email }) }}">Incarner</a>
+                    {% endif %}
+                    <a class="ml-1 border-0" href="{{ path('app_user_show', {'id': user.id}) }}">Voir</a>
                     <a class="ml-1 border-0" href="{{ path('app_user_edit', {'id': user.id}) }}">  Editer</a> 
                 </td>
             </tr>
