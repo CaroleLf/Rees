@@ -100,10 +100,20 @@ class SeriesController extends AbstractController
         ORDER BY numberSeason"
     )->setParameter('id', $series);
     $episodesPerSeason = $query->getResult();
+
+    $query = $entityManager->createQuery(
+        "SELECT r
+        FROM App\Entity\Rating r
+        INNER JOIN App\Entity\Series s
+        WHERE s.id = :id"
+    )->setParameter('id', $series);
+    $seriesRating = $query->getResult();
+
     return $this->render('series/show.html.twig', [
         'series' => $series,
         'seasons' => $seasons,
         'episodes' => $episodesPerSeason,
+        'rates' =>$seriesRating
     ]);
     }
 
