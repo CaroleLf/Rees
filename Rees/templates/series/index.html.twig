@@ -23,9 +23,53 @@
         {% else %}
                 <td colspan="11">Pas de séries trouvée</td>
         {% endfor %}
+        {% if maxPages > 1 %}
+         <ul class="pagination pagination-sm">
+        {# `«` arrow  #}
+            {% if thisPage > 1 %}
+            <li>
+                <a href="{{ path('app_series_index', {page: thisPage-1 < 1 ? 1 : thisPage-1}) }}">« &nbsp</a>
+            </li>
+            {% endif %}
+            {# Render each page number #}
+            {% if thisPage == 1 %}
+                {% for i in thisPage .. thisPage + 4 %}
+                    <li {{ thisPage == i ? 'class="active"' }}>
+                        <a href="{{ path('app_series_index', {page: i}) }}">{{ i }} &nbsp</a>
+                    </li>
+                {% endfor %}
+            {% elseif thisPage == 2 %}
+                {% for i in thisPage - 1 .. thisPage + 3 %}
+                    <li {{ thisPage == i ? 'class="active"' }}>
+                        <a href="{{ path('app_series_index', {page: i}) }}">{{ i }} &nbsp</a>
+                    </li>
+                {% endfor %}
+            {% elseif thisPage == maxPages %}
+                {% for i in thisPage - 4 .. thisPage %}
+                    <li {{ thisPage == i ? 'class="active"' }}>
+                        <a href="{{ path('app_series_index', {page: i}) }}">{{ i }} &nbsp</a>
+                    </li>
+                {% endfor %}
+            {% elseif thisPage == maxPages - 1 %}
+                {% for i in thisPage - 3 .. thisPage + 1 %}
+                    <li {{ thisPage == i ? 'class="active"' }}>
+                        <a href="{{ path('app_series_index', {page: i}) }}">{{ i }} &nbsp</a>
+                    </li>
+                {% endfor %}
+            {% else %}
+                {% for i in thisPage - 2 .. thisPage + 2%}
+                    <li {{ thisPage == i ? 'class="active"' }}>
+                        <a href="{{ path('app_series_index', {page: i}) }}">{{ i }} &nbsp</a>
+                    </li>
+                {% endfor %}
+            {% endif %}
+            {# `»` arrow #}
+            {% if thisPage < maxPages %}
+                <li>
+                    <a href="{{ path('app_series_index', {page: thisPage+1 <= maxPages ? thisPage+1 : thisPage}) }}">»</a>
+                </li>
+            {% endif %}
+        </ul>
+        {% endif %}
         </div>
-        
-    <div class="pag  d-flex flex-row align-items-center justify-content-center  text-decoration-none text-white ">
-        {{ knp_pagination_render(series,null,{},{'attr':{'class' : 'text-white'}}) }}
-    </div>
 {% endblock %}

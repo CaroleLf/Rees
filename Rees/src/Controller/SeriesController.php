@@ -7,13 +7,14 @@ use App\Entity\Season;
 use App\Entity\Series;
 use App\Form\Series1Type;
 use Doctrine\ORM\EntityManagerInterface;
+use Doctrine\ORM\Tools\Pagination\Paginator;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
-use Knp\Component\Pager\PaginatorInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
 
+use function Symfony\Component\DependencyInjection\Loader\Configurator\service;
 
 #[Route('/series')]
 class SeriesController extends AbstractController
@@ -27,21 +28,41 @@ class SeriesController extends AbstractController
         $this->authorizationChecker = $authorizationChecker;
     }
 
+    public function paginate($dql, $page = 1, $limit = 10)
+    {
+        $paginator = new Paginator($dql);
+
+        $paginator->getQuery()
+            ->setFirstResult($limit * ($page - 1)) // Offset
+            ->setMaxResults($limit); // Limit
+
+        return $paginator;
+    }
+
+    public function getAllPosts($currentPage = 1,EntityManagerInterface $entityManager)
+    {
+
+        $query = $entityManager->createQuery(
+            "SELECT s.id FROM App\Entity\Series s");
+        $paginator = $this->paginate($query, $currentPage);
+        $paginator->setUseOutputWalkers(false);
+
+        return $paginator;
+    }
+
 
     #[Route(['/'], name: 'app_series_index', methods: ['GET', 'POST'])]
-    public function index(EntityManagerInterface $entityManager,Request $request, Request $page, PaginatorInterface $paginator ): Response
+    public function index(EntityManagerInterface $entityManager,Request $request, Request $page ): Response
     {
         $is_admin = $request->query->get('is_admin');
         $user = $this->getUser();
 
-        $data = $entityManager
-            ->getRepository(Series::class)
-            ->findAll();
+        $posts = $this->getAllPosts($page->query->getInt('page',1),$entityManager);
+        $series = $posts->getIterator();
 
-        $series = $paginator -> paginate(
-            $data,
-            $page->query->getInt('page',1),
-            10);    
+        $limit = 10;
+        $maxPages = ceil($posts->count()/ $limit);
+        $thisPage = $page;
 
    
         if ($user && $user->isAdmin()) {
@@ -50,11 +71,15 @@ class SeriesController extends AbstractController
                     return $this->render('series/index.html.twig', [
                         'series' => $series,
                         'is_admin' => false,
+                        'maxPages'=> $maxPages,
+                        'thisPage' => $page->query->getInt('page',1)
                     ]);
                 } elseif ($request->request->get('interface') === 'Admin interface') {
                     return $this->render('series/index.html.twig', [
                         'series' => $series,
-                        'is_admin' => true,
+                        'is_admin' => false,
+                        'maxPages'=> $maxPages,
+                        'thisPage' => $page->query->getInt('page',1)
                     ]);
                 }
             }
@@ -63,6 +88,8 @@ class SeriesController extends AbstractController
         return $this->render('series/index.html.twig', [
             'series' => $series,
             'is_admin' => $is_admin,
+            'maxPages'=> $maxPages,
+            'thisPage' => $page->query->getInt('page',1)
         ]);
     }
 
@@ -85,7 +112,7 @@ class SeriesController extends AbstractController
         WHERE s.id = :id
         GROUP BY numberSeason
         ORDER BY numberSeason"
-    )->setParameter('id', $series);;
+    )->setParameter('id', $series);
     $episodesPerSeason = $query->getResult();
     return $this->render('series/show.html.twig', [
         'series' => $series,
