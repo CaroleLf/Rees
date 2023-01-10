@@ -43,7 +43,9 @@ class SeriesController extends AbstractController
     public function index(EntityManagerInterface $entityManager, Request $page ): Response
     {
         $query = $entityManager->createQuery(
-            "SELECT s.id FROM App\Entity\Series s");
+            "SELECT s FROM App\Entity\Series s
+             INNER JOIN App\Entity\Genre g
+             ORDER BY s.id");
         $posts = $this->paginate($query, $page->query->getInt('page',1));
         $posts->setUseOutputWalkers(false);
         $series = $posts->getIterator();
@@ -75,7 +77,7 @@ class SeriesController extends AbstractController
         WHERE s.id = :id
         GROUP BY numberSeason
         ORDER BY numberSeason"
-    )->setParameter('id', $series);;
+    )->setParameter('id', $series);
     $episodesPerSeason = $query->getResult();
     return $this->render('series/show.html.twig', [
         'series' => $series,
