@@ -17,7 +17,7 @@ class UserController extends AbstractController
 {
 
     #[Route('/', name: 'app_admin', methods: ['GET'])]
-    #[IsGranted('ROLE_ADMIN')]
+    //#[IsGranted('ROLE_ADMIN')]
     public function index(EntityManagerInterface $entityManager,Request $request): Response
     {
  
@@ -29,7 +29,7 @@ class UserController extends AbstractController
             'users' => $users,
         ]);
     }
-    #[IsGranted('ROLE_ADMIN')]
+    //#[IsGranted('ROLE_ADMIN')]
     #[Route('/new', name: 'app_user_new', methods: ['GET', 'POST'])]
     public function new(Request $request, EntityManagerInterface $entityManager): Response
     {
@@ -51,7 +51,7 @@ class UserController extends AbstractController
     }
     
     #[Route('/{id}', name: 'app_user_show', methods: ['GET'])]
-    #[IsGranted('ROLE_ADMIN')]
+    //#[IsGranted('ROLE_ADMIN')]
     public function show(User $user): Response
     {
         
@@ -61,7 +61,7 @@ class UserController extends AbstractController
     }
    
     #[Route('/{id}/edit', name: 'app_user_edit', methods: ['GET', 'POST'])]
-    #[IsGranted('ROLE_ADMIN')]
+    //#[IsGranted('ROLE_ADMIN')]
     public function edit(Request $request, User $user, EntityManagerInterface $entityManager): Response
     {
         $form = $this->createForm(UserType::class, $user);

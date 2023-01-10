@@ -9,41 +9,58 @@
 
 {% block body %}
     {{ parent()  }}
-    <div class="title d-flex justify-content-center">
-        <h1 class="titleTxt " >
-            {{ series.title }}
-        </h1>
-   </div>
+    
    <main class="d-flex flex-wrap" >
         <div class="info d-flex m-5 flex-column align-items-center" >
             <div class="LineOne d-flex flex-wrap m-5 align-items-center ">
-                <div class="firstPart d-flex d-column m-5">
+                <div class="firstPart m-5">
                         <img src="{{ path('app_poster',{'id':series.id}) }}">
                 </div>
-                <div class="secondPart m-2 d-flex  flex-column">
-                        <h3 class="border-0">Description </h3>
-                        <p  class="border-0">{{ series.plot }}</p>
-                    {% if series.director %}
-                        <h3 class="border-0">Director</h3>
-                        <p class="border-0">{{ series.director }}</p>
-                    {% endif %}                        
+                <div class="d-flex flex-column secondPart">
+                        <div class="title d-flex justify-content-center">
+                            <h1 class="titleTxt ">
+                                {{ series.title }}
+                            </h1>
+                        </div>
+                    <div class="m-2 d-flex  flex-column">
+                            <h3 class="border-0">Description </h3>
+                            <p  class="border-0">{{ series.plot }}</p>
+                        {% if series.director %}
+                            <h3 class="border-0">Director</h3>
+                            <p class="border-0">{{ series.director }}</p>
+                        {% endif %}                        
+                    </div>
                 </div>
             </div>
             <div class="LineOne d-flex flex-wrap">
-            <div class="ThreePart m-5">
-                {% if series.awards %}
-                        <h3 class="border-0">Awards</h3>
-                        <p class="border-0">{{ series.awards }}</p>
-                {% endif %}
-                {% if series.yearStart %}
-                        <h3 class="border-0">Year Start</h3>
-                        <p class="border-0">{{ series.yearStart }}</p>
-                {% endif %}
-                {% if series.yearEnd %}
-                        <h3 class="border-0">Year End</h3>
-                        <p class="border-0">{{ series.yearEnd }}</p>
-                {% endif %}
-            </div>
+                <div class="ThreePart m-5">
+                    {% if series.awards %}
+                            <h3 class="border-0">Awards</h3>
+                            <p class="border-0">{{ series.awards }}</p>
+                    {% endif %}
+                    {% if series.yearStart %}
+                            <h3 class="border-0">Year Start</h3>
+                            <p class="border-0">{{ series.yearStart }}</p>
+                    {% endif %}
+                    {% if series.yearEnd %}
+                            <h3 class="border-0">Year End</h3>
+                            <p class="border-0">{{ series.yearEnd }}</p>
+                    {% endif %}
+                    {% if not is_granted('IS_AUTHENTICATED_FULLY') %}
+                        <a type="button" class="btn btn-outline-light btn-lg px-4" href="{{ path('app_login') }}"> <b> Connecte toi pour suivre </b> </a> <br>
+                    {% endif %}
+                    {% if is_granted('IS_AUTHENTICATED_FULLY') %}
+                        {% if series.isLikedByUser(app.user) %}
+                            <div >
+                                <a type="button" class="btn btn-outline-light btn-lg px-4" href="{{ path('app_like_remove', {'id': series.id}) }}"> <b> Ne plus suivre </b> </a> <br>
+                            </div>
+                        {% else %}
+                        <div >
+                            <a type="button" class="btn btn-outline-light btn-lg px-4" href="{{ path('app_like_add', {'id': series.id}) }}"> <b> Suivre </b> </a> <br>
+                        </div>
+                        {% endif %}
+                    {% endif %}
+                </div>
                  <div class="lastPart m-5">
                  <h3> Episodes </h3>
                {% for episode in episodes %}

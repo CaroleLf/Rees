@@ -287,5 +287,14 @@ class Series
         return $this->title;
     }
 
+    public function isLikedByUser(User $user): bool
+    {
+        foreach ($this->user as $userLike) {
+            if ($userLike->getId() === $user->getId()) {
+                return true;
+            }
+        }
+        return false;
 
+}
 }

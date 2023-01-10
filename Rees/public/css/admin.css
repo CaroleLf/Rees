@@ -9,6 +9,7 @@ h5 {
 }
 
 main {
+    padding-top: 7rem;
     display: flex;
     align-content: center;
     justify-content: center;
@@ -32,4 +33,12 @@ th,td {
 
 tr,td {
     margin: 0%;
+}
+
+a {
+    display: flex;
+}
+
+.inlineButton {
+    display: flex;
 }
