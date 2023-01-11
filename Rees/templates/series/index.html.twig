@@ -32,7 +32,7 @@
         </div>
         {% if maxPages > 1 %}
          <ul class="pagination pagination-sm">
-        {# `«` arrow  #}
+            {# `«` arrow  #}
             {% if thisPage >= 4 %}
             <li>
                 <a href="{{ path('app_series_index', {page: 1}) }}"><< &nbsp</a>
@@ -69,7 +69,7 @@
                     </li>
                 {% endfor %}
             {% else %}
-                {% for i in thisPage - 2 .. thisPage + 2%}
+                {% for i in thisPage - 2 .. thisPage + 2 %}
                     <li {{ thisPage == i ? 'class="active"' }}>
                         <a href="{{ path('app_series_index', {page: i}) }}">{{ i }} &nbsp</a>
                     </li>
@@ -81,7 +81,7 @@
                 </li>
             {% endif %}
             {# `»` arrow #}
-            {% if thisPage <= 19 %}
+            {% if thisPage <= maxPages - 3 %}
                 <li>
                     <a href="{{ path('app_series_index', {page: maxPages}) }}">>></a>
                 </li>
