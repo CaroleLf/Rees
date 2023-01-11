@@ -123,8 +123,8 @@ class Series
 
     public function getYoutubeTrailer(): ?string
     {
-        $youtubeEmbed = explode('watch?v=',$this->youtubeTrailer );
-        return  $youtubeEmbed[0]."embed/".$youtubeEmbed[1];
+        $youtubeEmbed = explode('watch?v=', $this->youtubeTrailer);
+        return  $youtubeEmbed[0] . "embed/" . $youtubeEmbed[1];
     }
 
     public function setYoutubeTrailer(?string $youtubeTrailer): self
@@ -295,6 +295,5 @@ class Series
             }
         }
         return false;
-
-}
+    }
 }
