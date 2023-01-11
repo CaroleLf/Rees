@@ -71,12 +71,37 @@
                 <iframe width="800" height="500" src={{ series.youtubeTrailer }} ></iframe>
             {% endif %}
              </div>
+            {% if rates != null %}
+               <table class="table">
+                    <thead>
+                        <tr>
+                            <th>User</th>
+                            <th>Value</th>
+                            <th>Comment</th>
+                            <th>Date</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                    {% for rate in rates %}
+                        <tr>
+                            <td>{{ rate.user }}</td>
+                            <td>{{ rate.value }}</td>
+                            <td>{{ rate.comment }}</td>
+                            <td>{{ rate.date ? rate.date|date('Y-m-d H:i:s') : '' }}</td>            
+                        </tr>
+                    {% endfor %}
+                    </tbody>
+                </table>
+            {% endif %}
             </div>
+        </div>
         </div>
     </main>
     <footer>
     <div class="action" >
-    <a href="{{ path('app_rating_new', {'id' : series.id}) }}" method="POST"> <b> Add rate </b> </a> <br>
+    {% if is_granted('IS_AUTHENTICATED_FULLY') %}
+        <a href="{{ path('app_rating_new',{'id': series.id}) }}"> <b> Add rate </b> </a> <br>
+    {% endif %}
     <a href="{{ path('app_series_index') }}"> <b> Back to list </b> </a> <br>
     </div>
     </footer>

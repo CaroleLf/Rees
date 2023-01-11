@@ -4,8 +4,10 @@ namespace App\Controller;
 
 use App\Entity\Season;
 use App\Entity\Series;
+use App\Entity\User;
 use App\Form\Series1Type;
 use Doctrine\ORM\EntityManagerInterface;
+use Doctrine\ORM\Mapping\Id;
 use Doctrine\ORM\Tools\Pagination\Paginator;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -105,8 +107,9 @@ class SeriesController extends AbstractController
         "SELECT r
         FROM App\Entity\Rating r
         INNER JOIN App\Entity\Series s
-        WHERE s.id = :id"
-    )->setParameter('id', $series);
+        WHERE r.series = s
+        AND s.id = :id"
+    )->setParameter('id', $series->getId());
     $seriesRating = $query->getResult();
 
     return $this->render('series/show.html.twig', [

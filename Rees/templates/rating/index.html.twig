@@ -21,7 +21,7 @@
             <tr>
                 <td>{{ rating.id }}</td>
                 <td>{{ rating.user }}</td>
-                <td>{{ rating.series.title }}</td>
+                <td>{{ rating.series }}</td>
                 <td>{{ rating.value }}</td>
                 <td>{{ rating.comment }}</td>
                 <td>{{ rating.date ? rating.date|date('Y-m-d H:i:s') : '' }}</td>
@@ -37,6 +37,4 @@
         {% endfor %}
         </tbody>
     </table>
-
-    <a href="{{ path('app_rating_new') }}">Create new</a>
 {% endblock %}

@@ -10,7 +10,6 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
-use Symfony\Component\Validator\Constraints\Date;
 
 #[Route('/rating')]
 class RatingController extends AbstractController
@@ -30,25 +29,36 @@ class RatingController extends AbstractController
     #[Route('/new', name: 'app_rating_new', methods: ['GET', 'POST'])]
     public function new(Request $request, EntityManagerInterface $entityManager): Response
     {
-        $id = $request->request->get('series');
-        $serie = $entityManager
-        ->getRepository(Series::class)
-        ->findOneBy(['id' => $id]);
-        $rating = new Rating();
-        $form = $this->createForm(RatingType::class, $rating);
-        $form->handleRequest($request);
-        if ($form->isSubmitted() && $form->isValid()) {
-            $rating->setDate( new \DateTime());
-            $rating->setUser($this->getUser());
-            $rating->setSeries($serie);
-            $entityManager->persist($rating);
-            $entityManager->flush();
-            return $this->redirectToRoute('app_rating_index', [], Response::HTTP_SEE_OTHER);
+        $haveRate = $entityManager
+        ->getRepository(Rating::class)
+        ->findOneBy(['user' => $this->getUser()]);
+
+        if($haveRate == null){
+            $rating = new Rating();
+            $form = $this->createForm(RatingType::class, $rating);
+            $form->handleRequest($request);
+            if ($form->isSubmitted() && $form->isValid()) {
+                
+                $serie = $entityManager
+                ->getRepository(Series::class)
+                ->findOneBy(['id' => $request->query->getInt('id')]);
+                
+                $rating->setDate( new \DateTime());
+                $rating->setUser($this->getUser());
+                $rating->setSeries($serie);
+                $entityManager->persist($rating);
+                $entityManager->flush();
+                return $this->redirectToRoute('app_rating_index', [], Response::HTTP_SEE_OTHER);
+            }
+
+            return $this->renderForm('rating/new.html.twig', [
+                'rating' => $rating,
+                'form' => $form,
+            ]);
         }
 
-        return $this->renderForm('rating/new.html.twig', [
-            'rating' => $rating,
-            'form' => $form,
+        return $this->redirectToRoute('app_series_show', [
+            'id' => $request->query->getInt('id')
         ]);
     }
 
