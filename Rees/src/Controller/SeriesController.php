@@ -46,12 +46,12 @@ class SeriesController extends AbstractController
             ->getRepository(Series::class)
             ->findOneBy([], ['id' => 'desc']);
         $page = $page->query->getInt('page', 1);
-            //if the number of the page is below 1, or above (last number of page), it will redirect to an error page
+        //if the number of the page is below 1, or above (last number of page), it will redirect to another page
         if($page<1){
             $page = 1;
         }
         else if( $page > (($lastData->getId())/10)-1){
-            $page = $lastData->getId()/10 -1.4;
+            $page = (int)($lastData->getId()/10)-1;
         }
         
         $query = $entityManager->createQuery(
