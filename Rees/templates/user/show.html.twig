@@ -17,6 +17,28 @@
             </tr>
         </tbody>
     </table>
-
+    {% if rates != null %}
+     <h1>All rates</h1>
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>Serie</th>
+                    <th>Value</th>
+                    <th>Comment</th>
+                    <th>Date</th>
+                </tr>
+                </thead>
+                <tbody>
+                    {% for rate in rates %}
+                    <tr>
+                        <td>{{ rate.series }}</td>
+                        <td>{{ rate.value }}</td>
+                        <td>{{ rate.comment }}</td>
+                        <td>{{ rate.date ? rate.date|date('Y-m-d H:i:s') : '' }}</td>            
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+            {% endif %}
     <a href="{{ path('app_admin') }}">back to list</a>
 {% endblock %}
