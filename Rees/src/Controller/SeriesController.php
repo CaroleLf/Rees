@@ -126,15 +126,24 @@ class SeriesController extends AbstractController
             ->getRepository(Rating::class)
             ->findOneBy(['series' => $series, 'user' => $this  ->  getUser()]);
             
-        return $this->render(
-            'series/show.html.twig', [
+        $query = $entityManager->createQuery(
+            "SELECT AVG(r.value) as rate
+            FROM App\Entity\Rating r
+            INNER JOIN App\Entity\Series s
+            WHERE r.series = s
+            AND s.id = :id"
+        )->setParameter('id', $series->getId());    
+        $rate = $query->getResult();
+         
+
+        return $this->render('series/show.html.twig', [
             'series' => $series,
             'seasons' => $season,
             'episodes' => $episodes,
             'allRates' =>$seriesRating,
-            'myRate' => $isRate
-            ]
-        );
+            'myRate' => $isRate,
+            'reesRate' => $rate
+        ]);
     }
 
     #[Route('/new', name: 'app_series_new', methods: ['GET', 'POST'])]

@@ -31,6 +31,13 @@
                         {% if series.imdb %}
                          <h3 class="border-0"> Rating </h3>
                             <a href="https://www.imdb.com/title/{{ series.imdb }}" target="_blank"><h4 > Note IMDB </h4></a>
+                            {% if reesRate != null and allRates != null %}
+                                {% for rRate in reesRate %}
+                                    <p><b> Note Rees : {{ rRate.rate / 10 }}</b></p>
+                                {% endfor %}
+                            {% else %}
+                                <p><b> Note Rees : Non noté</b></p>
+                            {% endif %}
                         {% endif %}
                         
                         {% if series.director %}
@@ -93,7 +100,7 @@
                                                                         </div>
                                                                     {% else %}
                                                                         <div>
-                                                                            <a type="button" class="btn bg-dark btn-lg px-4" href="{{ path('app_watch_add', { 'idEpisode' : episode.id}) }}"> <b> J'ai vu ! </b> </a> <br>
+                                                                            <a type="button" class="btn bg-dark btn-lg px-4" href="{{ path('app_watch_add', { 'idEpisode' : episode.id}) }}"> <b> J'ai vu! </b> </a> <br>
                                                                             </div>
                                                                     {% endif %}
                                                             </div>
@@ -123,7 +130,7 @@
                     </thead>
                     <tbody>
                         <tr>
-                            <td>{{ myRate.value|number_format(1) }}</td>
+                            <td>{{ myRate.value / 10 |number_format(1) }}</td>
                             <td>{{ myRate.comment }}</td>
                             <td>{{ myRate.date ? myRate.date|date('Y-m-d H:i:s') : '' }}</td>
                             <td><a href="{{ path('app_rating_edit', {'id': myRate.id}) }}"> <b> éditer </b> </a> </td>
@@ -149,7 +156,7 @@
                     {% for rate in allRates %}
                         <tr>
                             <td><a href="{{ path('app_user_show',{'id': rate.user.id}) }}"> <b>{{ rate.user }}</b></a></td>
-                            <td>{{ rate.value|number_format(1) }}</td>
+                            <td>{{ rate.value / 10 |number_format(1) }}</td>
                             <td>{{ rate.comment }}</td>
                             <td>{{ rate.date ? rate.date|date('Y-m-d H:i:s') : '' }}</td>   
                         </tr>

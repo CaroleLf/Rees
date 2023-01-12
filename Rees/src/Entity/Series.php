@@ -297,4 +297,11 @@ class Series
         return false;
 
     }
+
+    public function setPoster($poster): self
+    {
+        $this->poster = $poster;
+
+        return $this;
+    }
 }

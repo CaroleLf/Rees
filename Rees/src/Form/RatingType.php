@@ -17,16 +17,16 @@ class RatingType extends AbstractType
         $builder
             ->add('value', ChoiceType::class, [  'choices'  => [
                 '0' => 0,
-                '0,5' => 5/10,
-                '1' => 1,
-                '1,5' => 15/10,
-                '2' => 2,
-                '2,5' => 25/10,
-                '3' => 3,
-                '3,5' => 35/10,
-                '4' => 4,
-                '4,5' => 45/10,
-                '5' => 5]
+                '0,5' => 50,
+                '1' => 10,
+                '1,5' => 15,
+                '2' => 20,
+                '2,5' => 25,
+                '3' => 30,
+                '3,5' => 35,
+                '4' => 40,
+                '4,5' => 45,
+                '5' => 50]
                 ,'required' => true])
 
             ->add('comment', TextType::class,['required'   => false])

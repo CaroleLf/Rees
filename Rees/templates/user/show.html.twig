@@ -32,7 +32,7 @@
                     {% for rate in rates %}
                     <tr>
                         <td>{{ rate.series }}</td>
-                        <td>{{ rate.value|number_format(1)}}</td>
+                        <td>{{ rate.value / 10 |number_format(1)}}</td>
                         <td>{{ rate.comment }}</td>
                         <td>{{ rate.date ? rate.date|date('Y-m-d H:i:s') : '' }}</td>            
                     </tr>
