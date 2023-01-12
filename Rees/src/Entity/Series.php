@@ -296,5 +296,5 @@ class Series
         }
         return false;
 
-}
+    }
 }
