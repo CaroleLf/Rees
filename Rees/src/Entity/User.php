@@ -231,7 +231,10 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         return $roles;
     } 
 
-    
+    public function __toString()
+    {
+        return $this->getName();
+    }
     
     public function eraseCredentials() { }
 
