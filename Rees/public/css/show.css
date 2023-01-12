@@ -14,10 +14,17 @@ main {
 tr,td {
     display: flex;
     margin: 1%;
-
+    border:0;
 }
 
+td,  th {
+    border : 0;
+    min-width: 20vh;
+}
 
+.ouais {
+    background-color: transparent;
+}
 
 footer {
     display: flex;
