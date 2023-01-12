@@ -1,4 +1,4 @@
-image: jakzal/phpqa:php7.4
+image: jakzal/phpqa:php8.2
 
 before_script:
     - composer install
@@ -25,10 +25,10 @@ phpcs:
 phpstan:
     stage: CodingStandards
     script:
-        - phpstan analyse ./src
+        - phpstan analyse ./srcg
     allow_failure: false
-
-twig-lint:
+  
+  twig-lint:
     stage: CodingStandards
     script:
         - twig-lint lint ./templates
