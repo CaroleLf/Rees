@@ -45,10 +45,10 @@ footer {
 }
 .titleTxt {
     display: flex;
-	font-size: 47px;
-	font-weight: 600;
-	border-bottom: 2px solid transparent;
-	transition: all .55s ease;
+    font-size: 47px;
+    font-weight: 600;
+    border-bottom: 2px solid transparent;
+    transition: all .55s ease;
     color: #91D7F2;
     z-index: 1000;
     
