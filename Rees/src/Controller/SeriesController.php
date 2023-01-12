@@ -75,13 +75,15 @@ class SeriesController extends AbstractController
             ->setParameter('year_end', $yearEnd);
 
         // SQL LIKE with multiple values
+        $i = 0;
         foreach ($keywords as $kw) {
-            $queryBuilder->andWhere('s.title LIKE :kw')
+            $queryBuilder->andWhere("s.title LIKE :kw$i")
                 ->setParameter(
-                    'kw', "%$kw%"
+                    "kw$i", "%$kw%"
                 );
+            $i++;
         }
-        echo $queryBuilder->getQuery()->getSQL();
+        //echo $queryBuilder->getQuery()->getSQL();
         // Series
         $series = $queryBuilder->getQuery()
             ->getResult();
