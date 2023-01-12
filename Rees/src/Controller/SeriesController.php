@@ -52,17 +52,18 @@ class SeriesController extends AbstractController
             ->findOneBy([], ['id' => 'desc']);
         $page = $page->query->getInt('page', 1);
         //if the number of the page is below 1, or above (last number of page), it will redirect to another page
-        if($page<1){
+        if($page<1) {
             $page = 1;
         }
-        else if( $page > (($lastData->getId())/10)-1){
+        else if($page > (($lastData->getId())/10)-1) {
             $page = (int)($lastData->getId()/10)-1;
         }
         
         $query = $entityManager->createQuery(
             "SELECT s FROM App\Entity\Series s
              INNER JOIN App\Entity\Genre g
-             ORDER BY s.id");
+             ORDER BY s.id"
+        );
         $posts = $this->paginate($query, $page);
         $posts->setUseOutputWalkers(false);
         $series = $posts->getIterator();
@@ -71,11 +72,13 @@ class SeriesController extends AbstractController
         $maxPages = ceil($posts->count()/ $limit);
         $thisPage = $page;
 
-        return $this->render('series/index.html.twig', [
+        return $this->render(
+            'series/index.html.twig', [
             'series' => $series,
             'maxPages'=> $maxPages,
             'thisPage' => $thisPage
-        ]);
+            ]
+        );
     }
 
 
@@ -83,9 +86,11 @@ class SeriesController extends AbstractController
     public function tracked(): Response
     {
         $user = $this->getUser();
-        return $this->render('series/tracked/index.html.twig', [
+        return $this->render(
+            'series/tracked/index.html.twig', [
             'user' => $user
-        ]);
+            ]
+        );
     }
 
     
@@ -93,18 +98,18 @@ class SeriesController extends AbstractController
     public function show(EntityManagerInterface $entityManager,Series $series): Response
     {             
         
-        $season = $entityManager->getRepository(Season::class)->findBy(['series' => $series],array('number' => 'ASC'));
+        $season = $entityManager->getRepository(Season::class)->findBy(['series' => $series], array('number' => 'ASC'));
         
         $episodes = $entityManager->getRepository(Episode::class)
-        ->createQueryBuilder('e')
-        ->select('e', 's')
-        ->join('e.season', 's')
-        ->where('s.series = :series')
-        ->orderBy('s.number', 'ASC')
-        ->addOrderBy('e.number', 'ASC')
-        ->setParameter('series', $series)
-        ->getQuery()
-        ->getResult();
+            ->createQueryBuilder('e')
+            ->select('e', 's')
+            ->join('e.season', 's')
+            ->where('s.series = :series')
+            ->orderBy('s.number', 'ASC')
+            ->addOrderBy('e.number', 'ASC')
+            ->setParameter('series', $series)
+            ->getQuery()
+            ->getResult();
 
 
         $query = $entityManager->createQuery(
@@ -118,8 +123,8 @@ class SeriesController extends AbstractController
         $seriesRating = $query->getResult();
         
         $isRate = $entityManager
-        ->getRepository(Rating::class)
-        ->findOneBy(['series' => $series, 'user' => $this  ->  getUser()]);
+            ->getRepository(Rating::class)
+            ->findOneBy(['series' => $series, 'user' => $this  ->  getUser()]);
             
         $query = $entityManager->createQuery(
             "SELECT AVG(r.value) as rate
@@ -156,12 +161,14 @@ class SeriesController extends AbstractController
             return $this->redirectToRoute('app_series_index', [], Response::HTTP_SEE_OTHER);
         }
 
-        return $this->renderForm('series/new.html.twig', [
+        return $this->renderForm(
+            'series/new.html.twig', [
             'series' => $series,
             'form' => $form,
-        ]);
+            ]
+        );
     }
-/*
+    /*
     #[Route('/{id}/edit', name: 'app_series_edit', methods: ['GET', 'POST'])]
     #[IsGranted('ROLE_ADMIN')]
     public function edit(Request $request, Series $series, EntityManagerInterface $entityManager): Response
@@ -196,7 +203,7 @@ class SeriesController extends AbstractController
     #[Route('/poster/{id}', name: 'app_poster', methods: ['GET'])]
     public function poster(Series $series): Response
     {
-        return new Response(stream_get_contents($series->getPoster()),200,['Content-Type'=>'image/png']);
+        return new Response(stream_get_contents($series->getPoster()), 200, ['Content-Type'=>'image/png']);
     }
 
 

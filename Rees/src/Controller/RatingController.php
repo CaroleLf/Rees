@@ -21,28 +21,30 @@ class RatingController extends AbstractController
             ->getRepository(Rating::class)
             ->findAll();
 
-        return $this->render('rating/index.html.twig', [
+        return $this->render(
+            'rating/index.html.twig', [
             'ratings' => $ratings,
-        ]);
+            ]
+        );
     }
 
     #[Route('/new', name: 'app_rating_new', methods: ['GET', 'POST'])]
     public function new(Request $request, EntityManagerInterface $entityManager): Response
     {
         $serie = $entityManager
-        ->getRepository(Series::class)
-        ->findOneBy(['id' => $request->query->getInt('id')]);
+            ->getRepository(Series::class)
+            ->findOneBy(['id' => $request->query->getInt('id')]);
 
         $haveRate = $entityManager
-        ->getRepository(Rating::class)
-        ->findOneBy(['user' => $this->getUser(),'series' => $serie]);
+            ->getRepository(Rating::class)
+            ->findOneBy(['user' => $this->getUser(),'series' => $serie]);
 
-        if($haveRate == null){
+        if($haveRate == null) {
             $rating = new Rating();
             $form = $this->createForm(RatingType::class, $rating);
             $form->handleRequest($request);
             if ($form->isSubmitted() && $form->isValid()) {
-                $rating->setDate( new \DateTime());
+                $rating->setDate(new \DateTime());
                 $rating->setUser($this->getUser());
                 $rating->setSeries($serie);
                 $entityManager->persist($rating);
@@ -50,23 +52,29 @@ class RatingController extends AbstractController
                 return $this->redirectToRoute('app_series_show', ['id'  => $rating->getSeries()->getId()], Response::HTTP_SEE_OTHER);
             }
 
-            return $this->renderForm('rating/new.html.twig', [
+            return $this->renderForm(
+                'rating/new.html.twig', [
                 'rating' => $rating,
                 'form' => $form,
-            ]);
+                ]
+            );
         }
 
-        return $this->redirectToRoute('app_series_show', [
+        return $this->redirectToRoute(
+            'app_series_show', [
             'id' => $request->query->getInt('id')
-        ]);
+            ]
+        );
     }
 
     #[Route('/{id}', name: 'app_rating_show', methods: ['GET'])]
     public function show(Rating $rating): Response
     {
-        return $this->render('rating/show.html.twig', [
+        return $this->render(
+            'rating/show.html.twig', [
             'rating' => $rating,
-        ]);
+            ]
+        );
     }
 
     #[Route('/{id}/edit', name: 'app_rating_edit', methods: ['GET', 'POST'])]
@@ -76,16 +84,18 @@ class RatingController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $rating->setDate( new \DateTime());
+            $rating->setDate(new \DateTime());
             $entityManager->flush();
 
             return $this->redirectToRoute('app_series_show', ['id'  => $rating->getSeries()->getId()], Response::HTTP_SEE_OTHER);
         }
 
-        return $this->renderForm('rating/edit.html.twig', [
+        return $this->renderForm(
+            'rating/edit.html.twig', [
             'rating' => $rating,
             'form' => $form,
-        ]);
+            ]
+        );
     }
 
     #[Route('/{id}', name: 'app_rating_delete', methods: ['POST'])]
