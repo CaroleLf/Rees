@@ -48,46 +48,46 @@ class SeriesController extends AbstractController
         $yearEnd = $request->query->get('yearEnd');
         $genres = $request->query->get('genres');
 
-        // Format keywords for SQL: put each element between quotation marks
-        $kwArray = explode(',', $keywords);
-        $keywordsFormatted = "";
-        foreach ($kwArray as $kw) {
-            $keywordsFormatted .= "\"$kw\",";
-        }
-
-        // Remove the last comma of keywords string
-        $keywordsFormatted = substr($keywordsFormatted, 0, -1);
+        // Get an array of keywords
+        $keywords = explode(',', $keywords);
 
         // Check user entries
-
-        // Case: if year
+        // Case: if years are not entered
         if ($yearStart == null) {
             $yearStart = 0;
         }
         if ($yearEnd == null) {
             $yearEnd = 9999;
         }
+        if ($genres != null) {
+            $condition = "and g.name IN (:genres)";
+        } else {
+            $condition = "";
+        }
 
         // SQL query for getting series according to the filters
-        $query = $entityManager->createQuery(
-            "
-            SELECT s FROM App\Entity\Series s
-                INNER JOIN App\Entity\Genre g
-            WHERE ((s.yearEnd >= :year_start and s.yearStart <= :year_end)
-            or (s.yearEnd is null and s.yearStart <= :year_end and s.yearStart >= :year_start))
-            ORDER BY s.id
-            "
-        )->setParameters([
-            'year_start' => $yearStart,
-            'year_end' => $yearEnd
-        ])
-        ;
+        $queryBuilder = $entityManager->createQueryBuilder()
+            ->select('s')
+            ->from(Series::class, 's')
+            ->where("(s.yearEnd >= :year_start and s.yearStart <= :year_end)
+            or (s.yearEnd is null and s.yearStart <= :year_end and s.yearStart >= :year_start)")
+            ->setParameter('year_start', $yearStart)
+            ->setParameter('year_end', $yearEnd);
 
+        // SQL LIKE with multiple values
+        foreach ($keywords as $kw) {
+            $queryBuilder->andWhere('s.title LIKE :kw')
+                ->setParameter(
+                    'kw', "%$kw%"
+                );
+        }
+        echo $queryBuilder->getQuery()->getSQL();
         // Series
-        $series = $query->getResult();
+        $series = $queryBuilder->getQuery()
+            ->getResult();
 
         // Posts
-        $posts = $this->paginate($query, $page);
+        $posts = $this->paginate($queryBuilder, $page);
         $posts->setUseOutputWalkers(false);
         $series = $posts->getIterator();
 
