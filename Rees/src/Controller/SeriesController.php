@@ -6,13 +6,9 @@ use App\Entity\Rating;
 use App\Entity\Episode;
 use App\Entity\Season;
 use App\Entity\Series;
-use App\Entity\User;
+use App\Entity\Genre;
 use App\Form\Series1Type;
-use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\EntityManagerInterface;
-use Doctrine\ORM\Query\Expr\Join;
-use Doctrine\ORM\Mapping\Id;
-use Doctrine\ORM\Mapping\OrderBy;
 use Doctrine\ORM\Tools\Pagination\Paginator;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -36,6 +32,8 @@ class SeriesController extends AbstractController
     #[Route('/search', name: 'app_series_search')]
     public function search(EntityManagerInterface $entityManager, Request $request): Response
     {
+
+        $allGenre = $entityManager->getRepository(Genre::class)->findAll();
         // Pages
         $lastData = $entityManager
             ->getRepository(Series::class)
@@ -55,7 +53,7 @@ class SeriesController extends AbstractController
         $genres = $request->query->get('genres');
 
         // Get array from string
-        $keywords = explode(',', $keywords);
+        $keywords = explode('+', $keywords);
 
         // Check user entries
         // Case: if years are not entered
@@ -70,8 +68,10 @@ class SeriesController extends AbstractController
         $queryBuilder = $entityManager->createQueryBuilder()
             ->select('s')
             ->from(Series::class, 's')
-            ->where("(s.yearEnd >= :year_start and s.yearStart <= :year_end)
-            or (s.yearEnd is null and s.yearStart <= :year_end and s.yearStart >= :year_start)")
+            ->where(
+                "(s.yearEnd >= :year_start and s.yearStart <= :year_end)
+            or (s.yearEnd is null and s.yearStart <= :year_end and s.yearStart >= :year_start)"
+            )
             ->setParameter('year_start', $yearStart)
             ->setParameter('year_end', $yearEnd);
 
@@ -88,7 +88,7 @@ class SeriesController extends AbstractController
 
         // Case: if genres are entered
         if ($genres) {
-            $genres = explode(',', $genres);
+            $genres = explode('+', $genres);
             $queryBuilder->join("s.genre", "g");
             $queryBuilder->andWhere('g.name IN (:genres)');
             $queryBuilder->setParameter("genres", $genres);
@@ -108,11 +108,14 @@ class SeriesController extends AbstractController
         $thisPage = $page;
 
         // TODO: fix pagination problem
-        return $this->render('series/index.html.twig', [
+        return $this->render(
+            'series/index.html.twig', [
             'series' => $series,
             'maxPages' => $maxPages,
-            'thisPage' => $thisPage
-        ]);
+            'thisPage' => $thisPage,
+            'allGenre' => $allGenre,
+            ]
+        );
     }
     public function paginate($dql, $page = 1, $limit = 10)
     {
@@ -128,6 +131,8 @@ class SeriesController extends AbstractController
     #[Route(['/'], name: 'app_series_index', methods: ['GET', 'POST'])]
     public function index(EntityManagerInterface $entityManager, Request $request): Response
     {
+        $allGenre = $entityManager->getRepository(Genre::class)->findAll();
+
         $lastData = $entityManager
             ->getRepository(Series::class)
             ->findOneBy([], ['id' => 'desc']);
@@ -157,7 +162,8 @@ class SeriesController extends AbstractController
             'series/index.html.twig', [
             'series' => $series,
             'maxPages' => $maxPages,
-            'thisPage' => $thisPage
+            'thisPage' => $thisPage,
+            'allGenre' => $allGenre,
             ]
         );
     }
@@ -216,14 +222,16 @@ class SeriesController extends AbstractController
         $rate = $query->getResult();
          
 
-        return $this->render('series/show.html.twig', [
+        return $this->render(
+            'series/show.html.twig', [
             'series' => $series,
             'seasons' => $season,
             'episodes' => $episodes,
             'allRates' =>$seriesRating,
             'myRate' => $isRate,
             'reesRate' => $rate
-        ]);
+            ]
+        );
     }
 
     #[Route('/new', name: 'app_series_new', methods: ['GET', 'POST'])]

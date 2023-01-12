@@ -82,22 +82,14 @@ div.series__filter:hover  {
     
 }
 
+.searchBar {
 
-
-.page, .first , .previous, .next , .last { 
-    margin: 0 7%;
+    margin-top: 15vh;
+    margin-left: 4vh;
 }
 
 
-.current {
-    color: #604174;
-}
 
-.pagination a{
-    font-size: medium;
-    color: white;
-    text-decoration: none;
-}
 
 @media (max-width: 900px){
     .pagination a{
