@@ -47,7 +47,7 @@ class RatingController extends AbstractController
                 $rating->setSeries($serie);
                 $entityManager->persist($rating);
                 $entityManager->flush();
-                return $this->redirectToRoute('app_rating_index', [], Response::HTTP_SEE_OTHER);
+                return $this->redirectToRoute('app_series_show', ['id'  => $rating->getSeries()->getId()], Response::HTTP_SEE_OTHER);
             }
 
             return $this->renderForm('rating/new.html.twig', [
@@ -76,9 +76,10 @@ class RatingController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
+            $rating->setDate( new \DateTime());
             $entityManager->flush();
 
-            return $this->redirectToRoute('app_rating_index', [], Response::HTTP_SEE_OTHER);
+            return $this->redirectToRoute('app_series_show', ['id'  => $rating->getSeries()->getId()], Response::HTTP_SEE_OTHER);
         }
 
         return $this->renderForm('rating/edit.html.twig', [
@@ -95,6 +96,6 @@ class RatingController extends AbstractController
             $entityManager->flush();
         }
 
-        return $this->redirectToRoute('app_rating_index', [], Response::HTTP_SEE_OTHER);
+        return $this->redirectToRoute('app_series_show', ['id'  => $rating->getSeries()->getId()], Response::HTTP_SEE_OTHER);
     }
 }
