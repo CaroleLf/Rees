@@ -31,6 +31,28 @@ class UserController extends AbstractController
             ]
         );
     }
+
+    #[Route('/search', name: 'app_user_search')]
+    public function search(EntityManagerInterface $entityManager, Request $request): Response
+    {
+        $userName = $request->query->get('userName');
+        $queryBuilder = $entityManager->createQueryBuilder()
+            ->select('s')
+            ->from(User::class, 's')
+            ->Where("s.name LIKE :name")
+            ->setParameter('name', "%$userName%");
+
+        $users = $queryBuilder->getQuery()->getResult();
+
+ 
+
+        // TODO: fix pagination problem
+        return $this->render(
+            'user/index.html.twig', [
+            'users' => $users,
+            ]
+        );
+    }
     //#[IsGranted('ROLE_ADMIN')]
     #[Route('/new', name: 'app_user_new', methods: ['GET', 'POST'])]
     public function new(Request $request, EntityManagerInterface $entityManager): Response
