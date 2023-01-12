@@ -59,14 +59,13 @@ class SeriesController extends AbstractController
             "SELECT s FROM App\Entity\Series s
              INNER JOIN App\Entity\Genre g
              ORDER BY s.id");
-
-        $posts = $this->paginate($query, $page->query->getInt('page',1));
+        $posts = $this->paginate($query, $page);
         $posts->setUseOutputWalkers(false);
         $series = $posts->getIterator();
 
         $limit = 10;
         $maxPages = ceil($posts->count()/ $limit);
-        $thisPage = $page->query->getInt('page',1);
+        $thisPage = $page;
 
         return $this->render('series/index.html.twig', [
             'series' => $series,
@@ -74,6 +73,7 @@ class SeriesController extends AbstractController
             'thisPage' => $thisPage
         ]);
     }
+
 
     #[Route(['/tracked'], name: 'app_series_tracked', methods: ['GET', 'POST'])]
     public function tracked(): Response
