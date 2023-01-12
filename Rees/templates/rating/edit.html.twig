@@ -3,6 +3,7 @@
 {% block title %}Edit Rating{% endblock %}
 
 {% block body %}
+    {{ parent()  }}
     <h1>Edit Rating</h1>
 
     {{ include('rating/_form.html.twig', {'button_label': 'Update'}) }}
