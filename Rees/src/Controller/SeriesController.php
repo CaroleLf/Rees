@@ -48,7 +48,7 @@ class SeriesController extends AbstractController
         $yearEnd = $request->query->get('yearEnd');
         $genres = $request->query->get('genres');
 
-        // Get an array of keywords
+        // Get array from string
         $keywords = explode(',', $keywords);
 
         // Check user entries
@@ -58,11 +58,6 @@ class SeriesController extends AbstractController
         }
         if ($yearEnd == null) {
             $yearEnd = 9999;
-        }
-        if ($genres != null) {
-            $condition = "and g.name IN (:genres)";
-        } else {
-            $condition = "";
         }
 
         // SQL query for getting series according to the filters
@@ -74,16 +69,25 @@ class SeriesController extends AbstractController
             ->setParameter('year_start', $yearStart)
             ->setParameter('year_end', $yearEnd);
 
-        // SQL LIKE with multiple values
+        // SQL LIKE with multiple values. As of right now, this is only an OR filter. If we want to apply an AND, we must use nested DQL queries. 
         $i = 0;
         foreach ($keywords as $kw) {
             $queryBuilder->andWhere("s.title LIKE :kw$i")
                 ->setParameter(
-                    "kw$i", "%$kw%"
+                    "kw$i",
+                    "%$kw%"
                 );
             $i++;
         }
-        //echo $queryBuilder->getQuery()->getSQL();
+
+        // Case: if genres are entered
+        if ($genres) {
+            $genres = explode(',', $genres);
+            $queryBuilder->join("s.genre", "g");
+            $queryBuilder->andWhere('g.name IN (:genres)');
+            $queryBuilder->setParameter("genres", $genres);
+        }
+
         // Series
         $series = $queryBuilder->getQuery()
             ->getResult();
@@ -97,7 +101,7 @@ class SeriesController extends AbstractController
         $maxPages = ceil($posts->count() / $limit);
         $thisPage = $page;
 
-        // TODO: pagination
+        // TODO: fix pagination problem
         return $this->render('series/index.html.twig', [
             'series' => $series,
             'maxPages' => $maxPages,
