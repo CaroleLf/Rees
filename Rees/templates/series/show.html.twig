@@ -87,7 +87,10 @@
                             <td>{{ rate.user }}</td>
                             <td>{{ rate.value }}</td>
                             <td>{{ rate.comment }}</td>
-                            <td>{{ rate.date ? rate.date|date('Y-m-d H:i:s') : '' }}</td>            
+                            <td>{{ rate.date ? rate.date|date('Y-m-d H:i:s') : '' }}</td>
+                            {% if app.user == rate.user  %}
+                                 <td><a href="{{ path('app_rating_edit', {'id': rate.id}) }}"> <b> edit </b> </a> </td>
+                            {% endif %}            
                         </tr>
                     {% endfor %}
                     </tbody>
@@ -99,7 +102,7 @@
     </main>
     <footer>
     <div class="action" >
-    {% if is_granted('IS_AUTHENTICATED_FULLY') %}
+    {% if is_granted('IS_AUTHENTICATED_FULLY') and not isRate %}
         <a href="{{ path('app_rating_new',{'id': series.id}) }}"> <b> Add rate </b> </a> <br>
     {% endif %}
     <a href="{{ path('app_series_index') }}"> <b> Back to list </b> </a> <br>

@@ -2,6 +2,7 @@
 
 namespace App\Controller;
 
+use App\Entity\Rating;
 use App\Entity\Season;
 use App\Entity\Series;
 use App\Entity\User;
@@ -109,14 +110,19 @@ class SeriesController extends AbstractController
         INNER JOIN App\Entity\Series s
         WHERE r.series = s
         AND s.id = :id"
-    )->setParameter('id', $series->getId());
+    )->setParameter('id', $series->getId());    
     $seriesRating = $query->getResult();
+    
+    $isRate = $entityManager
+    ->getRepository(Rating::class)
+    ->findOneBy(['series' => $series, 'user' => $this  ->  getUser()]);
 
     return $this->render('series/show.html.twig', [
         'series' => $series,
         'seasons' => $seasons,
         'episodes' => $episodesPerSeason,
-        'rates' =>$seriesRating
+        'rates' =>$seriesRating,
+        'isRate' => $isRate != null
     ]);
     }
 
