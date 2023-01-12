@@ -86,15 +86,23 @@ class SeriesController extends AbstractController
 
     
     #[Route('/{id}', name: 'app_series_show', methods: ['GET','POST'])]
-    public function show(EntityManagerInterface $entityManager,Series $series,  Request $request): Response
+    public function show(EntityManagerInterface $entityManager,Series $series): Response
     {             
         
         $season = $entityManager->getRepository(Season::class)->findBy(['series' => $series],array('number' => 'ASC'));
-        $seasonForLoop = array($season);
-        foreach($seasonForLoop as $season){
-            $episodes = $entityManager->getRepository(Episode::class)->findBy(['season' => $season], ['number' => 'ASC']);
-            // do something with $episodes
-        }        
+        
+        $episodes = $entityManager->getRepository(Episode::class)
+        ->createQueryBuilder('e')
+        ->select('e', 's')
+        ->join('e.season', 's')
+        ->where('s.series = :series')
+        ->orderBy('s.number', 'ASC')
+        ->addOrderBy('e.number', 'ASC')
+        ->setParameter('series', $series)
+        ->getQuery()
+        ->getResult();
+
+
         return $this->render('series/show.html.twig', [
             'series' => $series,
             'seasons' => $season,
