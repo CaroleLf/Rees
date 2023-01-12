@@ -4,12 +4,14 @@
 
 {% block stylesheets %}
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.3.1/dist/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
     <link href="{{ asset('/css/show.css') }}" type="text/css" rel="stylesheet">  
-{% endblock %}
 
+{% endblock %}
 {% block body %}
     {{ parent()  }}
-    
    <main class="d-flex flex-wrap" >
         <div class="info d-flex m-5 flex-column align-items-center" >
             <div class="LineOne d-flex flex-wrap m-5 align-items-center ">
@@ -23,8 +25,14 @@
                             </h1>
                         </div>
                     <div class="m-2 d-flex  flex-column">
-                            <h3 class="border-0">Description </h3>
-                            <p  class="border-0">{{ series.plot }}</p>
+                        <h3 class="border-0">Description </h3>
+                        <p  class="border-0">{{ series.plot }}</p>
+                       
+                        {% if series.imdb %}
+                         <h3 class="border-0"> Rating </h3>
+                            <a href="https://www.imdb.com/title/{{ series.imdb }}" target="_blank"><h4 > Note IMDB </h4></a>
+                        {% endif %}
+                        
                         {% if series.director %}
                             <h3 class="border-0">Director</h3>
                             <p class="border-0">{{ series.director }}</p>
@@ -61,15 +69,45 @@
                         {% endif %}
                     {% endif %}
                 </div>
-                 <div class="lastPart m-5">
-                 <h3> Episodes </h3>
-               {% for episode in episodes %}
-                    <p class=""> Saison {{ episode.numberSeason }}: {{ episode.nbEpisode }}  épisodes </p>   
-                {% endfor %}
-            </div>
-            {% if series.youtubeTrailer %}
-                <iframe width="800" height="500" src={{ series.youtubeTrailer }} ></iframe>
-            {% endif %}
+                <div class="lastPart m-5">
+                    <h3> Episodes </h3>
+                    <div class="accordion w-70 d-flex flex-column" id="accordionExample">
+                        {% for season in seasons %}
+                            <button class="click btn " 
+                             type="button"  data-mdb-toggle="collapse"  data-mdb-target="#collapseWidthExample"  aria-expanded="false" data-toggle="collapse" 
+                             data-target="#multiCollapse{{season.number}}" aria-expanded="false" aria-controls="multiCollapse{{season.number}}">
+                                Saison {{season.number}} 
+                            </button>
+                            <div class="col"> 
+                                        <div class="collapse multi-collapse  w-70 bg-transparent border-0" id="multiCollapse{{season.number}}">       
+                                            <div class="rounder card card-body bg-transparent border-0">
+                                                {% for episode in episodes %}
+                                                    {% if episode.season.id == season.id %}
+                                                        {% if is_granted('IS_AUTHENTICATED_FULLY') %}
+                                                            <div class="clickInfo bg-white m-1 d-flex flex-column justify-content-center">
+                                                                <h5 class="text-dark"> Episode {{episode.number}} // Titre : {{episode.title}} </h5>
+                                                                    {% if episode.isWatchByUser(app.user) %}
+                                                                        <div>
+                                                                            <a type="button" class="btn bg-dark btn-lg px-4" href="{{ path('app_watch_remove', { 'idEpisode' : episode.id }) }}"> <b> Je n'ai pas vu!  </b> </a> <br>
+                                                                        </div>
+                                                                    {% else %}
+                                                                        <div>
+                                                                            <a type="button" class="btn bg-dark btn-lg px-4" href="{{ path('app_watch_add', { 'idEpisode' : episode.id}) }}"> <b> J'ai vu ! </b> </a> <br>
+                                                                            </div>
+                                                                    {% endif %}
+                                                            </div>
+                                                        {% endif %}
+                                                    {% endif %}
+                                                {% endfor %}
+                                            </div>
+                                        </div>
+                                    </div>
+                        {% endfor %}
+                    </div>
+                    {% if series.youtubeTrailer %}
+                        <iframe width="800" height="500" src={{ series.youtubeTrailer }} ></iframe>
+                    {% endif %}
+                </div>
              </div>
             {% if myRate != null and is_granted('IS_AUTHENTICATED_FULLY')%}
                 <table class="table">

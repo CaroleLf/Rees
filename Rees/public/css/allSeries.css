@@ -68,6 +68,11 @@ a {
     border-radius: 1rem;
 }
 
+.theGenre {
+	border: solid 2px;
+	border-radius: .75rem;
+	margin: 0.2rem;
+}
 
 div.series__filter:hover  {
     -webkit-filter: grayscale(0);
