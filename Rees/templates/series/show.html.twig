@@ -12,7 +12,6 @@
 {% endblock %}
 {% block body %}
     {{ parent()  }}
-    
    <main class="d-flex flex-wrap" >
         <div class="info d-flex m-5 flex-column align-items-center" >
             <div class="LineOne d-flex flex-wrap m-5 align-items-center ">
@@ -26,8 +25,14 @@
                             </h1>
                         </div>
                     <div class="m-2 d-flex  flex-column">
-                            <h3 class="border-0">Description </h3>
-                            <p  class="border-0">{{ series.plot }}</p>
+                        <h3 class="border-0">Description </h3>
+                        <p  class="border-0">{{ series.plot }}</p>
+                       
+                        {% if series.imdb %}
+                         <h3 class="border-0"> Rating </h3>
+                            <a href="https://www.imdb.com/title/{{ series.imdb }}" target="_blank"><h4 > Note IMDB </h4></a>
+                        {% endif %}
+                        
                         {% if series.director %}
                             <h3 class="border-0">Director</h3>
                             <p class="border-0">{{ series.director }}</p>
