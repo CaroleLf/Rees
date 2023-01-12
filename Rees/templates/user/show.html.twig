@@ -1,44 +1,63 @@
 {% extends 'base.html.twig' %}
 
 {% block title %}User{% endblock %}
-
+{% block stylesheets %}
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.3.1/dist/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+    <link href="{{ asset('/css/show.css') }}" type="text/css" rel="stylesheet">  
+{% endblock %}
 {% block body %}
-    <h1>User</h1>
-
-    <table class="table">
-        <tbody>
-            <tr>
-                <th>Name</th>
-                <td>{{ user.name }}</td>
-            </tr>
-            <tr>
-                <th>RegisterDate</th>
-                <td>{{ user.registerDate ? user.registerDate|date('Y-m-d H:i:s') : '' }}</td>
-            </tr>
-        </tbody>
-    </table>
+ {{ parent()  }}
+ <main class="d-flex flex-wrap" >
+  <div class="info d-flex m-5 flex-column align-items-center" >
+        <div class="LineOne d-flex flex-column flex-wrap mt-5  ">
+               <h1 class="mt-5">{{ user.name }} </h1> 
+                
+                {% if user.registerDate  %}
+                <h2>RegisterDate</h2>
+                <h3>{{ user.registerDate ? user.registerDate|date('Y-m-d H:i:s') : '' }}</h3>
+                {% endif %}
+                
     {% if rates != null %}
-     <h1>All rates</h1>
-        <table class="table">
-            <thead>
-                <tr>
-                    <th>Serie</th>
-                    <th>Note</th>
-                    <th>Commentaire</th>
-                    <th>Date</th>
+     <h1>Ses commentaires</h1>
+        <table class="table table-striped">
+            <thead class="thead-light ">
+                <tr class="border-0 ">
+                    <th class="border-0 text-center">Serie</th>
+                    <th class="border-0 text-center">Note</th>
+                    <th class="border-0 text-center">Commentaire</th>
+                    <th class="border-0 text-center">Date</th>
                 </tr>
-                </thead>
-                <tbody>
-                    {% for rate in rates %}
-                    <tr>
-                        <td>{{ rate.series }}</td>
-                        <td>{{ rate.value / 10 |number_format(1)}}</td>
-                        <td>{{ rate.comment }}</td>
-                        <td>{{ rate.date ? rate.date|date('Y-m-d H:i:s') : '' }}</td>            
+            </thead>
+            <tbody class="bg-transparent">
+                {% for rate in rates %}
+                    <tr class="border-0 bg-transparent">
+                        <td class="border-0 text-center">{{ rate.series }}</td>
+                        <td class="border-0 text-center">{{ rate.value / 10 |number_format(1)}}</td>
+                        <td class="border-0 text-center">{{ rate.comment }}</td>
+                        <td class="border-0 text-center">{{ rate.date ? rate.date|date('Y-m-d H:i:s') : '' }}</td>            
                     </tr>
-                    {% endfor %}
-                </tbody>
-            </table>
-            {% endif %}
-    <a href="{{ path('app_admin') }}">back to list</a>
+                {% endfor %}
+            </tbody>
+        </table>
+    {% endif %}
+    {% if user.series != null %}
+     <h1>Ses Séries</h1>
+        <table class="table table-striped">
+            <thead class="thead-light ">
+                <tr class="border-0 ">
+                    <th class="border-0 text-center">Titre</th>
+                </tr>
+            </thead>
+            <tbody class="bg-transparent">
+                {% for serie in user.series %}
+                    <tr class="border-0 bg-transparent text-center">
+                        <td class="border-0 text-decoration-none text-white "> <a class=" font-weight-bold border-0 text-decoration-none text-white "href="{{ path('app_series_show', {'id': serie.id}) }}" > {{ serie.title }} </a></td> 
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    {% endif %}
 {% endblock %}
