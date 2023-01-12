@@ -71,7 +71,6 @@
                             </div>
                         {% else %}
                         <div >
-                            <button type="button" class="btn btn-outline-light">Light</button>
                             <a type="button" class="btn btn-outline-light btn-lg px-4 followButton" href="{{ path('app_like_add', {'id': series.id}) }}">Suivre</a> <br>
                         </div>
                         {% endif %}
@@ -91,24 +90,23 @@
                                             <div class="rounder card card-body bg-transparent border-0">
                                                 {% for episode in episodes %}
                                                     {% if episode.season.id == season.id %}
-                                                        {% if is_granted('IS_AUTHENTICATED_FULLY') %}
-                                                            <div class="clickInfo bg-white m-1 d-flex flex-column justify-content-center">
-                                                                <h5 class="text-dark"> Episode {{episode.number}} // Titre : {{episode.title}} </h5>
-                                                                    {% if episode.isWatchByUser(app.user) %}
-                                                                        <div>
-                                                                            <a type="button" class="btn bg-dark btn-lg px-4" href="{{ path('app_watch_remove', { 'idEpisode' : episode.id }) }}"> <b> Je n'ai pas vu!  </b> </a> <br>
-                                                                        </div>
-                                                                    {% else %}
-                                                                        <div>
-                                                                            <a type="button" class="btn bg-dark btn-lg px-4" href="{{ path('app_watch_add', { 'idEpisode' : episode.id}) }}"> <b> J'ai vu! </b> </a> <br>
-                                                                            </div>
-                                                                    {% endif %}
-                                                            </div>
-                                                        {% endif %}
+                                                        <div class="clickInfo bg-white m-1 d-flex flex-column justify-content-center">
+                                                            <h5 class="text-dark"> Episode {{episode.number}} // Titre : {{episode.title}} </h5>
+                                                            {% if is_granted('IS_AUTHENTICATED_FULLY') %}
+                                                                {% if episode.isWatchByUser(app.user) %}
+                                                                    <div>
+                                                                        <a type="button" class="btn bg-dark btn-lg px-4" href="{{ path('app_watch_remove', { 'idEpisode' : episode.id }) }}"> <b> Je n'ai pas vu!  </b> </a> <br>
+                                                                    </div>
+                                                                {% else %}
+                                                                    <div>
+                                                                        <a type="button" class="btn bg-dark btn-lg px-4" href="{{ path('app_watch_add', { 'idEpisode' : episode.id}) }}"> <b> J'ai vu! </b> </a> <br>
+                                                                    </div>
+                                                                {% endif %}
+                                                            {% endif %}
+                                                        </div>
                                                     {% endif %}
                                                 {% endfor %}
                                             </div>
-            'thisRate' => $rate
                                         </div>
                                     </div>
                         {% endfor %}
@@ -117,53 +115,57 @@
                         <iframe width="800" height="500" src={{ series.youtubeTrailer }} ></iframe>
                     {% endif %}
                 </div>
-             </div>
-            {% if myRate != null and is_granted('IS_AUTHENTICATED_FULLY')%}
-                <table class="table">
-                    <h2>Ma note</h2>
-                    <thead>
-                        <tr>
-                            <th>Note</th>
-                            <th>commentaire</th>
-                            <th>Date</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr>
-                            <td>{{ myRate.value / 10 |number_format(1) }}</td>
-                            <td>{{ myRate.comment }}</td>
-                            <td>{{ myRate.date ? myRate.date|date('Y-m-d H:i:s') : '' }}</td>
-                            <td><a href="{{ path('app_rating_edit', {'id': myRate.id}) }}"> <b> éditer </b> </a> </td>
-                        </tr>
-                    </tbody>
-                </table>
-            {% elseif  is_granted('IS_AUTHENTICATED_FULLY') %}
+                <div class="lastPart m-5">
+
+                {% if myRate != null and is_granted('IS_AUTHENTICATED_FULLY')%}
+                    <table class="table">
+                        <h2>Ma note</h2>
+                        <thead>
+                            <tr>
+                                <th>Note</th>
+                                <th>commentaire</th>
+                                <th>Date</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>{{ myRate.value / 10 |number_format(1) }}</td>
+                                <td>{{ myRate.comment }}</td>
+                                <td>{{ myRate.date ? myRate.date|date('Y-m-d H:i:s') : '' }}</td>
+                                <td><a href="{{ path('app_rating_edit', {'id': myRate.id}) }}"> <b> éditer </b> </a> </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    {% elseif  is_granted('IS_AUTHENTICATED_FULLY') %}
                 <h2>Ma note</h2><br>
                 <a href="{{ path('app_rating_new',{'id': series.id}) }}"> <b> Noter </b> </a> <br>
-            {% endif %}
-            {% if allRates != null %}
-                <h2>Toutes les notes</h2>
-               <table class="table">
-                    <thead>
-                        <tr>
-                            <th>Utilisateur</th>
-                            <th>Note</th>
-                            <th>Commentaire</th>
-                            <th>Date</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                    {% for rate in allRates %}
-                        <tr>
-                            <td><a href="{{ path('app_user_show',{'id': rate.user.id}) }}"> <b>{{ rate.user }}</b></a></td>
-                            <td>{{ rate.value / 10 |number_format(1) }}</td>
-                            <td>{{ rate.comment }}</td>
-                            <td>{{ rate.date ? rate.date|date('Y-m-d H:i:s') : '' }}</td>   
-                        </tr>
-                    {% endfor %}
-                    </tbody>
-                </table>
-            {% endif %}
+                {% endif %}
+                {% if allRates != null %}
+                    <h2>Toutes les notes</h2>
+                <table class="table">
+                        <thead>
+                            <tr>
+                                <th>Utilisateur</th>
+                                <th>Note</th>
+                                <th>Commentaire</th>
+                                <th>Date</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                        {% for rate in allRates %}
+                            <tr>
+                                <td><a href="{{ path('app_user_show',{'id': rate.user.id}) }}"> <b>{{ rate.user }}</b></a></td>
+                                <td>{{ rate.value / 10 |number_format(1) }}</td>
+                                <td>{{ rate.comment }}</td>
+                                <td>{{ rate.date ? rate.date|date('Y-m-d H:i:s') : '' }}</td>   
+                            </tr>
+                        {% endfor %}
+                        </tbody>
+                    </table>
+                {% endif %}
+             </div>
+            
+            
             </div>
         </div>
         </div>

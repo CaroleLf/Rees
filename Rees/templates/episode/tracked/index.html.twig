@@ -7,24 +7,58 @@
     <link href="{{ asset('/css/allSeries.css') }}" type="text/css" rel="stylesheet">  
 	<link rel="shortcut icon" href="img/logo.png" >
 	<link href='https://css.gg/css' rel='stylesheet'>
+    <link href="{{ asset('/css/episode.css') }}" type="text/css" rel="stylesheet">  
     <link href="https://cdn.jsdelivr.net/npm/remixicon@2.5.0/fonts/remixicon.css" rel="stylesheet">
 {% endblock %}
 
 {% block body %}
     {{ parent() }}    
-         <div id="episode" class="work_container container grid "> 
-        {% for episode in app.user.episode %}
-            <div class="episode d-flex flex-column">
-                <td> 
-                    <a href="{{ path('app_episode_show', {'id': episode.id}) }}">
-                      
-                        <p> Séries {{ episode.season.series.title }}  // Saisons {{ episode.season.number }} // Episode {{episode.number}} </p>
-                    </a>
-                    </div>
-                    <div class="allGenre d-flex flex-row justify-content-center flex-wrap">
-                     </div>
-                </td>
-                </div>
-        {% endfor %}
+    <main class="min-vh-100 d-flex flex-column align-items-center "> 
+         <table class="table table-striped">
+                    <thead class="thead-light">
+                        <tr class="border-0">
+                            <th class="border-0 min-vw-20">Titre  </th>
+                            <th class="email border-0 ">Saison</th>
+                            <th class="border-0 min-vw-20">Episode</th>
+                            <th class="border-0 min-vw-20">Titre épisode</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                    {% for episode in app.user.episode %}
+                        <tr>
+                            {% if  episode.season.series.title  %}
+                                <td class="border-0 w-25"> 
+                                    <a class="decoration-none text-white" href="{{ path('app_series_show', {'id': episode.season.series.id}) }}">  
+                                        {{ episode.season.series.title }}    
+                                    </a>
+                                </td>
+                            {% else %}
+                                <td class="border-0 min-vw-20"> N/A </td>   
+                            {% endif %}
+                            {% if   episode.season.number %}
+                            <td class="email border-0 w-60">{{ episode.season.number }}</td>
+                            {% else %}
+                            <td class="border-0 min-vw-20"> N/A </td>   
+                            {% endif %}
+                            {% if episode.number %}
+                                <td class="border-0 min-vw-20">{{ episode.number }}</td>
+                            {% else %}
+                                <td class="border-0 min-vw-20"> N/A </td>   
+                            {% endif %}
+                            {% if episode.title %}
+                                <td class="border-0 min-vw-20">{{ episode.title }}</td>
+                            {% else %}
+                                <td class="border-0 min-vw-20"> N/A </td>   
+                            {% endif %}
+                        </tr>
+                    {% else %}
+                        <tr>
+                            <td colspan="8">Aucun épisode trouvé</td>
+                        </tr>
+                    {% endfor %}
+                    </tbody>
+                </table>
         </div>
+    </main>
 {% endblock %}
+
