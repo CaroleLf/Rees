@@ -50,16 +50,17 @@
                             <p class="border-0">{{ series.yearEnd }}</p>
                     {% endif %}
                     {% if not is_granted('IS_AUTHENTICATED_FULLY') %}
-                        <a type="button" class="btn btn-outline-light btn-lg px-4" href="{{ path('app_login') }}"> <b> Connecte toi pour suivre </b> </a> <br>
+                        <a type="button" class="btn btn-outline-light btn-lg px-4 followButton" href="{{ path('app_login') }}">Connecte toi pour suivre</a> <br>
                     {% endif %}
                     {% if is_granted('IS_AUTHENTICATED_FULLY') %}
                         {% if series.isLikedByUser(app.user) %}
                             <div >
-                                <a type="button" class="btn btn-outline-light btn-lg px-4" href="{{ path('app_like_remove', {'id': series.id}) }}"> <b> Ne plus suivre </b> </a> <br>
+                                <a type="button" class="btn btn-outline-light btn-lg px-4 followButton" href="{{ path('app_like_remove', {'id': series.id}) }}">Ne plus suivre</a> <br>
                             </div>
                         {% else %}
                         <div >
-                            <a type="button" class="btn btn-outline-light btn-lg px-4" href="{{ path('app_like_add', {'id': series.id}) }}"> <b> Suivre </b> </a> <br>
+                            <button type="button" class="btn btn-outline-light">Light</button>
+                            <a type="button" class="btn btn-outline-light btn-lg px-4 followButton" href="{{ path('app_like_add', {'id': series.id}) }}">Suivre</a> <br>
                         </div>
                         {% endif %}
                     {% endif %}

@@ -1,5 +1,4 @@
 *  {
-	border: none;
     color: white;
 }
 
@@ -77,4 +76,8 @@ h3 {
 
 .clickInfo {
     border-radius: 30px;
+}
+
+.followButton {
+    border: solid 2px #FFFFFF;
 }

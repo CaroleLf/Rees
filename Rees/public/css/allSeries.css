@@ -36,13 +36,11 @@ a {
 
 /** Series display **/
 .work_container {
-    display: flex;
     padding: 0 19%;
 	display: grid;
 	grid-template-columns: repeat(5,330px) ;
 	gap : 1.8rem;
 	justify-content: center;
-	padding-top: 10rem;
 }
 
 
@@ -172,4 +170,3 @@ div.series__filter:hover  {
 		padding-top: 1rem;
 	}
 }
-
