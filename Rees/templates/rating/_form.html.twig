@@ -1,5 +1,17 @@
 {{ form_start(form) }}
-    {{ form_widget(form) }}
-        
-    <button class="btn">{{ button_label|default('Save') }}</button>
+
+                {{ form_start(form) }}
+                    {{ form_row(form.value,  { 
+                     'attr': { 'class' : 'm-2 form-control'}
+                    },{
+                        label: 'Valeur'
+                    }) }}
+                    
+                    {{ form_row(form.comment, { 
+                     'attr': { 'class' : 'm-2 form-control'}
+                    },{
+                        label: 'Commentaire'
+                    }) }}
+    <button class="btn btn-outline-light btn-lg px-4" type="submit">Envoyer</button>
 {{ form_end(form) }}
+

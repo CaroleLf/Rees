@@ -23,7 +23,7 @@ class Rating
     #[ORM\GeneratedValue(strategy: "IDENTITY")]
     private $id;
 
-    #[ORM\Column(name: "value", type: "integer", nullable: false)]
+    #[ORM\Column(name: "value", type: "float", nullable: false)]
     private $value;
 
     #[ORM\Column(name:"comment", type:"text", length:0, nullable:false)]
@@ -45,12 +45,12 @@ class Rating
         return $this->id;
     }
 
-    public function getValue(): ?int
+    public function getValue(): ?float
     {
         return $this->value;
     }
 
-    public function setValue(int $value): self
+    public function setValue(float $value): self
     {
         $this->value = $value;
 

@@ -182,15 +182,14 @@ class SeriesController extends AbstractController
         $season = $entityManager->getRepository(Season::class)->findBy(['series' => $series], array('number' => 'ASC'));
         
         $episodes = $entityManager->getRepository(Episode::class)
-            ->createQueryBuilder('e')
-            ->select('e', 's')
-            ->join('e.season', 's')
-            ->where('s.series = :series')
-            ->orderBy('s.number', 'ASC')
-            ->addOrderBy('e.number', 'ASC')
-            ->setParameter('series', $series)
-            ->getQuery()
-            ->getResult();
+                    ->createQueryBuilder('e')
+                    ->select('e')
+                    ->join('e.season', 's')
+                    ->where('s.series = :series')
+                    ->orderBy('e.number', 'ASC')
+                    ->setParameter('series', $series)
+                    ->getQuery()
+                    ->getResult();
 
 
         $query = $entityManager->createQuery(
