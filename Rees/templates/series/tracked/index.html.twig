@@ -11,27 +11,26 @@
 {% endblock %}
 
 {% block body %}
-    {{ parent() }}
-        {{ include ('pagination.html.twig') }}  
-        <div id="series" class="work_container container grid ">
-        {% for serie in series %}
-            <div class="d-flex flex-column">
+    {{ parent() }}    
+         <div id="series" class="work_container container grid " style="padding-top:10rem;"> 
+        {% for serie in user.series %}
+            <div class=" d-flex flex-column">
                 <td> 
                     <div class="series__filter AllPoster"> 
-                        <a href="{{ path('app_series_show', {'id': serie.id}) }}">
-                            <img src="{{ path('app_poster',{'id':serie.id }) }}">
-                        </a>
+                    <a href="{{ path('app_series_show', {'id': serie.id}) }}">
+                        <img src="{{ path('app_poster',{'id':serie.id }) }}">
+                    </a>
                     </div>
                     <div class="allGenre btn-group d-flex flex-row justify-content-evenly flex-wrap ">
                             {% for genre in serie.genre %}
                                 {% if loop.index <= 4 %}
                                     <p class="btn btn-outline-light btn-sm theGenre">{{ genre}}</p>    
                                 {% endif %}
+                                
                             {% endfor %}
                     </div>
                 </td>
-            </div>
+                </div>
         {% endfor %}
         </div>
-    {{ include ('pagination.html.twig') }}  
 {% endblock %}

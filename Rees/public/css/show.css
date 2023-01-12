@@ -1,5 +1,4 @@
 *  {
-	border: none;
     color: white;
 }
 
@@ -32,18 +31,24 @@ footer {
 
     margin: 0 2%;
 }
+
+
 .action a{
     color: white;
     text-decoration: none;
 }
 
-
+.click {
+    background-color: #91D7F2;
+    margin: 0.5vw;
+    border-radius: 30px;
+}
 .titleTxt {
     display: flex;
-	font-size: 47px;
-	font-weight: 600;
-	border-bottom: 2px solid transparent;
-	transition: all .55s ease;
+    font-size: 47px;
+    font-weight: 600;
+    border-bottom: 2px solid transparent;
+    transition: all .55s ease;
     color: #91D7F2;
     z-index: 1000;
     
@@ -66,4 +71,13 @@ h3 {
 }
 .secondPart {
     flex : 4;
+}
+
+
+.clickInfo {
+    border-radius: 30px;
+}
+
+.followButton {
+    border: solid 2px #FFFFFF;
 }

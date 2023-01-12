@@ -2,6 +2,7 @@
 
 namespace App\Entity;
 
+
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
@@ -157,5 +158,15 @@ class Episode
     public function __toString()
     {
         return $this->title;
+    }
+
+    public function isWatchByUser(User $user): bool
+    {
+        foreach ($this->user as $userWatch) {
+            if ($userWatch->getId() === $user->getId()) {
+                return true;
+            }
+        }
+        return false;
     }
 }

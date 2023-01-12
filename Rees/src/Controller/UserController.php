@@ -22,12 +22,14 @@ class UserController extends AbstractController
     {
  
         $users = $entityManager
-        ->getRepository(User::class)
-        ->findBy(array(),array('name'=>'ASC'));
+            ->getRepository(User::class)
+            ->findBy(array(), array('name'=>'ASC'));
 
-        return $this->render('user/index.html.twig', [
+        return $this->render(
+            'user/index.html.twig', [
             'users' => $users,
-        ]);
+            ]
+        );
     }
     //#[IsGranted('ROLE_ADMIN')]
     #[Route('/new', name: 'app_user_new', methods: ['GET', 'POST'])]
@@ -44,20 +46,33 @@ class UserController extends AbstractController
             return $this->redirectToRoute('app_admin', [], Response::HTTP_SEE_OTHER);
         }
 
-        return $this->renderForm('user/new.html.twig', [
+        return $this->renderForm(
+            'user/new.html.twig', [
             'user' => $user,
             'form' => $form,
-        ]);
+            ]
+        );
     }
     
     #[Route('/{id}', name: 'app_user_show', methods: ['GET'])]
     //#[IsGranted('ROLE_ADMIN')]
-    public function show(User $user): Response
+    public function show(EntityManagerInterface $entityManager,User $user): Response
     {
-        
-        return $this->render('user/show.html.twig', [
+        $query = $entityManager->createQuery(
+            "SELECT r
+            FROM App\Entity\Rating r
+            INNER JOIN App\Entity\User u
+            WHERE r.user = u
+            AND u.id = :id"
+        )->setParameter('id', $user->getId());
+        $ratedSeries = $query->getResult();
+    
+        return $this->render(
+            'user/show.html.twig', [
             'user' => $user,
-        ]);
+            'rates' => $ratedSeries
+            ]
+        );
     }
    
     #[Route('/{id}/edit', name: 'app_user_edit', methods: ['GET', 'POST'])]
@@ -73,10 +88,12 @@ class UserController extends AbstractController
             return $this->redirectToRoute('app_admin', [], Response::HTTP_SEE_OTHER);
         }
 
-        return $this->renderForm('user/edit.html.twig', [
+        return $this->renderForm(
+            'user/edit.html.twig', [
             'user' => $user,
             'form' => $form,
-        ]);
+            ]
+        );
     }
 
    

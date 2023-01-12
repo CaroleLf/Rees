@@ -18,23 +18,23 @@ class WelcomeController extends AbstractController
     {
         $SeriesFinal = [];
         $series = $entityManager
-        ->getRepository(Series::class)
-        ->findAll();
+            ->getRepository(Series::class)
+            ->findAll();
 
-        $randomSeries = array_rand($series,3);
+        $randomSeries = array_rand($series, 3);
         for ($i=0; $i < 3; $i++) { 
              $rand =  $entityManager
-                                ->getRepository(Series::class)
-                                ->findOneBy(array('id'=>$randomSeries[$i]));
-            if($rand!=null){
+                 ->getRepository(Series::class)
+                 ->findOneBy(array('id'=>$randomSeries[$i]));
+            if($rand!=null) {
                 $SeriesFinal[$i] = $rand;
             }
             else {
                 while ($rand==null){
-                    $randCorrection = array_rand($series,1);
+                    $randCorrection = array_rand($series, 1);
                     $rand =  $entityManager
-                                    ->getRepository(Series::class)
-                                    ->findOneBy(array('id'=>$randCorrection));
+                        ->getRepository(Series::class)
+                        ->findOneBy(array('id'=>$randCorrection));
                 }
                 $SeriesFinal[$i] = $rand;
             }
@@ -42,9 +42,11 @@ class WelcomeController extends AbstractController
             
         }
         
-        return $this->render('welcome/index.html.twig', [
-           'series'=> $SeriesFinal,
-        ]);
+        return $this->render(
+            'welcome/index.html.twig', [
+            'series'=> $SeriesFinal,
+            ]
+        );
     }
 
 

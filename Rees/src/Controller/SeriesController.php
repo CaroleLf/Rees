@@ -2,11 +2,17 @@
 
 namespace App\Controller;
 
+use App\Entity\Rating;
+use App\Entity\Episode;
 use App\Entity\Season;
 use App\Entity\Series;
+use App\Entity\User;
 use App\Form\Series1Type;
+use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\Query\Expr\Join;
+use Doctrine\ORM\Mapping\Id;
+use Doctrine\ORM\Mapping\OrderBy;
 use Doctrine\ORM\Tools\Pagination\Paginator;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -38,8 +44,8 @@ class SeriesController extends AbstractController
         // If the number of the page is below 1, or above (last number of page), it will redirect to an error page
         if ($page < 1) {
             $page = 1;
-        } else if ($page > (($lastData->getId()) / 10) - 1) {
-            $page = $lastData->getId() / 10 - 1.4;
+        } else if ($page > (($lastData->getId())/10)-1) {
+            $page = (int)($lastData->getId()/10)-1;
         }
 
         // Get filters
@@ -126,13 +132,14 @@ class SeriesController extends AbstractController
             ->getRepository(Series::class)
             ->findOneBy([], ['id' => 'desc']);
         $page = $request->query->getInt('page', 1);
-        // If the number of the page is below 1, or above (last number of page), it will redirect to an error page
+        //if the number of the page is below 1, or above (last number of page), it will redirect to another page
         if ($page < 1) {
             $page = 1;
-        } else if ($page > (($lastData->getId()) / 10) - 1) {
-            $page = $lastData->getId() / 10 - 1.4;
+        } 
+        else if($page > (($lastData->getId())/10)-1) {
+            $page = (int)($lastData->getId()/10)-1;
         }
-
+        
         $query = $entityManager->createQuery(
             "SELECT s FROM App\Entity\Series s
              INNER JOIN App\Entity\Genre g
@@ -146,35 +153,77 @@ class SeriesController extends AbstractController
         $maxPages = ceil($posts->count() / $limit);
         $thisPage = $page;
 
-        return $this->render('series/index.html.twig', [
+        return $this->render(
+            'series/index.html.twig', [
             'series' => $series,
             'maxPages' => $maxPages,
             'thisPage' => $thisPage
-        ]);
+            ]
+        );
     }
 
-    #[Route('/{id}', name: 'app_series_show', methods: ['GET', 'POST'])]
-    public function show(EntityManagerInterface $entityManager, Series $series,  Request $request): Response
-    {
 
-        $seasons = $entityManager
-            ->getRepository(Season::class)
-            ->findBy(array('series' => $series), array('number' => 'ASC'));
+    #[Route(['/tracked'], name: 'app_series_tracked', methods: ['GET', 'POST'])]
+    public function tracked(): Response
+    {
+        $user = $this->getUser();
+        return $this->render(
+            'series/tracked/index.html.twig', [
+            'user' => $user
+            ]
+        );
+    }
+
+    
+    #[Route('/{id}', name: 'app_series_show', methods: ['GET','POST'])]
+    public function show(EntityManagerInterface $entityManager,Series $series): Response
+    {             
+        
+        $season = $entityManager->getRepository(Season::class)->findBy(['series' => $series], array('number' => 'ASC'));
+        
+        $episodes = $entityManager->getRepository(Episode::class)
+            ->createQueryBuilder('e')
+            ->select('e', 's')
+            ->join('e.season', 's')
+            ->where('s.series = :series')
+            ->orderBy('s.number', 'ASC')
+            ->addOrderBy('e.number', 'ASC')
+            ->setParameter('series', $series)
+            ->getQuery()
+            ->getResult();
+
 
         $query = $entityManager->createQuery(
-            "SELECT se.number as numberSeason, e.number as nbEpisode
-        FROM App\Entity\Episode e
-        INNER JOIN e.season se
-        INNER JOIN se.series s
-        WHERE s.id = :id
-        GROUP BY numberSeason
-        ORDER BY numberSeason"
-        )->setParameter('id', $series);
-        $episodesPerSeason = $query->getResult();
+            "SELECT r
+            FROM App\Entity\Rating r
+            INNER JOIN App\Entity\Series s
+            WHERE r.series = s
+            AND s.id = :id
+            ORDER BY r.date DESC"
+        )->setParameter('id', $series->getId());    
+        $seriesRating = $query->getResult();
+        
+        $isRate = $entityManager
+            ->getRepository(Rating::class)
+            ->findOneBy(['series' => $series, 'user' => $this  ->  getUser()]);
+            
+        $query = $entityManager->createQuery(
+            "SELECT AVG(r.value) as rate
+            FROM App\Entity\Rating r
+            INNER JOIN App\Entity\Series s
+            WHERE r.series = s
+            AND s.id = :id"
+        )->setParameter('id', $series->getId());    
+        $rate = $query->getResult();
+         
+
         return $this->render('series/show.html.twig', [
             'series' => $series,
-            'seasons' => $seasons,
-            'episodes' => $episodesPerSeason,
+            'seasons' => $season,
+            'episodes' => $episodes,
+            'allRates' =>$seriesRating,
+            'myRate' => $isRate,
+            'reesRate' => $rate
         ]);
     }
 
@@ -193,10 +242,12 @@ class SeriesController extends AbstractController
             return $this->redirectToRoute('app_series_index', [], Response::HTTP_SEE_OTHER);
         }
 
-        return $this->renderForm('series/new.html.twig', [
+        return $this->renderForm(
+            'series/new.html.twig', [
             'series' => $series,
             'form' => $form,
-        ]);
+            ]
+        );
     }
     /*
     #[Route('/{id}/edit', name: 'app_series_edit', methods: ['GET', 'POST'])]
@@ -236,6 +287,7 @@ class SeriesController extends AbstractController
         return new Response(stream_get_contents($series->getPoster()), 200, ['Content-Type' => 'image/png']);
     }
 
+
     #[Route('/{id}/like', name: 'app_like_add')]
     public function like(Series $series, EntityManagerInterface $entityManager): Response
     {
@@ -251,4 +303,7 @@ class SeriesController extends AbstractController
         $entityManager->flush();
         return $this->redirectToRoute('app_series_show', ['id' => $series->getId()]);
     }
+
+    
+
 }
