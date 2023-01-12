@@ -3,6 +3,7 @@
 namespace App\Controller;
 
 use App\Entity\Rating;
+use App\Entity\Episode;
 use App\Entity\Season;
 use App\Entity\Series;
 use App\Entity\User;
@@ -90,42 +91,41 @@ class SeriesController extends AbstractController
     public function show(EntityManagerInterface $entityManager,Series $series,  Request $request): Response
     {
 
-    $seasons = $entityManager
-    ->getRepository(Season::class)
-    ->findBy(array('series'=>$series),array('number'=>'ASC'));
-
-    $query = $entityManager->createQuery(
-        "SELECT se.number as numberSeason, e.number as nbEpisode
-        FROM App\Entity\Episode e
-        INNER JOIN e.season se
-        INNER JOIN se.series s
-        WHERE s.id = :id
-        GROUP BY numberSeason
-        ORDER BY numberSeason"
-    )->setParameter('id', $series);
-    $episodesPerSeason = $query->getResult();
-
-    $query = $entityManager->createQuery(
-        "SELECT r
-        FROM App\Entity\Rating r
-        INNER JOIN App\Entity\Series s
-        WHERE r.series = s
-        AND s.id = :id
-        ORDER BY r.date DESC"
-    )->setParameter('id', $series->getId());    
-    $seriesRating = $query->getResult();
-    
-    $isRate = $entityManager
-    ->getRepository(Rating::class)
-    ->findOneBy(['series' => $series, 'user' => $this  ->  getUser()]);
+        $season = $entityManager->getRepository(Season::class)->findBy(['series' => $series],array('number' => 'ASC'));
         
-    return $this->render('series/show.html.twig', [
-        'series' => $series,
-        'seasons' => $seasons,
-        'episodes' => $episodesPerSeason,
-        'rates' =>$seriesRating,
-        'myRate' => $isRate
-    ]);
+        $episodes = $entityManager->getRepository(Episode::class)
+        ->createQueryBuilder('e')
+        ->select('e', 's')
+        ->join('e.season', 's')
+        ->where('s.series = :series')
+        ->orderBy('s.number', 'ASC')
+        ->addOrderBy('e.number', 'ASC')
+        ->setParameter('series', $series)
+        ->getQuery()
+        ->getResult();
+
+
+        $query = $entityManager->createQuery(
+            "SELECT r
+            FROM App\Entity\Rating r
+            INNER JOIN App\Entity\Series s
+            WHERE r.series = s
+            AND s.id = :id
+            ORDER BY r.date DESC"
+        )->setParameter('id', $series->getId());    
+        $seriesRating = $query->getResult();
+        
+        $isRate = $entityManager
+        ->getRepository(Rating::class)
+        ->findOneBy(['series' => $series, 'user' => $this  ->  getUser()]);
+            
+        return $this->render('series/show.html.twig', [
+            'series' => $series,
+            'seasons' => $season,
+            'episodes' => $episodes,
+            'rates' =>$seriesRating,
+            'myRate' => $isRate
+        ]);
     }
 
     #[Route('/new', name: 'app_series_new', methods: ['GET', 'POST'])]

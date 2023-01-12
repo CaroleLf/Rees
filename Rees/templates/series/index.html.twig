@@ -14,7 +14,7 @@
     {{ parent() }}
         <div id="series" class="work_container container grid "> 
         {% for serie in series %}
-            <div class="series__filter d-flex flex-column">
+            <div class=" d-flex flex-column">
                 <td> 
                     <div class="AllPoster"> 
                     <a href="{{ path('app_series_show', {'id': serie.id}) }}">
