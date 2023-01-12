@@ -32,12 +32,18 @@ footer {
 
     margin: 0 2%;
 }
+
+
 .action a{
     color: white;
     text-decoration: none;
 }
 
-
+.click {
+    background-color: #91D7F2;
+    margin: 0.5vw;
+    border-radius: 30px;
+}
 .titleTxt {
     display: flex;
 	font-size: 47px;
@@ -66,4 +72,9 @@ h3 {
 }
 .secondPart {
     flex : 4;
+}
+
+
+.clickInfo {
+    border-radius: 30px;
 }
