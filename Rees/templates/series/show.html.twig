@@ -101,6 +101,7 @@
                                                     {% endif %}
                                                 {% endfor %}
                                             </div>
+            'thisRate' => $rate
                                         </div>
                                     </div>
                         {% endfor %}
@@ -122,7 +123,7 @@
                     </thead>
                     <tbody>
                         <tr>
-                            <td>{{ myRate.value }}</td>
+                            <td>{{ myRate.value|number_format(1) }}</td>
                             <td>{{ myRate.comment }}</td>
                             <td>{{ myRate.date ? myRate.date|date('Y-m-d H:i:s') : '' }}</td>
                             <td><a href="{{ path('app_rating_edit', {'id': myRate.id}) }}"> <b> éditer </b> </a> </td>
@@ -133,7 +134,7 @@
                 <h2>Ma note</h2><br>
                 <a href="{{ path('app_rating_new',{'id': series.id}) }}"> <b> Noter </b> </a> <br>
             {% endif %}
-            {% if rates != null %}
+            {% if allRates != null %}
                 <h2>Toutes les notes</h2>
                <table class="table">
                     <thead>
@@ -145,10 +146,10 @@
                         </tr>
                     </thead>
                     <tbody>
-                    {% for rate in rates %}
+                    {% for rate in allRates %}
                         <tr>
                             <td><a href="{{ path('app_user_show',{'id': rate.user.id}) }}"> <b>{{ rate.user }}</b></a></td>
-                            <td>{{ rate.value }}</td>
+                            <td>{{ rate.value|number_format(1) }}</td>
                             <td>{{ rate.comment }}</td>
                             <td>{{ rate.date ? rate.date|date('Y-m-d H:i:s') : '' }}</td>   
                         </tr>

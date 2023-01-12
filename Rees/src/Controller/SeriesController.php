@@ -125,7 +125,7 @@ class SeriesController extends AbstractController
             'series' => $series,
             'seasons' => $season,
             'episodes' => $episodes,
-            'rates' =>$seriesRating,
+            'allRates' =>$seriesRating,
             'myRate' => $isRate
         ]);
     }
