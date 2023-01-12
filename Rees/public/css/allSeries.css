@@ -90,8 +90,18 @@ div.series__filter:hover  {
 
 
 
+@media (max-width: 1800px){
+    
+    .work_container {
+        display: grid;
+        grid-template-columns: repeat(3,330px) ;
+        gap : 1.8rem;
+        justify-content: center;
+        padding-top: 1rem;
+    }
+}
 
-@media (max-width: 900px){
+@media (max-width: 1200px){
     .pagination a{
         font-size: medium;
         color: white;
