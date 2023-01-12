@@ -10,6 +10,7 @@ use App\Entity\User;
 use App\Form\Series1Type;
 use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\EntityManagerInterface;
+use Doctrine\ORM\Query\Expr\Join;
 use Doctrine\ORM\Mapping\Id;
 use Doctrine\ORM\Mapping\OrderBy;
 use Doctrine\ORM\Tools\Pagination\Paginator;
@@ -20,11 +21,9 @@ use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 
-
 #[Route('/series')]
 class SeriesController extends AbstractController
 {
-
 
     private $authorizationChecker;
 
@@ -33,6 +32,88 @@ class SeriesController extends AbstractController
         $this->authorizationChecker = $authorizationChecker;
     }
 
+
+    #[Route('/search', name: 'app_series_search')]
+    public function search(EntityManagerInterface $entityManager, Request $request): Response
+    {
+        // Pages
+        $lastData = $entityManager
+            ->getRepository(Series::class)
+            ->findOneBy([], ['id' => 'desc']);
+        $page = $request->query->getInt('page', 1);
+        // If the number of the page is below 1, or above (last number of page), it will redirect to an error page
+        if ($page < 1) {
+            $page = 1;
+        } else if ($page > (($lastData->getId())/10)-1) {
+            $page = (int)($lastData->getId()/10)-1;
+        }
+
+        // Get filters
+        $keywords = $request->query->get('keywords');
+        $yearStart = $request->query->get('yearStart');
+        $yearEnd = $request->query->get('yearEnd');
+        $genres = $request->query->get('genres');
+
+        // Get array from string
+        $keywords = explode(',', $keywords);
+
+        // Check user entries
+        // Case: if years are not entered
+        if ($yearStart == null) {
+            $yearStart = 0;
+        }
+        if ($yearEnd == null) {
+            $yearEnd = 9999;
+        }
+
+        // SQL query for getting series according to the filters
+        $queryBuilder = $entityManager->createQueryBuilder()
+            ->select('s')
+            ->from(Series::class, 's')
+            ->where("(s.yearEnd >= :year_start and s.yearStart <= :year_end)
+            or (s.yearEnd is null and s.yearStart <= :year_end and s.yearStart >= :year_start)")
+            ->setParameter('year_start', $yearStart)
+            ->setParameter('year_end', $yearEnd);
+
+        // SQL LIKE with multiple values. As of right now, this is only an OR filter. If we want to apply an AND, we must use nested DQL queries. 
+        $i = 0;
+        foreach ($keywords as $kw) {
+            $queryBuilder->andWhere("s.title LIKE :kw$i")
+                ->setParameter(
+                    "kw$i",
+                    "%$kw%"
+                );
+            $i++;
+        }
+
+        // Case: if genres are entered
+        if ($genres) {
+            $genres = explode(',', $genres);
+            $queryBuilder->join("s.genre", "g");
+            $queryBuilder->andWhere('g.name IN (:genres)');
+            $queryBuilder->setParameter("genres", $genres);
+        }
+
+        // Series
+        $series = $queryBuilder->getQuery()
+            ->getResult();
+
+        // Posts
+        $posts = $this->paginate($queryBuilder, $page);
+        $posts->setUseOutputWalkers(false);
+        $series = $posts->getIterator();
+
+        $limit = 10;
+        $maxPages = ceil($posts->count() / $limit);
+        $thisPage = $page;
+
+        // TODO: fix pagination problem
+        return $this->render('series/index.html.twig', [
+            'series' => $series,
+            'maxPages' => $maxPages,
+            'thisPage' => $thisPage
+        ]);
+    }
     public function paginate($dql, $page = 1, $limit = 10)
     {
         $paginator = new Paginator($dql);
@@ -45,16 +126,16 @@ class SeriesController extends AbstractController
     }
 
     #[Route(['/'], name: 'app_series_index', methods: ['GET', 'POST'])]
-    public function index(EntityManagerInterface $entityManager, Request $page ): Response
+    public function index(EntityManagerInterface $entityManager, Request $request): Response
     {
         $lastData = $entityManager
             ->getRepository(Series::class)
             ->findOneBy([], ['id' => 'desc']);
-        $page = $page->query->getInt('page', 1);
+        $page = $request->query->getInt('page', 1);
         //if the number of the page is below 1, or above (last number of page), it will redirect to another page
-        if($page<1) {
+        if ($page < 1) {
             $page = 1;
-        }
+        } 
         else if($page > (($lastData->getId())/10)-1) {
             $page = (int)($lastData->getId()/10)-1;
         }
@@ -69,13 +150,13 @@ class SeriesController extends AbstractController
         $series = $posts->getIterator();
 
         $limit = 10;
-        $maxPages = ceil($posts->count()/ $limit);
+        $maxPages = ceil($posts->count() / $limit);
         $thisPage = $page;
 
         return $this->render(
             'series/index.html.twig', [
             'series' => $series,
-            'maxPages'=> $maxPages,
+            'maxPages' => $maxPages,
             'thisPage' => $thisPage
             ]
         );
@@ -203,7 +284,7 @@ class SeriesController extends AbstractController
     #[Route('/poster/{id}', name: 'app_poster', methods: ['GET'])]
     public function poster(Series $series): Response
     {
-        return new Response(stream_get_contents($series->getPoster()), 200, ['Content-Type'=>'image/png']);
+        return new Response(stream_get_contents($series->getPoster()), 200, ['Content-Type' => 'image/png']);
     }
 
 
@@ -226,4 +307,3 @@ class SeriesController extends AbstractController
     
 
 }
-
