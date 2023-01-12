@@ -1,11 +1,11 @@
-image: jakzal/phpqa:php7.4
+image: jakzal/phpqa:php8.2
 
 before_script:
     - composer install
 
 cache:
     paths:
-        - Rees/vendor/
+        - vendor/
 
 stages:
     - SecurityChecker
@@ -14,12 +14,12 @@ stages:
 security-checker:
     stage: SecurityChecker
     script:
-        - security-checker security:check composer.lock
+        - symfony check:security
     allow_failure: false
 phpcs:
     stage: CodingStandards
     script:
-        -  Rees/vendor/bin/phpcs -v --standard=PSR12 --ignore=./src/Kernel.php ./src
+        -  /vendor/bin/phpcs -v --standard=PSR12 --ignore=./src/Kernel.php ./src
     allow_failure: false
 
 phpstan:
@@ -31,6 +31,6 @@ phpstan:
   twig-lint:
     stage: CodingStandards
     script:
-        - twig-lint lint Rees/templates
+        - twig-lint lint ./templates
     allow_failure: false
 
