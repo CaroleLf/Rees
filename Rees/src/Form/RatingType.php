@@ -17,22 +17,19 @@ class RatingType extends AbstractType
         $builder
             ->add('value', ChoiceType::class, [  'choices'  => [
                 '0' => 0,
-                '0,5' => 0.5,
+                '0,5' => 5/10,
                 '1' => 1,
-                '1,5' => 1.5,
+                '1,5' => 15/10,
                 '2' => 2,
-                '2,5' => 2.5,
+                '2,5' => 25/10,
                 '3' => 3,
-                '3,5' => 3.5,
+                '3,5' => 35/10,
                 '4' => 4,
-                '4,5' => 4.5,
+                '4,5' => 45/10,
                 '5' => 5]
                 ,'required' => true])
 
             ->add('comment', TextType::class,['required'   => false])
-            ->add('date', HiddenType::class,['by_reference' => true, 'required' => true])
-            ->add('user', HiddenType::class, ['by_reference' => true, 'required' => true])
-            ->add('series', HiddenType::class, ['by_reference' => true, 'required' => true])
         ;
     }
 

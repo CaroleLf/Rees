@@ -29,20 +29,19 @@ class RatingController extends AbstractController
     #[Route('/new', name: 'app_rating_new', methods: ['GET', 'POST'])]
     public function new(Request $request, EntityManagerInterface $entityManager): Response
     {
+        $serie = $entityManager
+        ->getRepository(Series::class)
+        ->findOneBy(['id' => $request->query->getInt('id')]);
+
         $haveRate = $entityManager
         ->getRepository(Rating::class)
-        ->findOneBy(['user' => $this->getUser()]);
+        ->findOneBy(['user' => $this->getUser(),'series' => $serie]);
 
         if($haveRate == null){
             $rating = new Rating();
             $form = $this->createForm(RatingType::class, $rating);
             $form->handleRequest($request);
             if ($form->isSubmitted() && $form->isValid()) {
-                
-                $serie = $entityManager
-                ->getRepository(Series::class)
-                ->findOneBy(['id' => $request->query->getInt('id')]);
-                
                 $rating->setDate( new \DateTime());
                 $rating->setUser($this->getUser());
                 $rating->setSeries($serie);
