@@ -109,12 +109,59 @@
                     {% endif %}
                 </div>
              </div>
+            {% if myRate != null and is_granted('IS_AUTHENTICATED_FULLY')%}
+                <table class="table">
+                    <h2>My rate</h2>
+                    <thead>
+                        <tr>
+                            <th>Value</th>
+                            <th>Comment</th>
+                            <th>Date</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>{{ myRate.value }}</td>
+                            <td>{{ myRate.comment }}</td>
+                            <td>{{ myRate.date ? myRate.date|date('Y-m-d H:i:s') : '' }}</td>
+                            <td><a href="{{ path('app_rating_edit', {'id': myRate.id}) }}"> <b> edit </b> </a> </td>
+                        </tr>
+                    </tbody>
+                </table>
+            {% elseif  is_granted('IS_AUTHENTICATED_FULLY') %}
+                <h2>My rate</h2><br>
+                <a href="{{ path('app_rating_new',{'id': series.id}) }}"> <b> Add rate </b> </a> <br>
+            {% endif %}
+            {% if rates != null %}
+                <h2>Other rate</h2>
+               <table class="table">
+                    <thead>
+                        <tr>
+                            <th>User</th>
+                            <th>Value</th>
+                            <th>Comment</th>
+                            <th>Date</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                    {% for rate in rates %}
+                        <tr>
+                            <td>{{ rate.user }}</td>
+                            <td>{{ rate.value }}</td>
+                            <td>{{ rate.comment }}</td>
+                            <td>{{ rate.date ? rate.date|date('Y-m-d H:i:s') : '' }}</td>   
+                        </tr>
+                    {% endfor %}
+                    </tbody>
+                </table>
+            {% endif %}
             </div>
+        </div>
         </div>
     </main>
     <footer>
     <div class="action" >
-    <a href="{{ path('app_series_index') }}"> <b> Back to list </b> </a> <br>
+        <a href="{{ path('app_series_index') }}"> <b> Back to list </b> </a> <br>
     </div>
     </footer>
     </body>

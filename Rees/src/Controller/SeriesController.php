@@ -2,12 +2,16 @@
 
 namespace App\Controller;
 
+use App\Entity\Rating;
 use App\Entity\Episode;
-use App\Entity\Series;
 use App\Entity\Season;
+use App\Entity\Series;
+use App\Entity\User;
 use App\Form\Series1Type;
 use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\EntityManagerInterface;
+use Doctrine\ORM\Mapping\Id;
+use Doctrine\ORM\Mapping\OrderBy;
 use Doctrine\ORM\Tools\Pagination\Paginator;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -103,10 +107,26 @@ class SeriesController extends AbstractController
         ->getResult();
 
 
+        $query = $entityManager->createQuery(
+            "SELECT r
+            FROM App\Entity\Rating r
+            INNER JOIN App\Entity\Series s
+            WHERE r.series = s
+            AND s.id = :id
+            ORDER BY r.date DESC"
+        )->setParameter('id', $series->getId());    
+        $seriesRating = $query->getResult();
+        
+        $isRate = $entityManager
+        ->getRepository(Rating::class)
+        ->findOneBy(['series' => $series, 'user' => $this  ->  getUser()]);
+            
         return $this->render('series/show.html.twig', [
             'series' => $series,
             'seasons' => $season,
             'episodes' => $episodes,
+            'rates' =>$seriesRating,
+            'myRate' => $isRate
         ]);
     }
 
