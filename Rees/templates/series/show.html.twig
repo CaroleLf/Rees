@@ -146,7 +146,7 @@
                     <tbody>
                     {% for rate in rates %}
                         <tr>
-                            <td>{{ rate.user }}</td>
+                            <td><a href="{{ path('app_user_show',{'id': rate.user.id}) }}"> <b>{{ rate.user }}</b></a></td>
                             <td>{{ rate.value }}</td>
                             <td>{{ rate.comment }}</td>
                             <td>{{ rate.date ? rate.date|date('Y-m-d H:i:s') : '' }}</td>   
