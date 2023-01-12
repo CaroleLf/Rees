@@ -14,18 +14,21 @@
     {{ parent() }}    
          <div id="series" class="work_container container grid "> 
         {% for serie in user.series %}
-            <div class="series__filter d-flex flex-column">
+            <div class=" d-flex flex-column">
                 <td> 
-                    <div class="AllPoster"> 
+                    <div class="series__filter AllPoster"> 
                     <a href="{{ path('app_series_show', {'id': serie.id}) }}">
                         <img src="{{ path('app_poster',{'id':serie.id }) }}">
                     </a>
                     </div>
-                    <div class="allGenre d-flex flex-row justify-content-center flex-wrap">
-                    {% for genre in serie.genre %}
-                        <p class="text-white">  / {{ genre}} / </p>
-                    {% endfor %}
-                     </div>
+                    <div class="allGenre btn-group d-flex flex-row justify-content-evenly flex-wrap ">
+                            {% for genre in serie.genre %}
+                                {% if loop.index <= 4 %}
+                                    <p class="btn btn-outline-light btn-sm theGenre disabled">{{ genre}}</p>    
+                                {% endif %}
+                                
+                            {% endfor %}
+                    </div>
                 </td>
                 </div>
         {% endfor %}
