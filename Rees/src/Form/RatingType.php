@@ -15,7 +15,8 @@ class RatingType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
-            ->add('value', ChoiceType::class, [  'choices'  => [
+            ->add(
+                'value', ChoiceType::class, [  'choices'  => [
                 '0 🌑🌑🌑🌑🌑' => 0,
                 '0.5 🌗🌑🌑🌑🌑' => 5.0/10.0,
                 '1 🌕🌑🌑🌑🌑' => 1,
@@ -28,17 +29,21 @@ class RatingType extends AbstractType
                 '🌕🌕🌕🌕🌗' => 45.0/10.0,
                 '🌕🌕🌕🌕🌕' => 5]
                 ,'required' => true,
-                'label' => 'Valeur',])
+                'label' => 'Valeur',]
+            )
 
-            ->add('comment', TextType::class,['required'   => false,
-                'label' => 'Commentaire'])
-        ;
+            ->add(
+                'comment', TextType::class, ['required'   => false,
+                'label' => 'Commentaire']
+            );
     }
 
     public function configureOptions(OptionsResolver $resolver): void
     {
-        $resolver->setDefaults([
+        $resolver->setDefaults(
+            [
             'data_class' => Rating::class,
-        ]);
+            ]
+        );
     }
 }
