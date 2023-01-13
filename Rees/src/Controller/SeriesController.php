@@ -52,8 +52,8 @@ class SeriesController extends AbstractController
         $yearEnd = $request->query->get('yearEnd');
         $genres = $request->query->get('genres');
 
-        // Get array from string
-        $keywords = explode('+', $keywords);
+        // Get keywords in array which are separated by whitespace
+        $keywords = explode(' ', $keywords);
 
         // Check user entries
         // Case: if years are not entered
@@ -88,7 +88,7 @@ class SeriesController extends AbstractController
 
         // Case: if genres are entered
         if ($genres) {
-            $genres = explode('+', $genres);
+            $genres = explode(' ', $genres);
             $queryBuilder->join("s.genre", "g");
             $queryBuilder->andWhere('g.name IN (:genres)');
             $queryBuilder->setParameter("genres", $genres);
