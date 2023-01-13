@@ -32,7 +32,7 @@
                             <a href="https://www.imdb.com/title/{{ series.imdb }}" target="_blank"><h4 > Note IMDB </h4></a>
                             {% if reesRate != null and allRates != null %}
                                 {% for rRate in reesRate %}
-                                    <p><b> Note Rees : {{ rRate.rate / 10 |number_format(1) }}</b></p>
+                                    <p><b> Note Rees : {{ rRate.rate }}</b></p>
                                 {% endfor %}
                             {% else %}
                                 <p><b> Note Rees : Non noté</b></p>
@@ -130,19 +130,19 @@
                             <tr class="bg-transparent ">
                                 <td class="border-0 ">
                                     <div class="d-flex align-items-center">
-                                        {{ myRate.value / 10 |number_format(1) }}
+                                        {{ myRate.value }}
                                     </div>
                                 </td>
                                 <td class="border-0">{{ myRate.comment }}</td>
                                 <td class="border-0 ">{{ myRate.date ? myRate.date|date('Y-m-d H:i:s') : '' }}</td>
-                                <a class="btn btn-primary btn-lg px-4 m-2" href="{{ path('app_rating_edit', {'id': myRate.id}) }}" role='button'>  Editer</a>  
+                                <a class="btn btn-outline-light btn-lg px-4 m-2 followButton" href="{{ path('app_rating_edit', {'id': myRate.id}) }}" role='button'>  Editer</a>  
 
                             </tr>
                         </tbody>
                     </table>
                     {% elseif  is_granted('IS_AUTHENTICATED_FULLY') %}
                     <h2>Ma note</h2><br>
-                    <a class="btn btn-primary btn-lg px-4" href="{{ path('app_rating_new',{'id': series.id}) }}" role='button'>  Noter</a>  
+                    <a class="btn btn-outline-light btn-lg px-4 followButton" href="{{ path('app_rating_new',{'id': series.id}) }}" role='button'>  Noter</a>  
                     {% endif %}
                 {% if allRates != null %}
                     <h2 >Toutes les notes</h2>
@@ -159,7 +159,7 @@
                         {% for rate in allRates %}
                             <tr class="bg-transparent">
                                 <td class="border-0 "><a href="{{ path('app_user_show',{'id': rate.user.id}) }}"> <b>{{ rate.user }}</b></a></td>
-                                <td class="border-0 ">{{ rate.value / 10 |number_format(1) }}</td>
+                                <td class="border-0 ">{{ rate.value }}</td>
                                 <td class="border-0 ">{{ rate.comment }}</td>
                                 <td class="border-0">{{ rate.date ? rate.date|date('Y-m-d H:i:s') : '' }}</td>   
                             </tr>
@@ -176,7 +176,7 @@
     </main>
     <footer>
     <div class="action" >
-        <a class="btn btn-primary btn-lg px-4" href="{{ path('app_series_index') }}" role='button'>  Back to list</a>  
+        <a class="btn btn-outline-light btn-lg px-4 followButton" href="{{ path('app_series_index') }}" role='button'>  Back to list</a>  
     </div>
     </footer>
     </body>
