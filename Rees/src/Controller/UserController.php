@@ -22,12 +22,36 @@ class UserController extends AbstractController
     {
  
         $users = $entityManager
-        ->getRepository(User::class)
-        ->findBy(array(),array('name'=>'ASC'));
+            ->getRepository(User::class)
+            ->findBy(array(), array('name'=>'ASC'));
 
-        return $this->render('user/index.html.twig', [
+        return $this->render(
+            'user/index.html.twig', [
             'users' => $users,
-        ]);
+            ]
+        );
+    }
+
+    #[Route('/search', name: 'app_user_search')]
+    public function search(EntityManagerInterface $entityManager, Request $request): Response
+    {
+        $userName = $request->query->get('userName');
+        $queryBuilder = $entityManager->createQueryBuilder()
+            ->select('s')
+            ->from(User::class, 's')
+            ->Where("s.name LIKE :name")
+            ->setParameter('name', "%$userName%");
+
+        $users = $queryBuilder->getQuery()->getResult();
+
+ 
+
+        // TODO: fix pagination problem
+        return $this->render(
+            'user/index.html.twig', [
+            'users' => $users,
+            ]
+        );
     }
     //#[IsGranted('ROLE_ADMIN')]
     #[Route('/new', name: 'app_user_new', methods: ['GET', 'POST'])]
@@ -44,10 +68,12 @@ class UserController extends AbstractController
             return $this->redirectToRoute('app_admin', [], Response::HTTP_SEE_OTHER);
         }
 
-        return $this->renderForm('user/new.html.twig', [
+        return $this->renderForm(
+            'user/new.html.twig', [
             'user' => $user,
             'form' => $form,
-        ]);
+            ]
+        );
     }
     
     #[Route('/{id}', name: 'app_user_show', methods: ['GET'])]
@@ -63,10 +89,12 @@ class UserController extends AbstractController
         )->setParameter('id', $user->getId());
         $ratedSeries = $query->getResult();
     
-        return $this->render('user/show.html.twig', [
+        return $this->render(
+            'user/show.html.twig', [
             'user' => $user,
             'rates' => $ratedSeries
-        ]);
+            ]
+        );
     }
    
     #[Route('/{id}/edit', name: 'app_user_edit', methods: ['GET', 'POST'])]
@@ -82,10 +110,12 @@ class UserController extends AbstractController
             return $this->redirectToRoute('app_admin', [], Response::HTTP_SEE_OTHER);
         }
 
-        return $this->renderForm('user/edit.html.twig', [
+        return $this->renderForm(
+            'user/edit.html.twig', [
             'user' => $user,
             'form' => $form,
-        ]);
+            ]
+        );
     }
 
    

@@ -21,18 +21,22 @@ class EpisodeController extends AbstractController
             ->getRepository(Episode::class)
             ->findAll();
 
-        return $this->render('episode/index.html.twig', [
+        return $this->render(
+            'episode/index.html.twig', [
             'episodes' => $episodes,
-        ]);
+            ]
+        );
     }
 
     #[Route(['/tracked'], name: 'app_episode_tracked', methods: ['GET', 'POST'])]
     public function tracked(): Response
     {
         $user = $this->getUser();
-        return $this->render('episode/tracked/index.html.twig', [
+        return $this->render(
+            'episode/tracked/index.html.twig', [
             'user' => $user
-        ]);
+            ]
+        );
     }
 
 
@@ -50,18 +54,22 @@ class EpisodeController extends AbstractController
             return $this->redirectToRoute('app_episode_index', [], Response::HTTP_SEE_OTHER);
         }
 
-        return $this->renderForm('episode/new.html.twig', [
+        return $this->renderForm(
+            'episode/new.html.twig', [
             'episode' => $episode,
             'form' => $form,
-        ]);
+            ]
+        );
     }
 
     #[Route('/{id}', name: 'app_episode_show', methods: ['GET'])]
     public function show(Episode $episode): Response
     {
-        return $this->render('episode/show.html.twig', [
+        return $this->render(
+            'episode/show.html.twig', [
             'episode' => $episode,
-        ]);
+            ]
+        );
     }
 
     #[Route('/{id}/edit', name: 'app_episode_edit', methods: ['GET', 'POST'])]
@@ -76,10 +84,12 @@ class EpisodeController extends AbstractController
             return $this->redirectToRoute('app_episode_index', [], Response::HTTP_SEE_OTHER);
         }
 
-        return $this->renderForm('episode/edit.html.twig', [
+        return $this->renderForm(
+            'episode/edit.html.twig', [
             'episode' => $episode,
             'form' => $form,
-        ]);
+            ]
+        );
     }
     #[Route('/{idEpisode}/watch', name: 'app_watch_add')]
     public function watch(Request $request, EntityManagerInterface $entityManager): Response

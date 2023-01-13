@@ -14,10 +14,17 @@ main {
 tr,td {
     display: flex;
     margin: 1%;
-
+    border:0;
 }
 
+td,  th {
+    border : 0;
+    min-width: 20vh;
+}
 
+.ouais {
+    background-color: transparent;
+}
 
 footer {
     display: flex;
@@ -45,16 +52,20 @@ footer {
 }
 .titleTxt {
     display: flex;
-	font-size: 47px;
-	font-weight: 600;
-	border-bottom: 2px solid transparent;
-	transition: all .55s ease;
+    font-size: 47px;
+    font-weight: 600;
+    border-bottom: 2px solid transparent;
+    transition: all .55s ease;
     color: #91D7F2;
     z-index: 1000;
     
 }
 
-
+a {
+    font-weight: bold;
+    text-decoration: none;
+    color : white;
+}
 .LineOne {
     display: flex;
 }

@@ -7,7 +7,7 @@
 }
 
 a {
-	font-weight: bold;
+    font-weight: bold;
 }
 .selectWindow h2 {
     padding-left: 2vw;   
@@ -16,50 +16,50 @@ a {
 
 /** Arrow down **/
 .scroll-down{
-	position: absolute;
-	bottom: 6%;
-	right: 9%;
+    position: absolute;
+    bottom: 6%;
+    right: 9%;
 }
 .scroll-down i{
-	display: block;
-	padding: 12px;
-	font-size: 40px;
-	color: white;
-	background: #604174;
-	border-radius: 30px;
-	transition: all .50s ease;
+    display: block;
+    padding: 12px;
+    font-size: 40px;
+    color: white;
+    background: #604174;
+    border-radius: 30px;
+    transition: all .50s ease;
 }
 .scroll-down i:hover{
-	transform: translateY(-5px);
+    transform: translateY(-5px);
 }
 
 
 /** Series display **/
 .work_container {
     padding: 0 19%;
-	display: grid;
-	grid-template-columns: repeat(5,330px) ;
-	gap : 1.8rem;
-	justify-content: center;
+    display: grid;
+    grid-template-columns: repeat(5,330px) ;
+    gap : 1.8rem;
+    justify-content: center;
 }
 
 
 .series__filter {
     display: flex;
-	justify-content : space-between;
-	align-items: stretch;
-	column-gap: .75rem;
-	margin-bottom: 2rem;
-	padding: 2vh;
+    justify-content : space-between;
+    align-items: stretch;
+    column-gap: .75rem;
+    margin-bottom: 2rem;
+    padding: 2vh;
     border-radius: .5rem;
     -webkit-filter: grayscale(100%);
-	filter: grayscale(100%);
-	-webkit-transition: .3s ease-in-out;
-	transition: .3s ease-in-out;
+    filter: grayscale(100%);
+    -webkit-transition: .3s ease-in-out;
+    transition: .3s ease-in-out;
 }
 
 .allGenre {
-	max-width: 330px;
+    max-width: 330px;
 }
 
 .series__filter img {
@@ -67,12 +67,12 @@ a {
 }
 
 .theGenre {
-	margin: 0.2rem;
+    margin: 0.2rem;
 }
 
 div.series__filter:hover  {
     -webkit-filter: grayscale(0);
-	filter: grayscale(0);
+    filter: grayscale(0);
 }
 
 /** Pagination **/
@@ -82,24 +82,26 @@ div.series__filter:hover  {
     
 }
 
+.searchBar {
 
-
-.page, .first , .previous, .next , .last { 
-    margin: 0 7%;
+    margin-top: 15vh;
+    margin-left: 4vh;
 }
 
 
-.current {
-    color: #604174;
+
+@media (max-width: 1800px){
+    
+    .work_container {
+        display: grid;
+        grid-template-columns: repeat(3,330px) ;
+        gap : 1.8rem;
+        justify-content: center;
+        padding-top: 1rem;
+    }
 }
 
-.pagination a{
-    font-size: medium;
-    color: white;
-    text-decoration: none;
-}
-
-@media (max-width: 900px){
+@media (max-width: 1200px){
     .pagination a{
         font-size: medium;
         color: white;
@@ -108,17 +110,17 @@ div.series__filter:hover  {
     main {
         display: flex;
     }
-	#logoSociety {
+    #logoSociety {
         display: none;
     }
-	
-	.work_container {
-		display: grid;
-		grid-template-columns: repeat(2,330px) ;
-		gap : 1.8rem;
-		justify-content: center;
-		padding-top: 1rem;
-	}
+    
+    .work_container {
+        display: grid;
+        grid-template-columns: repeat(2,330px) ;
+        gap : 1.8rem;
+        justify-content: center;
+        padding-top: 1rem;
+    }
 }
 
 @media (max-width: 990px){
@@ -130,41 +132,41 @@ div.series__filter:hover  {
     main {
         display: flex;
     }
-	#logoSociety {
+    #logoSociety {
         display: none;
     }
-	
-	.work_container {
-		display: grid;
-		grid-template-columns: repeat(2,330px) ;
-		gap : 1.8rem;
-		justify-content: center;
-		padding-top: 1rem;
-	}
+    
+    .work_container {
+        display: grid;
+        grid-template-columns: repeat(2,330px) ;
+        gap : 1.8rem;
+        justify-content: center;
+        padding-top: 1rem;
+    }
 }
 
 @media (max-width: 850px){
-	.work_container {
-		display: grid;
-		grid-template-columns: repeat(1,330px) ;
-		gap : 1.8rem;
-		justify-content: center;
-		padding-top: 1rem;
-	}
+    .work_container {
+        display: grid;
+        grid-template-columns: repeat(1,330px) ;
+        gap : 1.8rem;
+        justify-content: center;
+        padding-top: 1rem;
+    }
 }
 
 @media (max-width: 500px){
-	.pagination a{
+    .pagination a{
         font-size: large;
         color: white;
         text-decoration: none;
     }
 
-	.work_container {
-		display: grid;
-		grid-template-columns: repeat(auto,330px) ;
-		gap : 1.8rem;
-		justify-content: center;
-		padding-top: 1rem;
-	}
+    .work_container {
+        display: grid;
+        grid-template-columns: repeat(auto,330px) ;
+        gap : 1.8rem;
+        justify-content: center;
+        padding-top: 1rem;
+    }
 }

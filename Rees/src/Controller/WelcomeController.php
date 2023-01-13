@@ -17,34 +17,34 @@ class WelcomeController extends AbstractController
     public function index(EntityManagerInterface $entityManager,Request $request): Response
     {
         $SeriesFinal = [];
-        $series = $entityManager
-        ->getRepository(Series::class)
-        ->findAll();
-
-        $randomSeries = array_rand($series,3);
+        
         for ($i=0; $i < 3; $i++) { 
-             $rand =  $entityManager
-                                ->getRepository(Series::class)
-                                ->findOneBy(array('id'=>$randomSeries[$i]));
-            if($rand!=null){
+            $randomSeries = rand(1, 234);
+            $rand= $entityManager
+                ->getRepository(Series::class)
+                ->findOneBy(array('id'=>$randomSeries));
+            if($rand!=null) {
                 $SeriesFinal[$i] = $rand;
             }
             else {
                 while ($rand==null){
-                    $randCorrection = array_rand($series,1);
+                    $randomSeries = rand(1, 234);
                     $rand =  $entityManager
-                                    ->getRepository(Series::class)
-                                    ->findOneBy(array('id'=>$randCorrection));
+                        ->getRepository(Series::class)
+                        ->findOneBy(array('id'=>$randomSeries));
                 }
                 $SeriesFinal[$i] = $rand;
             }
+        
                 
             
         }
         
-        return $this->render('welcome/index.html.twig', [
-           'series'=> $SeriesFinal,
-        ]);
+        return $this->render(
+            'welcome/index.html.twig', [
+            'series'=> $SeriesFinal,
+            ]
+        );
     }
 
 
