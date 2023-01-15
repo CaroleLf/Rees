@@ -7,6 +7,8 @@ use App\Entity\Episode;
 use App\Entity\Season;
 use App\Entity\Series;
 use App\Entity\Genre;
+use Doctrine\ORM\Query\Parameter;
+use Doctrine\Common\Collections\ArrayCollection; 
 use App\Form\Series1Type;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\Tools\Pagination\Paginator;
@@ -170,13 +172,82 @@ class SeriesController extends AbstractController
 
 
     #[Route(['/tracked'], name: 'app_series_tracked', methods: ['GET', 'POST'])]
-    public function tracked(): Response
+    public function tracked(EntityManagerInterface $entityManager): Response
     {
-        return $this->render(
-            'series/tracked/index.html.twig', [
-            'user' => $this->getUser()
-            ]
-        );
+        $user = $this->getUser();
+        if($user != null){
+            $userid = $user->getId();
+            $userSeries = $user->getSeries();
+            $seriesComplete = [];
+            $seriesStart = [];
+            $seriesJustLike = [];
+            foreach ($userSeries as $serie) {
+        
+                $userEpisode = $entityManager->getRepository(Episode::class)
+                    ->createQueryBuilder('e')
+                    ->select('e')
+                    ->join('e.user','u')
+                    ->join('e.season', 's')
+                    ->where('s.series = :series')
+                    ->andWhere('u.id = :user')
+                    ->orderBy('e.number', 'ASC')
+                    ->setParameters(new ArrayCollection([
+                        new Parameter('series' ,$serie),
+                        new Parameter('user' , $userid)
+                    ]))
+                    ->getQuery()
+                    ->getResult();
+    
+                    $episodes = $entityManager->getRepository(Episode::class)
+                    ->createQueryBuilder('e')
+                    ->select('e')
+                    ->join('e.season', 's')
+                    ->where('s.series = :series')
+                    ->orderBy('e.number', 'ASC')
+                    ->setParameter('series', $serie)
+                    ->getQuery()
+                    ->getResult();
+    
+                if (count($episodes) == count($userEpisode) ) {
+                    array_push($seriesComplete , $serie);  
+                    }
+                else if(count($userEpisode) == 0 ) {
+                    array_push($seriesJustLike , $serie); 
+                }
+                else {
+                    array_push($seriesStart , $serie);
+                }
+            }
+    
+            return $this->render(
+                'series/tracked/index.html.twig', [
+                'user' => $user,
+                'likes' => $seriesJustLike,
+                'start' => $seriesStart,
+                'complete' => $seriesComplete,
+                ]
+            );
+        }
+            else {
+                return $this->redirectToRoute('app_login');
+            }
+        
+       
+    }
+
+
+    public function countEpisode(Series $serie, EntityManagerInterface $entityManager ) : int {
+        $episodes = $entityManager->getRepository(Episode::class)
+        ->createQueryBuilder('e')
+        ->select('e')
+        ->join('e.season', 's')
+        ->where('s.series = :series')
+        ->orderBy('e.number', 'ASC')
+        ->setParameter('series', $series)
+        ->getQuery()
+        ->getResult();
+
+        return count($episodes); 
     }
 
     
@@ -204,9 +275,9 @@ class SeriesController extends AbstractController
             WHERE r.series = s
             AND s.id = :id
             ORDER BY r.date DESC"
-        )->setParameter('id', $series->getId());    
+        )->setParameter('id', $series->getId());  
+
         $seriesRating = $query->getResult();
-        
         $isRate = $entityManager
             ->getRepository(Rating::class)
             ->findOneBy(['series' => $series, 'user' => $this  ->  getUser()]);

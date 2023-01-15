@@ -70,7 +70,7 @@
                             </div>
                         {% else %}
                         <div >
-                            <a type="button" class="btn btn-outline-light btn-lg px-4 followButton" href="{{ path('app_like_add', {'id': series.id}) }}">Suivre</a> <br>
+                            <a type="button" class="btn btn-outline-light btn-lg px-4 followButton" href="{{ path('app_like_add', {'id': series.id}) }}  ">Suivre</a> <br>
                         </div>
                         {% endif %}
                     {% endif %}
@@ -98,7 +98,7 @@
                                                                     </div>
                                                                 {% else %}
                                                                     <div  class="d-flex justify-content-center m-1">
-                                                                        <a type="button" class="btn btn-primary btn-lg px-4 followButton m-1" href="{{ path('app_watch_add', { 'idEpisode' : episode.id}) }}"> <b> J'ai vu! </b> </a> <br>
+                                                                        <a type="button" class="btn btn-primary btn-lg px-4 followButton m-1" href="{{ path('app_watch_add', { 'idEpisode' : episode.id}) }} "> <b> J'ai vu! </b> </a> <br>
                                                                     </div>
                                                                 {% endif %}
                                                             {% endif %}
