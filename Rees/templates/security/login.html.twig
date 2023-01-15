@@ -18,26 +18,26 @@
 
                 {% if app.user %}
                     <div class="mb-3">
-                        You are logged in as {{ app.user.userIdentifier }}, <a href="{{ path('app_logout') }}">Sign out</a>
+                        Vous êtes connecté en tant que {{ app.user.userIdentifier }}, <a href="{{ path('app_logout') }}"> Déconnection</a>
                     </div>
                 {% endif %}   
-                <h1 class="h3 mb-3 font-weight-normal text-light">Please sign in</h1>
+                <h1 class="h3 mb-3 font-weight-normal text-light">Connectez vous</h1>
       
                 <div class="form-floating">
                     <input type="email" class="form-control" name="email" id="floatingInput" placeholder="name@example.com">
-                    <label for="floatingInput">Email address</label>
+                    <label for="floatingInput">Adresse Mail</label>
                 </div>
                 
                 <div class="form-floating">                    
                     <input type="password" class="form-control" id="floatingPassword" placeholder="Password" name="password" required>
-                    <label for="floatingPassword">Password</label>
+                    <label for="floatingPassword">Mots de passe </label>
                 </div>    
 
                 <input type="hidden" name="_csrf_token"
                 value="{{ csrf_token('authenticate') }}">
 
                 <button class="btn btn-outline-light btn-lg px-4" type="submit">
-                    Sign in
+                    Connection
                 </button>
             
             </form>
