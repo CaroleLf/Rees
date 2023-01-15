@@ -9,6 +9,10 @@ body {
     font-size: x-large;
     color: white;
 }
+li a{
+    color: white;
+    text-decoration: none;
+}
 
 .comment {
     padding: 25px;
