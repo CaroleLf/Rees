@@ -91,7 +91,15 @@ h3 {
 
 .clickInfo {
     border-radius: 30px;
+    height: 7vh;
 }
+
+
+.ouais {
+    height: 10vw;
+    width: 10vw;
+}
+
 
 .followButton {
     border: solid 2px #FFFFFF;
