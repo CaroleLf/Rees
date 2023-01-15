@@ -25,7 +25,11 @@ class UserController extends AbstractController
             ->getRepository(User::class)
             ->findBy(array(), array('registerDate'=>'DESC'));
 
-
+        $user = $this->getUser();
+        if($user == null){
+            return $this->redirectToRoute('app_login');
+        }
+      
         return $this->render(
             'user/index.html.twig', [
             'users' => $users,

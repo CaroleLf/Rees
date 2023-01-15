@@ -172,10 +172,9 @@ class SeriesController extends AbstractController
     #[Route(['/tracked'], name: 'app_series_tracked', methods: ['GET', 'POST'])]
     public function tracked(): Response
     {
-        $user = $this->getUser();
         return $this->render(
             'series/tracked/index.html.twig', [
-            'user' => $user
+            'user' => $this->getUser()
             ]
         );
     }
