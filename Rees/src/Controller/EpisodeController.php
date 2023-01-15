@@ -31,6 +31,7 @@ class EpisodeController extends AbstractController
     #[Route(['/tracked'], name: 'app_episode_tracked', methods: ['GET', 'POST'])]
     public function tracked(): Response
     {
+
         $user = $this->getUser();
         return $this->render(
             'episode/tracked/index.html.twig', [
@@ -94,9 +95,13 @@ class EpisodeController extends AbstractController
     #[Route('/{idEpisode}/watch', name: 'app_watch_add')]
     public function watch(Request $request, EntityManagerInterface $entityManager): Response
     {
+
         $episodeId = $request->attributes->get('idEpisode');
         $episode = $entityManager->getRepository(Episode::class)->find($episodeId);
         $serie = $episode->getSeason()->getSeries();
+        if (!$this->getUser()->getSeries()->contains($serie)) {
+            $this->getUser()->addSeries($serie);
+        }
         $episode->addUser($this->getUser());
         $entityManager->flush();
         return $this->redirectToRoute('app_series_show', ['id' => $serie->getId()]);
