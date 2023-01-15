@@ -10,6 +10,10 @@ main {
     align-items: center;
 
 }
+li a{
+    color: white;
+    text-decoration: none;
+}
 
 tr,td {
     display: flex;

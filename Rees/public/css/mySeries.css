@@ -1,4 +1,3 @@
-
 /** header **/
 .selectWindow {
     display: flex;
@@ -6,9 +5,13 @@
     flex-wrap: wrap;
 
 }
+
 li a{
     color: white;
     text-decoration: none;
+}
+.personnalSeries {
+    color :  #91D7F2;
 }
 
 a {
@@ -17,10 +20,6 @@ a {
 .selectWindow h2 {
     padding-left: 2vw;   
     padding-right: 2vw; 
-}
-
-.welcome {
-    color :  #91D7F2;
 }
 
 /** Arrow down **/
@@ -42,55 +41,21 @@ a {
     transform: translateY(-5px);
 }
 
-/** Main **/
-main {
-    padding-top: 5rem;
-    display: flex;
-    width: 98vw;
-    height: 110vh;
-    flex-wrap: wrap;
-    flex-direction: column;
-    justify-content: center;
-    align-content: space-around;
-}
-
-
-
-main h1 {
-    font-size: 4rem;
-    color : #ffffff;
-}
-main h2 {
-    font-size: 2rem;
-    color : rgb(255, 255, 255);
-}
-
-.welcome , .societyName {
-    margin: 0 auto;
-    max-width: 950px;
-    padding: 50px 0;
-    position: relative;
-    text-align: center;
-    width: 100%;
-    z-index: 1;
-}
 
 /** Series display **/
 .work_container {
-    display: flex;
     padding: 0 19%;
     display: grid;
-    grid-template-columns: repeat(3,330px) ;
+    grid-template-columns: repeat(5,330px) ;
     gap : 1.8rem;
     justify-content: center;
-    padding-top: 1rem;
 }
 
 
 .series__filter {
     display: flex;
-    justify-content : center;
-    align-items: center;
+    justify-content : space-between;
+    align-items: stretch;
     column-gap: .75rem;
     margin-bottom: 2rem;
     padding: 2vh;
@@ -101,12 +66,17 @@ main h2 {
     transition: .3s ease-in-out;
 }
 
-
+.allGenre {
+    max-width: 330px;
+}
 
 .series__filter img {
     border-radius: 1rem;
 }
 
+.theGenre {
+    margin: 0.2rem;
+}
 
 div.series__filter:hover  {
     -webkit-filter: grayscale(0);
@@ -120,76 +90,26 @@ div.series__filter:hover  {
     
 }
 
+.searchBar {
 
-
-.page, .first , .previous, .next , .last { 
-    margin: 0 7%;
+    margin-top: 15vh;
+    margin-left: 4vh;
 }
 
 
-.current {
-    color: #604174;
-}
 
-.pagination a{
-    font-size: medium;
-    color: white;
-    text-decoration: none;
-}
-
-
-@media (max-width: 990px){
-    .pagination a{
-        font-size: medium;
-        color: white;
-        text-decoration: none;
-    }
-    main {
-        display: flex;
-    }
-    #logoSociety {
-        display: none;
-    }
+@media (max-width: 1800px){
     
     .work_container {
         display: grid;
-        grid-template-columns: repeat(2,330px) ;
+        grid-template-columns: repeat(3,330px) ;
         gap : 1.8rem;
         justify-content: center;
         padding-top: 1rem;
     }
 }
 
-@media (max-width: 850px){
-    .work_container {
-        display: grid;
-        grid-template-columns: repeat(2,330px) ;
-        gap : 1.8rem;
-        justify-content: center;
-        padding-top: 1rem;
-    }
-}
-
-@media (max-width: 500px){
-    .work_container {
-        display: grid;
-        grid-template-columns: repeat(1,330px) ;
-        gap : 1.8rem;
-        justify-content: center;
-        padding-top: 1rem;
-    }
-}
-
-
-
-
-.pagination a{
-    font-size: medium;
-    color: white;
-    text-decoration: none;
-}
-
-@media (max-width: 900px){
+@media (max-width: 1200px){
     .pagination a{
         font-size: medium;
         color: white;
@@ -258,5 +178,3 @@ div.series__filter:hover  {
         padding-top: 1rem;
     }
 }
-
-
