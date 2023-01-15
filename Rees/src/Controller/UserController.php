@@ -23,7 +23,8 @@ class UserController extends AbstractController
  
         $users = $entityManager
             ->getRepository(User::class)
-            ->findBy(array(), array('name'=>'ASC'));
+            ->findBy(array(), array('registerDate'=>'DESC'));
+
 
         return $this->render(
             'user/index.html.twig', [
@@ -35,12 +36,12 @@ class UserController extends AbstractController
     #[Route('/search', name: 'app_user_search')]
     public function search(EntityManagerInterface $entityManager, Request $request): Response
     {
-        $userName = $request->query->get('userName');
+        $mailAdress = $request->query->get('mailAdress');
         $queryBuilder = $entityManager->createQueryBuilder()
             ->select('s')
             ->from(User::class, 's')
-            ->Where("s.name LIKE :name")
-            ->setParameter('name', "%$userName%");
+            ->Where("s.email LIKE :mail")
+            ->setParameter('mail', "%$mailAdress%");
 
         $users = $queryBuilder->getQuery()->getResult();
 
