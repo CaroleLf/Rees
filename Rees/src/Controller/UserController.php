@@ -22,7 +22,7 @@ class UserController extends AbstractController
     public function index(EntityManagerInterface $entityManager,Request $request, PaginatorInterface $paginator): Response
     {
  
-        $query = $entityManager ->createQuery('Select u from App\Entity\User u order by u.name ASC');
+        $query = $entityManager ->createQuery('Select u from App\Entity\User u order by u.registerDate DESC');
         $users = $paginator->paginate(
             $query,
             $request->query->getInt('page', 1), 
