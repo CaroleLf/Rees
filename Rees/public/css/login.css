@@ -44,3 +44,7 @@ ul {
     border-radius: 2.5rem !important;
     box-shadow: 0 0.1rem 1rem rgba(190, 124, 255, 0.64);
 }
+
+.custonHeight {
+    height: 10px;
+}

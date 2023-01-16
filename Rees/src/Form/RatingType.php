@@ -36,7 +36,7 @@ class RatingType extends AbstractType
             ->add(
                 'comment', TextareaType::class, ['required'   => false,
                 'label' => 'Commentaire',
-                'attr' => ['rows' => 3]]
+                'attr' => ['style' => 'height : auto']]
             );
     }
 
