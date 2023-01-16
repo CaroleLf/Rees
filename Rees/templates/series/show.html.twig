@@ -33,7 +33,7 @@
                             <a href="https://www.imdb.com/title/{{ series.imdb }}" target="_blank"><h4 > Lien IMDB </h4></a>
                             {% if reesRate != null and allRates != null %}
                                 {% for rRate in reesRate %}
-                                    <p><b> Note Rees : {{ rRate.rate }}</b></p>
+                                    <p><b> Note Rees : {{ rRate.rate|number_format(1) }}</b></p>
                                 {% endfor %}
                             {% else %}
                                 <p><b> Note Rees : Non noté</b></p>
@@ -137,7 +137,7 @@
                             <tr class="bg-transparent ">
                                 <td class="border-0 ">
                                     <div class="d-flex align-items-center">
-                                        {{ myRate.value }}
+                                        {{ myRate.value|number_format(1) }}
                                     </div>
                                 </td>
                                 <td class="border-0">{{ myRate.comment }}</td>
@@ -173,6 +173,7 @@
                         {% endfor %}
                         </tbody>
                     </table>
+                    {{ knp_pagination_render(allRates) }}
                 {% endif %}
              </div>
             </div>
