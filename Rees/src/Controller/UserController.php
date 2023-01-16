@@ -29,7 +29,7 @@ class UserController extends AbstractController
             10 
         );
         $user = $this->getUser();
-        
+
         if($user == null){
             return $this->redirectToRoute('app_login');
         }
@@ -42,7 +42,7 @@ class UserController extends AbstractController
     }
 
     #[Route('/search', name: 'app_user_search')]
-    public function search(EntityManagerInterface $entityManager, Request $request): Response
+    public function search(EntityManagerInterface $entityManager,Request $request, PaginatorInterface $paginator): Response
     {
         $mailAdress = $request->query->get('mailAdress');
         $queryBuilder = $entityManager->createQueryBuilder()
@@ -51,11 +51,13 @@ class UserController extends AbstractController
             ->Where("s.email LIKE :mail")
             ->setParameter('mail', "%$mailAdress%");
 
-        $users = $queryBuilder->getQuery()->getResult();
+        $query = $queryBuilder->getQuery();
 
- 
-
-        // TODO: fix pagination problem
+        $users = $paginator->paginate(
+            $query,
+            $request->query->getInt('page', 1), 
+            10 
+        ); 
         return $this->render(
             'user/index.html.twig', [
             'users' => $users,

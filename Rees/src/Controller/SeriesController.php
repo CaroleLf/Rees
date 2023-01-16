@@ -127,7 +127,7 @@ class SeriesController extends AbstractController
 
 
     #[Route(['/tracked'], name: 'app_series_tracked', methods: ['GET', 'POST'])]
-    public function tracked(EntityManagerInterface $entityManager): Response
+    public function tracked(EntityManagerInterface $entityManager,Request $request, PaginatorInterface $paginator): Response
     {
         $user = $this->getUser();
         if($user != null){
