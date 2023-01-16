@@ -40,6 +40,7 @@
                         <td class="border-0 text-center">{{ rate.date ? rate.date|date('Y-m-d H:i:s') : '' }}</td>            
                     </tr>
                 {% endfor %}
+                {{ knp_pagination_render(rates) }}
             </tbody>
         </table>
     {% endif %}

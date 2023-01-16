@@ -1,8 +1,8 @@
 body {
     margin: 0;
     padding: 0;
-    color :white;
-    background: linear-gradient( #604174,#302336);
+    color: white;
+    background: linear-gradient(#604174, #302336);
     font-family: Verdana, sans-serif;
     min-height: 95vh;
 }
@@ -10,8 +10,8 @@ body {
 
 /** header **/
 li {
-    list-style-type: none;    
-    color : white;
+    list-style-type: none;
+    color: white;
 
 }
 
@@ -26,32 +26,41 @@ header {
     align-items: center;
     justify-content: space-between;
     padding: 10px 0.5%;
-    margin: 0 , 1px;
-    background-color: rgba(63, 43, 77,0.6);
-    
+    margin: 0, 1px;
+    background-color: rgba(63, 43, 77, 0.6);
+
 }
 
 
 header h1 {
     margin-left: 1%;
 }
-a  {
+
+a {
     text-decoration: none;
-    color : white
+    color: white
 }
 
-.navlist{
+.navlist {
     display: flex;
 }
-.navlist a{
+
+.navlist li {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.navlist a {
     margin-left: 60px;
     font-size: 18px;
     font-weight: 600;
     border-bottom: 2px solid transparent;
     transition: all .55s ease;
-   
+    text-align: center;
 }
-.navlist a:hover{
+
+.navlist a:hover {
     border-bottom: 2px solid white;
 }
 
@@ -66,12 +75,12 @@ a  {
 
 .scrollbar {
     position: fixed;
-    top : 0;
+    top: 0;
     right: 0;
     width: 15px;
     height: 0;
     opacity: 0;
-    
+
 }
 
 
@@ -85,8 +94,8 @@ a  {
 
 
 /** Media queries **/
-@media (max-width: 990px){
-    .navlist ul{
+@media (max-width: 990px) {
+    .navlist ul {
         position: static;
         top: 100%;
         right: -100%;
@@ -99,11 +108,13 @@ a  {
         padding: 50px 20px;
         transition: all .55s ease;
     }
-    .navlist a{
+
+    .navlist a {
         margin-left: 0;
         display: block;
         margin: 7px 7px;
     }
+
     .pagination {
         font-size: small;
     }

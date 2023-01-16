@@ -35,9 +35,6 @@ class WelcomeController extends AbstractController
                 }
                 $SeriesFinal[$i] = $rand;
             }
-        
-                
-            
         }
         
         return $this->render(
