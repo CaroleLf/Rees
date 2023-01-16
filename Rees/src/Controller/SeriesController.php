@@ -9,7 +9,7 @@ use App\Entity\Series;
 use App\Entity\Genre;
 use App\Form\Series1Type;
 use Doctrine\ORM\EntityManagerInterface;
-use Doctrine\ORM\Tools\Pagination\Paginator;
+use Knp\Component\Pager\PaginatorInterface; 
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -29,28 +29,16 @@ class SeriesController extends AbstractController
     }
 
 
-    #[Route('/search', name: 'app_series_search')]
-    public function search(EntityManagerInterface $entityManager, Request $request): Response
+   #[Route('/search', name: 'app_series_search')]
+    public function search(EntityManagerInterface $entityManager, Request $request, PaginatorInterface $paginator): Response
     {
 
         $allGenre = $entityManager->getRepository(Genre::class)->findAll();
-        // Pages
-        $lastData = $entityManager
-            ->getRepository(Series::class)
-            ->findOneBy([], ['id' => 'desc']);
-        $page = $request->query->getInt('page', 1);
-        // If the number of the page is below 1, or above (last number of page), it will redirect to an error page
-        if ($page < 1) {
-            $page = 1;
-        } else if ($page > (($lastData->getId())/10)-1) {
-            $page = (int)($lastData->getId()/10)-1;
-        }
 
-        // Get filters
         $keywords = $request->query->get('keywords');
         $yearStart = $request->query->get('yearStart');
         $yearEnd = $request->query->get('yearEnd');
-        $genres = $request->query->get('genres');
+        $queryGenres = $request->query->get('genres');
 
         // Get array from string
         $keywords = explode('+', $keywords);
@@ -87,83 +75,50 @@ class SeriesController extends AbstractController
         }
 
         // Case: if genres are entered
-        if ($genres) {
-            $genres = explode('+', $genres);
+        if ($queryGenres) {
+            $genres = explode('+', $queryGenres);
             $queryBuilder->join("s.genre", "g");
             $queryBuilder->andWhere('g.name IN (:genres)');
             $queryBuilder->setParameter("genres", $genres);
         }
 
         // Series
-        $series = $queryBuilder->getQuery()
-            ->getResult();
-
+        $series = $queryBuilder->getQuery();
+        
         // Posts
-        $posts = $this->paginate($queryBuilder, $page);
-        $posts->setUseOutputWalkers(false);
-        $series = $posts->getIterator();
-
-        $limit = 10;
-        $maxPages = ceil($posts->count() / $limit);
-        $thisPage = $page;
+        $series = $paginator->paginate(
+            $series,
+            $request->query->getInt('page', 1), 
+            10 
+        );
 
         // TODO: fix pagination problem
         return $this->render(
             'series/index.html.twig', [
             'series' => $series,
-            'maxPages' => $maxPages,
-            'thisPage' => $thisPage,
             'allGenre' => $allGenre,
             ]
         );
     }
-    public function paginate($dql, $page = 1, $limit = 10)
-    {
-        $paginator = new Paginator($dql);
-
-        $paginator->getQuery()
-            ->setFirstResult($limit * ($page - 1)) // Offset
-            ->setMaxResults($limit); // Limit
-
-        return $paginator;
-    }
 
     #[Route(['/'], name: 'app_series_index', methods: ['GET', 'POST'])]
-    public function index(EntityManagerInterface $entityManager, Request $request): Response
+    public function index(EntityManagerInterface $entityManager, Request $request, PaginatorInterface $paginator): Response
     {
         $allGenre = $entityManager->getRepository(Genre::class)->findAll();
 
-        $lastData = $entityManager
-            ->getRepository(Series::class)
-            ->findOneBy([], ['id' => 'desc']);
-        $page = $request->query->getInt('page', 1);
-        //if the number of the page is below 1, or above (last number of page), it will redirect to another page
-        if ($page < 1) {
-            $page = 1;
-        } 
-        else if($page > (($lastData->getId())/10)-1) {
-            $page = (int)($lastData->getId()/10)-1;
-        }
+        $query = $entityManager->createQuery('Select s from App\Entity\Series s');
         
-        $query = $entityManager->createQuery(
-            "SELECT s FROM App\Entity\Series s
-             INNER JOIN App\Entity\Genre g
-             ORDER BY s.id"
+        $series = $paginator->paginate(
+            $query,
+            $request->query->getInt('page', 1), 
+            10 
         );
-        $posts = $this->paginate($query, $page);
-        $posts->setUseOutputWalkers(false);
-        $series = $posts->getIterator();
-
-        $limit = 10;
-        $maxPages = ceil($posts->count() / $limit);
-        $thisPage = $page;
 
         return $this->render(
             'series/index.html.twig', [
             'series' => $series,
-            'maxPages' => $maxPages,
-            'thisPage' => $thisPage,
             'allGenre' => $allGenre,
+            'query' => null
             ]
         );
     }
@@ -182,7 +137,7 @@ class SeriesController extends AbstractController
 
     
     #[Route('/{id}', name: 'app_series_show', methods: ['GET','POST'])]
-    public function show(EntityManagerInterface $entityManager,Series $series): Response
+    public function show(EntityManagerInterface $entityManager,Series $series, Request $request, PaginatorInterface $paginator): Response
     {             
         
         $season = $entityManager->getRepository(Season::class)->findBy(['series' => $series], array('number' => 'ASC'));
@@ -206,7 +161,13 @@ class SeriesController extends AbstractController
             AND s.id = :id
             ORDER BY r.date DESC"
         )->setParameter('id', $series->getId());    
-        $seriesRating = $query->getResult();
+
+        $seriesRating = $paginator->paginate(
+            $query,
+            $request->query->getInt('page', 1), 
+            5 
+        );
+
         
         $isRate = $entityManager
             ->getRepository(Rating::class)

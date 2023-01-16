@@ -76,6 +76,7 @@
                     {% endfor %}
                     </tbody>
                 </table>
+                {{ knp_pagination_render(users) }}
             </div>
         </main>
         {% else %}
@@ -84,5 +85,4 @@
             </main >
         {% endif %}
     {% endif %}
-
 {% endblock %}
