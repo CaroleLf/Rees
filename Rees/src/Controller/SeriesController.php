@@ -137,7 +137,6 @@ class SeriesController extends AbstractController
             $seriesStart = [];
             $seriesJustLike = [];
             foreach ($userSeries as $serie) {
-        
                 $userEpisode = $entityManager->getRepository(Episode::class)
                     ->createQueryBuilder('e')
                     ->select('e')
@@ -186,24 +185,9 @@ class SeriesController extends AbstractController
             else {
                 return $this->redirectToRoute('app_login');
             }
-        
-       
     }
 
 
-    public function countEpisode(Series $serie, EntityManagerInterface $entityManager ) : int {
-        $episodes = $entityManager->getRepository(Episode::class)
-        ->createQueryBuilder('e')
-        ->select('e')
-        ->join('e.season', 's')
-        ->where('s.series = :series')
-        ->orderBy('e.number', 'ASC')
-        ->setParameter('series', $serie)
-        ->getQuery()
-        ->getResult();
-
-        return count($episodes); 
-    }
 
     
     #[Route('/{id}', name: 'app_series_show', methods: ['GET','POST'])]
@@ -220,7 +204,6 @@ class SeriesController extends AbstractController
             ->setParameter('series', $series)
             ->getQuery()
             ->getResult();
-
 
         $query = $entityManager->createQuery(
             "SELECT r

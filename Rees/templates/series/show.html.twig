@@ -85,8 +85,21 @@
                     <h3> Episodes </h3>
                     <div class="accordion w-70 d-flex flex-column" id="accordionExample">
                         {% for season in seasons %}
-                         <div class="ouais d-flex justify-content-center m-1 mr-3 w-100 h-100">
-                            <a  href="{{ path('app_watchSeason_add', { 'idSeason' : season.id }) }}">  <i class="fa-solid fa-check"></i></a>
+                         <div class="ouais d-flex flex-column justify-content-center m-1 mr-3 w-100 h-100">
+                            {% set seasonEpisodes = episodes|filter(e => e.season.id == season.id) %}
+                            {% set watchedEpisodes = seasonEpisodes|filter(e => e.isWatchByUser(app.user)) %}
+                            {% if watchedEpisodes|length == seasonEpisodes|length %}
+                            <a href="{{ path('app_WatchSeason_remove', {'idSeason': season.id}) }}">
+                                <label> Saison {{season.number}} non vue ? </label>
+                                <i class="fa-solid fa-xmark"></i>
+                            </a>    
+                            {% else %}
+                            <a href="{{ path('app_watchSeason_add', {'idSeason': season.id}) }}">
+                                <label> Saison {{season.number}}  vue ?  </label>
+                                <i class="fa-solid fa-check"> </i>
+                            </a>
+
+                            {% endif %}
                         </div>
                         <button class="click btn " 
                              type="button"  data-mdb-toggle="collapse"  data-mdb-target="#collapseWidthExample"  aria-expanded="false" data-toggle="collapse" 
@@ -215,7 +228,6 @@
         <a class="btn btn-outline-light btn-lg px-4 followButton" href="{{ path('app_series_index') }}" role='button'>  Back to list</a>  
     </div>
     </footer>
-    <!-- Default switch -->
 
     </body>
 {% endblock %}
