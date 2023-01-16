@@ -109,7 +109,7 @@ h3 {
 .card {
     
     border: none;
-    box-shadow: 5px 6px 6px 2px #604174;
+    box-shadow: 0 0.1rem 1rem rgba(190, 124, 255, 0.64);
     border-radius: 4px;
 }
 

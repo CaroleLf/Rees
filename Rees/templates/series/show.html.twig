@@ -154,15 +154,17 @@
                                 <div class="d-flex justify-content-between align-items-center">
                                     <div class="user d-flex flex-row align-items-center">
                                         <img src="" width="30" class="user-img rounded-circle mr-2">
-                                        <span><small class="font-weight-bold text-primary">{{myRate.user.name}}</small><br>
+                                        <span><h5 class="font-weight-bold text-primary">{{myRate.user.name}}</h5><br>
                                          <small class="mt-5 font-weight-bold ">{{myRate.comment}}</small></span>
                                     </div>
                                      {% set difference = date(myRate.date).diff(date("now"|date("m/d/Y"))) %}
                                     {% set leftDays = difference.days %}
                                     {% if leftDays == 0 %}
-                                     <small >  {{ difference.i }} minutes </small>
+                                     <small>  {{ difference.i }} minutes </small>
                                     {% elseif leftDays > 31 %}
                                     <small > {{ difference.m }} mois </small>
+                                    {% elseif leftDays > 365 %}
+                                    <small > {{ difference.y }} ans </small>
                                     {% else %}
                                     <small > {{ leftDays }} jours </small>
                                     {% endif %}                          
@@ -194,7 +196,7 @@
                                 <div class="d-flex justify-content-between align-items-center">
                                     <div class="user d-flex flex-row align-items-center">
                                         <img src="" width="30" class="user-img rounded-circle mr-2">
-                                        <span><small class="font-weight-bold text-primary">{{rate.user.name}}</small><br>
+                                        <span><h5 class="font-weight-bold text-primary">{{rate.user.name}}</h5><br>
                                          <small class="font-weight-bold ">{{rate.comment}}</small></span>
                                     </div>
                                     {% set difference = date(rate.date).diff(date("now"|date("m/d/Y"))) %}
@@ -203,6 +205,8 @@
                                      <small >  {{ difference.i }} minutes </small>
                                     {% elseif leftDays > 31 %}
                                     <small > {{ difference.m }} mois </small>
+                                    {% elseif leftDays > 365 %}
+                                    <small > {{ difference.y }} ans </small>
                                     {% else %}
                                     <small > {{ leftDays }} jours </small>
                                     {% endif %}
