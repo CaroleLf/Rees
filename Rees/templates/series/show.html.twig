@@ -86,7 +86,7 @@
                     <div class="accordion w-70 d-flex flex-column" id="accordionExample">
                         {% for season in seasons %}
                          <div class="ouais d-flex justify-content-center m-1 mr-3 w-100 h-100">
-                            <a  href="{{ path('app_watchSeason_add', { 'idSeason' : season.id }) }}">  <i class="eye fa-solid fa-eye-slash text-dark " ></i> </a>
+                            <a  href="{{ path('app_watchSeason_add', { 'idSeason' : season.id }) }}">  <i class="fa-solid fa-check"></i></a>
                         </div>
                         <button class="click btn " 
                              type="button"  data-mdb-toggle="collapse"  data-mdb-target="#collapseWidthExample"  aria-expanded="false" data-toggle="collapse" 

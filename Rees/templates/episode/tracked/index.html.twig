@@ -23,8 +23,10 @@
                         </tr>
                     </thead>
                     <tbody>
-                    {% for episode in episodes %}
+                    {% if episodes   %}
+                      {% for episode in episodes %}
                         <tr>
+                        {% if  episode.season  %}
                             {% if  episode.season.series.title  %}
                                 <td class="border-0 w-25"> 
                                     <a class="decoration-none text-white" href="{{ path('app_series_show', {'id': episode.season.series.id}) }}">  
@@ -49,12 +51,16 @@
                             {% else %}
                                 <td class="border-0 min-vw-20"> N/A </td>   
                             {% endif %}
+                        {% endif %}
                         </tr>
+                    {% endfor %}
                     {% else %}
                         <tr>
                             <td colspan="8">Aucun épisode trouvé</td>
                         </tr>
-                    {% endfor %}
+                    {% endif %}
+                    
+                  
                     </tbody>
                 </table>
                 {{ knp_pagination_render(episodes) }}
