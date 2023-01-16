@@ -128,29 +128,36 @@
                 </div>
                 <div class="lastPart m-5">
                 {% if myRate != null and is_granted('IS_AUTHENTICATED_FULLY')%}
-                    <table class="table table-striped">
-                        <h2>Ma note</h2>
-                        <thead class="border-0 thead-light ">
-                            <tr class="border-0 ">
-                                <th class=" border-0" >Note</th>
-                                <th class= "border-0 " >commentaire</th>
-                                <th class=" border-0 ">Date</th>
-                            </tr>
-                        </thead>
-                        <tbody class="bg-transparent">
-                            <tr class="bg-transparent ">
-                                <td class="border-0 ">
-                                    <div class="d-flex align-items-center">
-                                        {{ myRate.value|number_format(1) }}
+                <h2> Ma note </h2>
+                     <div class="rate bg-transparent card p-3 mt-2">
+                                <div class="d-flex justify-content-between align-items-center">
+                                    <div class="user d-flex flex-row align-items-center">
+                                        <img src="" width="30" class="user-img rounded-circle mr-2">
+                                        <span><small class="font-weight-bold text-primary">{{myRate.user.name}}</small><br>
+                                         <small class="mt-5 font-weight-bold ">{{myRate.comment}}</small></span>
                                     </div>
-                                </td>
-                                <td class="border-0">{{ myRate.comment }}</td>
-                                <td class="border-0 ">{{ myRate.date ? myRate.date|date('Y-m-d H:i:s') : '' }}</td>
-                                <a class="btn btn-outline-light btn-lg px-4 m-2 followButton" href="{{ path('app_rating_edit', {'id': myRate.id}) }}" role='button'>  Editer</a>  
-
-                            </tr>
-                        </tbody>
-                    </table> 
+                                    {% set difference = date(myRate.date).diff(date("now"|date("m/d/Y"))) %}
+                                    {% set leftDays = difference.days %}
+                                    {% if leftDays == 0 %}
+                                     <small > Today </small>
+                                    {% else %}
+                                    <small > {{ leftDays }} jours </small>
+                                    {% endif %}                                   
+                                </div>
+                                <div class="action d-flex justify-content-between mt-2 align-items-center">
+                                    <div class="reply px-4">
+                                    {% if app.user %}
+                                            {% if app.user.admin == 1 %}
+                                                <small class="">Remove</small>
+                                            {% endif %}   
+                                        {% endif %}
+                                    </div>
+                                    <div class="icons align-items-center">
+                                        <p> {{ myRate.value|number_format(1) }}</p>
+                                        <i class="fa fa-check-circle-o check-icon"></i>
+                                    </div>
+                                </div> 
+                            </div>
                     {% elseif  is_granted('IS_AUTHENTICATED_FULLY') %}
                     <h2>Ma note</h2><br>
                     <a class="btn btn-outline-light btn-lg px-4 followButton" href="{{ path('app_rating_new',{'id': series.id}) }}" role='button'>  Noter</a>  
@@ -169,7 +176,13 @@
                                     </div>
                                     {% set difference = date(rate.date).diff(date("now"|date("m/d/Y"))) %}
                                     {% set leftDays = difference.days %}
-                                    <small >{{ leftDays  }} days</small>
+                                    {% if leftDays == 0 %}
+                                     <small >  {{ difference.i }} minutes </small>
+                                    {% elseif leftDays > 31 %}
+                                    <small > {{ difference.m }} mois </small>
+                                    {% else %}
+                                    <small > {{ leftDays }} jours </small>
+                                    {% endif %}
                                 </div>
                                 <div class="action d-flex justify-content-between mt-2 align-items-center">
                                     <div class="reply px-4">
@@ -181,7 +194,7 @@
                                     
                                     </div>
                                     <div class="icons align-items-center">
-                                        <i class="fa fa-star text-warning"></i>
+                                        <p> {{ rate.value|number_format(1) }}</p>
                                         <i class="fa fa-check-circle-o check-icon"></i>
                                     </div>
                                 </div> 
