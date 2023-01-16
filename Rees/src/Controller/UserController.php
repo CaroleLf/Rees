@@ -28,6 +28,11 @@ class UserController extends AbstractController
             $request->query->getInt('page', 1), 
             10 
         );
+        $user = $this->getUser();
+        
+        if($user == null){
+            return $this->redirectToRoute('app_login');
+        }
         
         return $this->render(
             'user/index.html.twig', [
@@ -39,12 +44,12 @@ class UserController extends AbstractController
     #[Route('/search', name: 'app_user_search')]
     public function search(EntityManagerInterface $entityManager, Request $request): Response
     {
-        $userName = $request->query->get('userName');
+        $mailAdress = $request->query->get('mailAdress');
         $queryBuilder = $entityManager->createQueryBuilder()
             ->select('s')
             ->from(User::class, 's')
-            ->Where("s.name LIKE :name")
-            ->setParameter('name', "%$userName%");
+            ->Where("s.email LIKE :mail")
+            ->setParameter('mail', "%$mailAdress%");
 
         $users = $queryBuilder->getQuery()->getResult();
 

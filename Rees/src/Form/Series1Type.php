@@ -24,14 +24,15 @@ class Series1Type extends AbstractType
             ->add('user')
             ->add('genre')
             ->add('actor')
-            ->add('country')
-        ;
+            ->add('country');
     }
 
     public function configureOptions(OptionsResolver $resolver): void
     {
-        $resolver->setDefaults([
+        $resolver->setDefaults(
+            [
             'data_class' => Series::class,
-        ]);
+            ]
+        );
     }
 }

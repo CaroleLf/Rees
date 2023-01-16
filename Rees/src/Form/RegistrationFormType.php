@@ -22,35 +22,43 @@ class RegistrationFormType extends AbstractType
         $builder
             ->add('email')
             ->add('country')
-            ->add('plainPassword', PasswordType::class, [
+            ->add(
+                'plainPassword', PasswordType::class, [
                 // instead of being set onto the object directly,
                 // this is read and encoded in the controller
                 'mapped' => false,
                 'attr' => ['autocomplete' => 'new-password'],
                 'constraints' => [
-                    new NotBlank([
+                    new NotBlank(
+                        [
                         'message' => 'Please enter a password',
-                    ]),
-                    new Length([
+                        ]
+                    ),
+                    new Length(
+                        [
                         'min' => 6,
                         'minMessage' => 'Your password should be at least {{ limit }} characters',
                         // max length allowed by Symfony for security reasons
                         'max' => 4096,
-                    ]),
+                        ]
+                    ),
                 ],
-            ])
+                ]
+            )
             ->add('name')
-            ->add('captcha', CaptchaType::class, array(
+            ->add(
+                'captcha', CaptchaType::class, array(
                 'invalid_message' => "The captcha is invalid"
-            ))
-            
-        ;
+                )
+            );
     }
 
     public function configureOptions(OptionsResolver $resolver): void
     {
-        $resolver->setDefaults([
+        $resolver->setDefaults(
+            [
             'data_class' => User::class,
-        ]);
+            ]
+        );
     }
 }

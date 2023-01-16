@@ -10,6 +10,10 @@ main {
     align-items: center;
 
 }
+li a{
+    color: white;
+    text-decoration: none;
+}
 
 tr,td {
     display: flex;
@@ -87,7 +91,15 @@ h3 {
 
 .clickInfo {
     border-radius: 30px;
+    height: 7vh;
 }
+
+
+.ouais {
+    height: 10vw;
+    width: 10vw;
+}
+
 
 .followButton {
     border: solid 2px #FFFFFF;

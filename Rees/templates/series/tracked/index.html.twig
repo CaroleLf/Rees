@@ -4,33 +4,75 @@
 
 {% block stylesheets %}
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.3.1/dist/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
-    <link href="{{ asset('/css/allSeries.css') }}" type="text/css" rel="stylesheet">  
 	<link rel="shortcut icon" href="img/logo.png" >
 	<link href='https://css.gg/css' rel='stylesheet'>
     <link href="https://cdn.jsdelivr.net/npm/remixicon@2.5.0/fonts/remixicon.css" rel="stylesheet">
+    <link href="{{ asset('/css/mySeries.css') }}" type="text/css" rel="stylesheet">  
 {% endblock %}
 
 {% block body %}
-    {{ parent() }}    
-         <div id="series" class="work_container container grid " style="padding-top:10rem;"> 
-        {% for serie in user.series %}
-            <div class=" d-flex flex-column">
-                <td> 
-                    <div class="series__filter AllPoster"> 
-                    <a href="{{ path('app_series_show', {'id': serie.id}) }}">
-                        <img src="{{ path('app_poster',{'id':serie.id }) }}">
-                    </a>
-                    </div>
-                    <div class="allGenre btn-group d-flex flex-row justify-content-evenly flex-wrap ">
-                            {% for genre in serie.genre %}
+    {{ parent() }}   
+        <h1 class="text-white" style="padding-top:10rem;"> Séries commencées </h1> 
+        <div id="series" class="work_container container grid " style="padding-top:10rem;"> 
+            {% for serieStart in start %}
+                <div class=" d-flex flex-column">
+                    <td> 
+                        <div class="series__filter AllPoster"> 
+                            <a href="{{ path('app_series_show', {'id': serieStart.id}) }}">
+                                <img src="{{ path('app_poster',{'id':serieStart.id }) }}">
+                            </a>
+                        </div>
+                        <div class="allGenre btn-group d-flex flex-row justify-content-evenly flex-wrap ">
+                            {% for genre in serieStart.genre %}
                                 {% if loop.index <= 4 %}
                                     <p class="btn btn-outline-light btn-sm theGenre">{{ genre}}</p>    
-                                {% endif %}
-                                
+                                {% endif %}   
                             {% endfor %}
-                    </div>
-                </td>
+                        </div>
+                    </td>
                 </div>
-        {% endfor %}
+            {% endfor %}
+        </div>
+        <h1 class="text-white" style="padding-top:10rem;"> Séries Finies </h1> 
+        <div id="series" class="work_container container grid " style="padding-top:10rem;"> 
+            {% for serieComplete in complete %}
+                <div class=" d-flex flex-column">
+                    <td> 
+                        <div class="series__filter AllPoster"> 
+                            <a href="{{ path('app_series_show', {'id': serieComplete.id}) }}">
+                                <img src="{{ path('app_poster',{'id':serieComplete.id }) }}">
+                            </a>
+                        </div>
+                        <div class="allGenre btn-group d-flex flex-row justify-content-evenly flex-wrap ">
+                            {% for genre in serieComplete.genre %}
+                                {% if loop.index <= 4 %}
+                                    <p class="btn btn-outline-light btn-sm theGenre">{{ genre}}</p>    
+                                {% endif %}   
+                            {% endfor %}
+                        </div>
+                    </td>
+                </div>
+            {% endfor %}
+        </div>
+        <h1 class="text-white" style="padding-top:10rem;"> Séries Aimée </h1> 
+        <div id="series" class="work_container container grid " style="padding-top:10rem;"> 
+            {% for serieLike in likes %}
+                <div class="  d-block p-2  text-white">
+                    <td> 
+                        <div class="series__filter AllPoster"> 
+                            <a href="{{ path('app_series_show', {'id': serieLike.id}) }}">
+                                <img src="{{ path('app_poster',{'id':serieLike.id }) }}">
+                            </a>
+                        </div>
+                        <div class="allGenre btn-group d-flex flex-row justify-content-evenly flex-wrap ">
+                            {% for genre in serieLike.genre %}
+                                {% if loop.index <= 4 %}
+                                    <p class="btn btn-outline-light btn-sm theGenre">{{ genre}}</p>    
+                                {% endif %}   
+                            {% endfor %}
+                        </div>
+                    </td>
+                </div>
+            {% endfor %}
         </div>
 {% endblock %}
