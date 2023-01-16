@@ -8,7 +8,8 @@
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.1/jquery.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
     <link href="{{ asset('/css/show.css') }}" type="text/css" rel="stylesheet">  
-
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <script src="https://kit.fontawesome.com/2b4594a491.js" crossorigin="anonymous"></script>
 {% endblock %}
 {% block body %}
     {{ parent()  }}
@@ -16,7 +17,7 @@
         <div class="info d-flex m-5 flex-column align-items-center" >
             <div class="LineOne d-flex flex-wrap m-5 align-items-center ">
                 <div class="firstPart m-5">
-                        <img src="{{ path('app_poster',{'id':series.id}) }}">
+                    <img src="{{ path('app_poster',{'id':series.id}) }}">
                 </div>
                 <div class="d-flex flex-column secondPart">
                         <div class="title d-flex justify-content-center">
@@ -29,7 +30,7 @@
                         <p  class="border-0">{{ series.plot }}</p>
                         {% if series.imdb %}
                          <h3 class="border-0"> Rating </h3>
-                            <a href="https://www.imdb.com/title/{{ series.imdb }}" target="_blank"><h4 > Note IMDB </h4></a>
+                            <a href="https://www.imdb.com/title/{{ series.imdb }}" target="_blank"><h4 > Lien IMDB </h4></a>
                             {% if reesRate != null and allRates != null %}
                                 {% for rRate in reesRate %}
                                     <p><b> Note Rees : {{ rRate.rate }}</b></p>
@@ -70,7 +71,7 @@
                             </div>
                         {% else %}
                         <div >
-                            <a type="button" class="btn btn-outline-light btn-lg px-4 followButton" href="{{ path('app_like_add', {'id': series.id}) }}">Suivre</a> <br>
+                            <a type="button" class="btn btn-outline-light btn-lg px-4 followButton" href="{{ path('app_like_add', {'id': series.id}) }}  ">Suivre</a> <br>
                         </div>
                         {% endif %}
                     {% endif %}
@@ -79,26 +80,33 @@
                     <h3> Episodes </h3>
                     <div class="accordion w-70 d-flex flex-column" id="accordionExample">
                         {% for season in seasons %}
-                            <button class="click btn " 
+                         <div class="custom-control custom-switch  h-100 w-100">
+                            <input type="checkbox" class="custom-control-input" id="customSwitches">
+                            <label class="custom-control-label" for="customSwitches"> Saison {{season.number}} vu</label>
+                        </div>
+                        <button class="click btn " 
                              type="button"  data-mdb-toggle="collapse"  data-mdb-target="#collapseWidthExample"  aria-expanded="false" data-toggle="collapse" 
                              data-target="#multiCollapse{{season.number}}" aria-expanded="false" aria-controls="multiCollapse{{season.number}}">
                                 Saison {{season.number}} 
-                            </button>
+                        </button>
                             <div class="col"> 
                                         <div class="collapse multi-collapse  w-70 bg-transparent border-0" id="multiCollapse{{season.number}}">       
                                             <div class="rounder card card-body bg-transparent border-0">
                                                 {% for episode in episodes %}
                                                     {% if episode.season.id == season.id %}
                                                         <div class="clickInfo bg-white m-1 d-flex flex-column justify-content-center">
-                                                            <h5 class="text-dark ml-5 font-weight-bold"> Episode {{episode.number}} // Titre : {{episode.title}} </h5>
+                                                            <h4 class="text-dark ml-5 font-weight-bold"> Episode {{episode.number}} // Titre : {{episode.title}} </h4>
                                                             {% if is_granted('IS_AUTHENTICATED_FULLY') %}
                                                                 {% if episode.isWatchByUser(app.user) %}
-                                                                    <div class="d-flex justify-content-center m-1">
-                                                                        <a type="button" class="btn btn-primary btn-lg px-4 followButton" href="{{ path('app_watch_remove', { 'idEpisode' : episode.id }) }}"> <b> Je n'ai pas vu!  </b> </a> <br>
+                                                                    <div class="ouais d-flex justify-content-center m-1 mr-3 w-100 h-100">
+                                                                        <a  href="{{ path('app_watch_remove', { 'idEpisode' : episode.id }) }}">  <i class="eye fa-solid fa-eye-slash text-dark " ></i> </a>
                                                                     </div>
-                                                                {% else %}
+                                                                {% else %} 
                                                                     <div  class="d-flex justify-content-center m-1">
-                                                                        <a type="button" class="btn btn-primary btn-lg px-4 followButton m-1" href="{{ path('app_watch_add', { 'idEpisode' : episode.id}) }}"> <b> J'ai vu! </b> </a> <br>
+                                                                        <a href="{{ path('app_watch_add', { 'idEpisode' : episode.id}) }} ">        
+                                                                            <i class="eye fa-solid fa-eye text-dark"> </i>
+                                                                         </a>
+                                                                         
                                                                     </div>
                                                                 {% endif %}
                                                             {% endif %}
@@ -109,7 +117,6 @@
                                         </div>
                                     </div>
                         {% endfor %}
-                    </div>
                     {% if series.youtubeTrailer %}
                         <iframe width="800" height="500" src={{ series.youtubeTrailer }} ></iframe>
                     {% endif %}
@@ -139,7 +146,7 @@
 
                             </tr>
                         </tbody>
-                    </table>
+                    </table> 
                     {% elseif  is_granted('IS_AUTHENTICATED_FULLY') %}
                     <h2>Ma note</h2><br>
                     <a class="btn btn-outline-light btn-lg px-4 followButton" href="{{ path('app_rating_new',{'id': series.id}) }}" role='button'>  Noter</a>  
@@ -168,8 +175,6 @@
                     </table>
                 {% endif %}
              </div>
-            
-            
             </div>
         </div>
         </div>
@@ -179,5 +184,7 @@
         <a class="btn btn-outline-light btn-lg px-4 followButton" href="{{ path('app_series_index') }}" role='button'>  Back to list</a>  
     </div>
     </footer>
+    <!-- Default switch -->
+
     </body>
 {% endblock %}

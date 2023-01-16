@@ -6,6 +6,14 @@
 
 }
 
+li a{
+    color: white;
+    text-decoration: none;
+}
+.series {
+    color :  #91D7F2;
+}
+
 a {
     font-weight: bold;
 }
