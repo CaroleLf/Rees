@@ -21,7 +21,8 @@ a {
 }
 
 .welcome {
-    color: #91D7F2;
+    color :  #91D7F2;
+    text-decoration: none;
 }
 
 /** Arrow down **/
