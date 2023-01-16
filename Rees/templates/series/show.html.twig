@@ -31,7 +31,7 @@
                         {% if series.imdb %}
                          <h3 class="border-0"> Rating </h3>
                             <a href="https://www.imdb.com/title/{{ series.imdb }}" target="_blank"><h4 > Lien IMDB </h4></a>
-                            {% if reesRate != null and allRates != null %}
+                            {% if reesRate|length > 0 and allRates|length > 0 %}
                                 {% for rRate in reesRate %}
                                     <p><b> Note Rees : {{ rRate.rate|number_format(1) }}</b></p>
                                 {% endfor %}
