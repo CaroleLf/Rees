@@ -23,7 +23,7 @@
                         </tr>
                     </thead>
                     <tbody>
-                    {% for episode in app.user.episode %}
+                    {% for episode in episodes %}
                         <tr>
                             {% if  episode.season.series.title  %}
                                 <td class="border-0 w-25"> 
@@ -57,6 +57,7 @@
                     {% endfor %}
                     </tbody>
                 </table>
+                {{ knp_pagination_render(episodes) }}
         </div>
     </main>
 {% endblock %}
