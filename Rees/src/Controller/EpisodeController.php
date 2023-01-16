@@ -4,6 +4,7 @@ namespace App\Controller;
 
 use App\Entity\Episode;
 use App\Entity\Series;
+use App\Entity\Season;
 use App\Form\EpisodeType;
 use Doctrine\ORM\EntityManagerInterface;
 use Knp\Component\Pager\PaginatorInterface; 
@@ -181,6 +182,37 @@ class EpisodeController extends AbstractController
         return $this->redirectToRoute('app_episode_index', [], Response::HTTP_SEE_OTHER);
     }
 
+    #[Route('/{numberPrevious}/{season}/watchPrevious', name: 'app_watch_previous_episodes')]
+    public function deleteRemovePrevious(Request $request, EntityManagerInterface $entityManager): Response
+    {
+        
+        $season = $request->attributes->get('season');
+        $season = $entityManager->getRepository(Season::class)->find($season);
+        $serie = $season->getSeries();
+        $episodeToAdd = $request->attributes->get('numberPrevious');
+        $episodes = $entityManager->createQueryBuilder()
+                                ->select('e')
+                                ->from(Episode::class, 'e')
+                                ->where('e.season = :season')
+                                ->andWhere('e.number >= :first')
+                                ->andWhere('e.number < :last')
+                                ->setParameter('season', $season)
+                                ->setParameter('first', 1)
+                                ->setParameter('last', $episodeToAdd)
+                                ->getQuery()
+                                ->getResult();
+
+        foreach ($episodes as $episode) {
+            if (!$this->getUser()->getSeries()->contains($serie)) {
+                $this->getUser()->addSeries($serie);
+            }
+            $episode->addUser($this->getUser());
+        }
+        $entityManager->flush();
+
+    
+        return $this->redirectToRoute('app_series_show', ['id' => $serie->getId()]);
+    }
 
 
 }

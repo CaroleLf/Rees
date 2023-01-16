@@ -219,8 +219,6 @@ class SeriesController extends AbstractController
             $request->query->getInt('page', 1), 
             5 
         );
-
-        
         $isRate = $entityManager
             ->getRepository(Rating::class)
             ->findOneBy(['series' => $series, 'user' => $this ->getUser()]);
@@ -233,7 +231,6 @@ class SeriesController extends AbstractController
             AND s.id = :id"
         )->setParameter('id', $series->getId());    
         $rate = $query->getResult();
-         
 
         
         return $this->render(

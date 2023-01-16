@@ -85,54 +85,63 @@
                     <h3> Episodes </h3>
                     <div class="accordion w-70 d-flex flex-column" id="accordionExample">
                         {% for season in seasons %}
-                         <div class="ouais d-flex flex-column justify-content-center m-1 mr-3 w-100 h-100">
-                            {% set seasonEpisodes = episodes|filter(e => e.season.id == season.id) %}
-                            {% set watchedEpisodes = seasonEpisodes|filter(e => e.isWatchByUser(app.user)) %}
-                            {% if watchedEpisodes|length == seasonEpisodes|length %}
-                            <a href="{{ path('app_WatchSeason_remove', {'idSeason': season.id}) }}">
-                                <label> Saison {{season.number}} non vue ? </label>
-                                <i class="fa-solid fa-xmark"></i>
-                            </a>    
-                            {% else %}
-                            <a href="{{ path('app_watchSeason_add', {'idSeason': season.id}) }}">
-                                <label> Saison {{season.number}}  vue ?  </label>
-                                <i class="fa-solid fa-check"> </i>
-                            </a>
+                            {% set watchEpisode = true %}
+                            <div class="ouais d-flex flex-column justify-content-center m-1 mr-3 w-100 h-100">
+                                {% set seasonEpisodes = episodes|filter(e => e.season.id == season.id) %}
+                                {% set watchedEpisodes = seasonEpisodes|filter(e => e.isWatchByUser(app.user)) %}
+                                {% if watchedEpisodes|length == seasonEpisodes|length %}
+                                <a href="{{ path('app_WatchSeason_remove', {'idSeason': season.id}) }}">
+                                    <label> Saison {{season.number}} non vue ? </label>
+                                    <i class="fa-solid fa-xmark"></i>
+                                </a>    
+                                {% else %}
+                                <a href="{{ path('app_watchSeason_add', {'idSeason': season.id}) }}">
+                                    <label> Saison {{season.number}}  vue ?  </label>
+                                    <i class="fa-solid fa-check"> </i>
+                                </a>
 
-                            {% endif %}
-                        </div>
-                        <button class="click btn " 
-                             type="button"  data-mdb-toggle="collapse"  data-mdb-target="#collapseWidthExample"  aria-expanded="false" data-toggle="collapse" 
-                             data-target="#multiCollapse{{season.number}}" aria-expanded="false" aria-controls="multiCollapse{{season.number}}">
-                                Saison {{season.number}} 
-                        </button>
-                            <div class="col"> 
-                                        <div class="collapse multi-collapse  w-70 bg-transparent border-0" id="multiCollapse{{season.number}}">       
-                                            <div class="rounder card card-body bg-transparent border-0">
-                                                {% for episode in episodes %}
-                                                    {% if episode.season.id == season.id %}
-                                                        <div class="clickInfo bg-white m-1 d-flex flex-column justify-content-center">
-                                                            <h4 class="text-dark ml-5 font-weight-bold"> Episode {{episode.number}} // Titre : {{episode.title}} </h4>
-                                                            {% if is_granted('IS_AUTHENTICATED_FULLY') %}
-                                                                {% if episode.isWatchByUser(app.user) %}
-                                                                    <div class="ouais d-flex justify-content-center m-1 mr-3 w-100 h-100">
-                                                                        <a  href="{{ path('app_watch_remove', { 'idEpisode' : episode.id }) }}">  <i class="eye fa-solid fa-eye-slash text-dark " ></i> </a>
-                                                                    </div>
-                                                                {% else %} 
-                                                                    <div  class="d-flex justify-content-center m-1">
-                                                                        <a href="{{ path('app_watch_add', { 'idEpisode' : episode.id}) }} ">        
-                                                                            <i class="eye fa-solid fa-eye text-dark"> </i>
-                                                                         </a>
-                                                                         
-                                                                    </div>
-                                                                {% endif %}
+                                {% endif %}
+                            </div>
+                            <button class="click btn " 
+                                type="button"  data-mdb-toggle="collapse"  data-mdb-target="#collapseWidthExample"  aria-expanded="false" data-toggle="collapse" 
+                                data-target="#multiCollapse{{season.number}}" aria-expanded="false" aria-controls="multiCollapse{{season.number}}">
+                                    Saison {{season.number}} 
+                            </button>
+                                <div class="col"> 
+                                    <div class="collapse multi-collapse  w-70 bg-transparent border-0" id="multiCollapse{{season.number}}">       
+                                        <div class="rounder card card-body bg-transparent border-0">
+                                            {% for episode in episodes %}
+                                                {% if episode.season.id == season.id %}
+                                                    <div class="episode-info bg-white m-1 p-3">
+                                                        <h4 class="text-dark font-weight-bold"> Episode {{episode.number}} // Titre : {{episode.title}} </h4>
+                                                        {% if is_granted('IS_AUTHENTICATED_FULLY') %}
+                                                            {% if app.user %}
+                                                                <div class="d-flex justify-content-between align-items-center">
+                                                                    {% if episode.isWatchByUser(app.user) %}
+                                                                        <a  href="{{ path('app_watch_remove', { 'idEpisode' : episode.id }) }}" class="btn btn-danger">  <i class="eye fa-solid fa-eye-slash text-light " > Not Watched </i> </a>
+                                                                        {% if watchEpisode == false %}
+                                                                            {% set watchEpisode = true %}
+                                                                            <div class="previous-episodes-question">
+                                                                                <p class="text-dark">Voulez-vous marquer les épisodes précédents comme vu ?</p>
+                                                                                <a  href="{{ path('app_watch_previous_episodes', { 'numberPrevious': episode.number, 'season' : season.id}) }}" class="btn btn-primary">Yes</a>
+                                                                                <button class="btn btn-light" onclick="$(this).parent().hide()">No</button>
+                                                                            </div>
+                                                                        {% endif %}
+                                                                    {% else %} 
+                                                                        {% set watchEpisode = false %}
+                                                                        <a href="{{ path('app_watch_add', { 'idEpisode' : episode.id}) }} " class="btn btn-success">        
+                                                                        <i class="eye fa-solid fa-eye text-light"> Watched </i>
+                                                                        </a>
+                                                                    {% endif %}
+                                                                </div>
                                                             {% endif %}
-                                                        </div>
-                                                    {% endif %}
-                                                {% endfor %}
-                                            </div>
+                                                        {% endif %}
+                                                    </div>
+                                                {% endif %} 
+                                            {% endfor %}
                                         </div>
                                     </div>
+                                </div>
                         {% endfor %}
                     {% if series.youtubeTrailer %}
                         <iframe width="800" height="500" src={{ series.youtubeTrailer }} ></iframe>
