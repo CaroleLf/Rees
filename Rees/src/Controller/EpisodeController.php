@@ -32,8 +32,14 @@ class EpisodeController extends AbstractController
     #[Route(['/tracked'], name: 'app_episode_tracked', methods: ['GET', 'POST'])]
     public function tracked(EntityManagerInterface $entityManager, Request $request, PaginatorInterface $paginator): Response
     {
-        $query = $entityManager->createQuery('Select e from App\Entity\Episode e inner join App\Entity\User u where u = :user')
-        ->setParameter('user', $this->getUser());
+        $query = $entityManager->getRepository(Episode::class)
+        ->createQueryBuilder('e')
+        ->select('e')
+        ->join('e.user','u')
+        ->Where('u.id = :user')
+        ->setParameter('user', $this->getUser())
+        ->getQuery();
+        
         $episodes = $paginator->paginate(
             $query,
             $request->query->getInt('page', 1), 
