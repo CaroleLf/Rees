@@ -28,10 +28,9 @@
                             <th class="border-0 min-vw-20">Id</th>
                             <th class="border-0 min-vw-20">Nom</th>
                             <th class="email border-0 ">Email</th>
-                            <th class="border-0 min-vw-20">RegisterDate</th>
+                            <th class="border-0 min-vw-20">Date de création</th>
                             <th class="border-0 min-vw-20">Admin</th>
-                            <th class="border-0 min-vw-20">UserId</th>
-                            <th class="border-0 min-vw-20 text-center">actions</th>
+                            <th class="border-0 min-vw-20 text-center">Actions</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -55,18 +54,13 @@
                             {% else %}
                             <td class="border-0 min-vw-20"> N/A </td>   
                             {% endif %}
-                            <td class="border-0 min-vw-20">{{ user.admin ? 'Yes' : 'No' }}</td> 
-                            {% if  user.registerDate %}
-                            <td class="border-0 min-vw-20" >{{ user.userId }}</td>
-                            {% else %}
-                            <td class="border-0 min-vw-20"> N/A </td>   
-                            {% endif %}
+                            <td class="border-0 min-vw-20">{{ user.admin ? 'Yes' : 'No' }}</td>  
                             <td class="border-0 min-vw-20 inline-block inlineButton" colspan="3">
                                 {% if app.user != user %}
                                 <a class="btn btn-outline-light btn-lg px-4" href="{{ path('app_welcome', {'_switch_user' : user.email }) }} " role='button'>Incarner</a>
                                 {% endif %}
                                 <a class="btn btn-outline-light btn-lg px-4" href="{{ path('app_user_show', {'id': user.id}) }}" role='button'>Voir</a>
-                                <a class="btn btn-outline-light btn-lg px-4" href="{{ path('app_user_edit', {'id': user.id}) }}" role='button'>  Editer</a>
+                                <a class="btn btn-outline-light btn-lg px-4" href="{{ path('app_user_edit', {'id': user.id}) }}" role='button'>Editer</a>
                              </td>
                         </tr>
                     {% else %}
