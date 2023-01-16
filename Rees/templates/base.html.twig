@@ -1,48 +1,78 @@
 <!DOCTYPE html>
 <html>
-    <head>
-        <meta charset="UTF-8">
-        <title>{% block title %}Welcome!{% endblock %}</title>
-        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.3.1/dist/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
-        <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 128 128%22><text y=%221.2em%22 font-size=%2296%22>⚫️</text></svg>">
-        <link href="{{ asset('/css/base.css') }}" type="text/css" rel="stylesheet">  
-        {% block stylesheets %}
-            {{ encore_entry_link_tags('app') }}
-        {% endblock %}
+	<head>
+		<meta charset="UTF-8">
+		<title>
+			{% block title %}Bienvenue
+			{% endblock %}
+		</title>
+		<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.3.1/dist/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+		<link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 128 128%22><text y=%221.2em%22 font-size=%2296%22>⚫️</text></svg>">
+		<link href="{{ asset('/css/base.css') }}" type="text/css" rel="stylesheet">
+		{% block stylesheets %}
+			{{ encore_entry_link_tags('app') }}
+		{% endblock %}
 
-        {% block javascripts %}
-            {{ encore_entry_script_tags('app') }}
-        {% endblock %}
-    </head>
-    <body>
-        {% block body %}
-        
-        <div class="scrollbar"></div>
-	    <div class="clickScrollbar"></div>
-        <header class="d-flex text-white">
-            <h1 class="navlist font-weight-bold">Rees</h1>
-             <ul class="navlist d-flex m-3 p-2">
-            {% if app.user %}
-                {% if is_granted('ROLE_PREVIOUS_ADMIN') %}
-                    <a class ="ComeBackAdmin text-white text-decoration-none" href="{{ impersonation_exit_path(path('app_welcome') ) }}"> Revenir en administrateur</a>          
-                {% endif %}
-                    <li><a href="{{ path('app_welcome')}}"  class ="welcome  text-decoration-none"> Accueil</a></li>
-                {% if is_granted('ROLE_ADMIN') and not is_granted('ROLE_PREVIOUS_ADMIN') %}
-                    <li><a href="{{ path('app_admin')}}"  class ="ListUsers  text-decoration-none "> Liste Utilisateurs</a></li>
-                {% endif %}  
-                    <li><a href="{{ path('app_series_index')}}"  class ="profil  text-decoration-none"> {{app.user.name }}</a></li>
-                    <li><a href="{{ path('app_series_index')}}"  class ="series  text-decoration-none"> Les séries</a></li>
-                    <li><a href="{{ path('app_episode_tracked')}}"  class ="personalEpisodes text-decoration-none "> Mes episodes</a></li>
-                    <li><a href="{{ path('app_series_tracked')}}"  class ="personnalSeries  text-decoration-none "> Mes Series</a></li>
-                    <li><a href="{{ path('app_logout') }} "  class ="logout text-white text-decoration-none ">Déconnexion</a></li>
-            {% else %}
-                <li><a href="{{ path('app_welcome')}}"  class ="welcome  text-decoration-none"> Accueil</a></li>
-                 <li><a href="{{ path('app_series_index')}}"  class =" series  text-decoration-none"> Les séries</a></li>
-			    <li><a href="{{ path('app_register') }}" class ="registration  text-decoration-none">Inscription</a></li>
-			    <li><a href="{{ path('app_login') }}"  class ="login  text-decoration-none ">Connexion</a></li>
-             {% endif %}
-        </header>
-        {% endblock %}
-    </body>
+		{% block javascripts %}
+			{{ encore_entry_script_tags('app') }}
+		{% endblock %}
+	</head>
+	<body>
+		{% block body %}
+
+			<div class="scrollbar"></div>
+			<div class="clickScrollbar"></div>
+			<header class="d-flex text-white">
+				<h1 class="navlist font-weight-bold">Rees</h1>
+				<ul class="navlist d-flex m-3 p-2">
+					{% if app.user %}
+						{% if is_granted('ROLE_PREVIOUS_ADMIN') %}
+							<a class="ComeBackAdmin text-white text-decoration-none" href="{{ impersonation_exit_path(path('app_welcome')) }}">
+								Revenir en administrateur</a>
+						{% endif %}
+						<li>
+							<a href="{{ path('app_welcome')}}" class="welcome  text-decoration-none">
+								Accueil</a>
+						</li>
+						{% if is_granted('ROLE_ADMIN') and not is_granted('ROLE_PREVIOUS_ADMIN') %}
+							<li>
+								<a href="{{ path('app_admin')}}" class="ListUsers  text-decoration-none ">
+									Utilisateurs</a>
+							</li>
+						{% endif %}
+						<li>
+							<a href="{{ path('app_series_index')}}" class="series  text-decoration-none">
+								Séries</a>
+						</li>
+						<li>
+							<a href="{{ path('app_episode_tracked')}}" class="personalEpisodes text-decoration-none ">
+								Mes épisodes</a>
+						</li>
+						<li>
+							<a href="{{ path('app_series_tracked')}}" class="personnalSeries  text-decoration-none ">
+								Mes séries</a>
+						</li>
+						<li>
+							<a href="{{ path('app_logout') }} " class="logout text-white text-decoration-none ">Déconnexion</a>
+						</li>
+					{% else %}
+						<li>
+							<a href="{{ path('app_welcome')}}" class="welcome  text-decoration-none">
+								Accueil</a>
+						</li>
+						<li>
+							<a href="{{ path('app_series_index')}}" class=" series  text-decoration-none">
+								Les séries</a>
+						</li>
+						<li>
+							<a href="{{ path('app_register') }}" class="registration  text-decoration-none">Inscription</a>
+						</li>
+						<li>
+							<a href="{{ path('app_login') }}" class="login  text-decoration-none ">Connexion</a>
+						</li>
+					{% endif %}
+				</header>
+			{% endblock %}
+		</body>
+	</body>
 </html>
-

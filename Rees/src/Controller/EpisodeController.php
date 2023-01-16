@@ -6,6 +6,7 @@ use App\Entity\Episode;
 use App\Entity\Series;
 use App\Form\EpisodeType;
 use Doctrine\ORM\EntityManagerInterface;
+use Knp\Component\Pager\PaginatorInterface; 
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -29,13 +30,18 @@ class EpisodeController extends AbstractController
     }
 
     #[Route(['/tracked'], name: 'app_episode_tracked', methods: ['GET', 'POST'])]
-    public function tracked(): Response
+    public function tracked(EntityManagerInterface $entityManager, Request $request, PaginatorInterface $paginator): Response
     {
-
-        $user = $this->getUser();
+        $query = $entityManager->createQuery('Select e from App\Entity\Episode e inner join App\Entity\User u where u = :user')
+        ->setParameter('user', $this->getUser());
+        $episodes = $paginator->paginate(
+            $query,
+            $request->query->getInt('page', 1), 
+            10 
+        );
         return $this->render(
             'episode/tracked/index.html.twig', [
-            'user' => $user
+            'episodes' => $episodes
             ]
         );
     }
