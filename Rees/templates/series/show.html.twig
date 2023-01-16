@@ -85,9 +85,8 @@
                     <h3> Episodes </h3>
                     <div class="accordion w-70 d-flex flex-column" id="accordionExample">
                         {% for season in seasons %}
-                         <div class="custom-control custom-switch  h-100 w-100">
-                            <input type="checkbox" class="custom-control-input" id="customSwitches">
-                            <label class="custom-control-label" for="customSwitches"> Saison {{season.number}} vu</label>
+                         <div class="ouais d-flex justify-content-center m-1 mr-3 w-100 h-100">
+                            <a  href="{{ path('app_watchSeason_add', { 'idSeason' : season.id }) }}">  <i class="fa-solid fa-check"></i></a>
                         </div>
                         <button class="click btn " 
                              type="button"  data-mdb-toggle="collapse"  data-mdb-target="#collapseWidthExample"  aria-expanded="false" data-toggle="collapse" 
@@ -100,16 +99,16 @@
                                                 {% for episode in episodes %}
                                                     {% if episode.season.id == season.id %}
                                                         <div class="clickInfo bg-white m-1 d-flex flex-column justify-content-center">
-                                                            <h4 class=" ml-5 font-weight-bold"> Episode {{episode.number}} // Titre : {{episode.title}} </h4>
+                                                            <h4 class="text-dark ml-5 font-weight-bold"> Episode {{episode.number}} // Titre : {{episode.title}} </h4>
                                                             {% if is_granted('IS_AUTHENTICATED_FULLY') %}
                                                                 {% if episode.isWatchByUser(app.user) %}
                                                                     <div class="ouais d-flex justify-content-center m-1 mr-3 w-100 h-100">
-                                                                        <a  href="{{ path('app_watch_remove', { 'idEpisode' : episode.id }) }}">  <i class="eye fa-solid fa-eye-slash " ></i> </a>
+                                                                        <a  href="{{ path('app_watch_remove', { 'idEpisode' : episode.id }) }}">  <i class="eye fa-solid fa-eye-slash text-dark " ></i> </a>
                                                                     </div>
                                                                 {% else %} 
                                                                     <div  class="d-flex justify-content-center m-1">
                                                                         <a href="{{ path('app_watch_add', { 'idEpisode' : episode.id}) }} ">        
-                                                                            <i class="eye fa-solid fa-eye "> </i>
+                                                                            <i class="eye fa-solid fa-eye text-dark"> </i>
                                                                          </a>
                                                                          
                                                                     </div>
@@ -136,13 +135,15 @@
                                         <span><small class="font-weight-bold text-primary">{{myRate.user.name}}</small><br>
                                          <small class="mt-5 font-weight-bold ">{{myRate.comment}}</small></span>
                                     </div>
-                                    {% set difference = date(myRate.date).diff(date("now"|date("m/d/Y"))) %}
+                                     {% set difference = date(myRate.date).diff(date("now"|date("m/d/Y"))) %}
                                     {% set leftDays = difference.days %}
                                     {% if leftDays == 0 %}
-                                     <small > Today </small>
+                                     <small >  {{ difference.i }} minutes </small>
+                                    {% elseif leftDays > 31 %}
+                                    <small > {{ difference.m }} mois </small>
                                     {% else %}
                                     <small > {{ leftDays }} jours </small>
-                                    {% endif %}                                   
+                                    {% endif %}                          
                                 </div>
                                 <div class="action d-flex justify-content-between mt-2 align-items-center">
                                     <div class="reply px-4">

@@ -32,8 +32,14 @@ class EpisodeController extends AbstractController
     #[Route(['/tracked'], name: 'app_episode_tracked', methods: ['GET', 'POST'])]
     public function tracked(EntityManagerInterface $entityManager, Request $request, PaginatorInterface $paginator): Response
     {
-        $query = $entityManager->createQuery('Select e from App\Entity\Episode e inner join App\Entity\User u where u = :user')
-        ->setParameter('user', $this->getUser());
+        $query = $entityManager->getRepository(Episode::class)
+        ->createQueryBuilder('e')
+        ->select('e')
+        ->join('e.user','u')
+        ->Where('u.id = :user')
+        ->setParameter('user', $this->getUser())
+        ->getQuery();
+        
         $episodes = $paginator->paginate(
             $query,
             $request->query->getInt('page', 1), 
@@ -101,7 +107,7 @@ class EpisodeController extends AbstractController
     #[Route('/{idEpisode}/watch', name: 'app_watch_add')]
     public function watch(Request $request, EntityManagerInterface $entityManager): Response
     {
-
+        
         $episodeId = $request->attributes->get('idEpisode');
         $episode = $entityManager->getRepository(Episode::class)->find($episodeId);
         $serie = $episode->getSeason()->getSeries();
@@ -110,8 +116,31 @@ class EpisodeController extends AbstractController
         }
         $episode->addUser($this->getUser());
         $entityManager->flush();
+
+    
         return $this->redirectToRoute('app_series_show', ['id' => $serie->getId()]);
     }
+
+
+    #[Route('/{idSeason}/watchSeason', name: 'app_watchSeason_add')]
+    public function seasonWatch(Request $request, EntityManagerInterface $entityManager): Response
+    {
+        $season = $request->attributes->get('idSeason');
+        $episodes = $entityManager->getRepository(Episode::class)->findBy(['season' => $season]);
+        foreach ($episodes as $episode) {
+            $serie = $episode->getSeason()->getSeries();
+            if (!$this->getUser()->getSeries()->contains($serie)) {
+                $this->getUser()->addSeries($serie);
+            }
+            $episode->addUser($this->getUser());
+        }
+        $entityManager->flush();
+
+    
+        return $this->redirectToRoute('app_series_show', ['id' => $serie->getId()]);
+    }
+
+
 
 
     #[Route('/{idEpisode}/unwatch', name: 'app_watch_remove')]
