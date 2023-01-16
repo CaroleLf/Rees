@@ -3,6 +3,11 @@
 {% block title %}{{ series.title }}{% endblock %}
 
 {% block stylesheets %}
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-alpha1/dist/css/bootstrap.min.css">
+    <script> href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-alpha1/dist/js/bootstrap.bundle.min.js" </script>
+    <script> href="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js" </script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.3.1/dist/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.1/jquery.min.js"></script>
@@ -95,16 +100,16 @@
                                                 {% for episode in episodes %}
                                                     {% if episode.season.id == season.id %}
                                                         <div class="clickInfo bg-white m-1 d-flex flex-column justify-content-center">
-                                                            <h4 class="text-dark ml-5 font-weight-bold"> Episode {{episode.number}} // Titre : {{episode.title}} </h4>
+                                                            <h4 class=" ml-5 font-weight-bold"> Episode {{episode.number}} // Titre : {{episode.title}} </h4>
                                                             {% if is_granted('IS_AUTHENTICATED_FULLY') %}
                                                                 {% if episode.isWatchByUser(app.user) %}
                                                                     <div class="ouais d-flex justify-content-center m-1 mr-3 w-100 h-100">
-                                                                        <a  href="{{ path('app_watch_remove', { 'idEpisode' : episode.id }) }}">  <i class="eye fa-solid fa-eye-slash text-dark " ></i> </a>
+                                                                        <a  href="{{ path('app_watch_remove', { 'idEpisode' : episode.id }) }}">  <i class="eye fa-solid fa-eye-slash " ></i> </a>
                                                                     </div>
                                                                 {% else %} 
                                                                     <div  class="d-flex justify-content-center m-1">
                                                                         <a href="{{ path('app_watch_add', { 'idEpisode' : episode.id}) }} ">        
-                                                                            <i class="eye fa-solid fa-eye text-dark"> </i>
+                                                                            <i class="eye fa-solid fa-eye "> </i>
                                                                          </a>
                                                                          
                                                                     </div>
@@ -122,57 +127,68 @@
                     {% endif %}
                 </div>
                 <div class="lastPart m-5">
-
                 {% if myRate != null and is_granted('IS_AUTHENTICATED_FULLY')%}
-                    <table class="table table-striped">
-                        <h2>Ma note</h2>
-                        <thead class="border-0 thead-light ">
-                            <tr class="border-0 ">
-                                <th class=" border-0" >Note</th>
-                                <th class= "border-0 " >commentaire</th>
-                                <th class=" border-0 ">Date</th>
-                            </tr>
-                        </thead>
-                        <tbody class="bg-transparent">
-                            <tr class="bg-transparent ">
-                                <td class="border-0 ">
-                                    <div class="d-flex align-items-center">
-                                        {{ myRate.value }}
-                                    </div>
-                                </td>
-                                <td class="border-0">{{ myRate.comment }}</td>
-                                <td class="border-0 ">{{ myRate.date ? myRate.date|date('Y-m-d H:i:s') : '' }}</td>
-                                <a class="btn btn-outline-light btn-lg px-4 m-2 followButton" href="{{ path('app_rating_edit', {'id': myRate.id}) }}" role='button'>  Editer</a>  
-
-                            </tr>
-                        </tbody>
-                    </table> 
+                     <div class="rate card p-3 mt-2">
+                     <h2 class=""> Ma note </h2>
+                            <div class="d-flex justify-content-between align-items-center">
+                                <div class="user d-flex flex-row align-items-center">
+                                    <img src="" width="30" class="user-img rounded-circle mr-2">
+                                    <span><small class="font-weight-bold ">{{myRate.user.name}}</small> <small class="font-weight-bold ">{{myRate.comment}}</small></span>
+                                </div>
+                                <small >3 days ago</small>
+                            </div>
+                            <div class="action d-flex justify-content-between mt-2 align-items-center">
+                                <div class="reply px-4">
+                                    <small class="">Remove</small>
+                                    <span class="dots"></span>
+                                    <small  class="">Reply</small>
+                                    <span class="dots"></span>
+                                    <small  class="">Translate</small>
+                                </div>
+                            <div class="icons align-items-center">
+                            <i class="fa fa-star text-warning"></i>
+                            <i class="fa fa-check-circle-o check-icon"></i>
+                        </div>
+                          
+                      </div>
                     {% elseif  is_granted('IS_AUTHENTICATED_FULLY') %}
                     <h2>Ma note</h2><br>
                     <a class="btn btn-outline-light btn-lg px-4 followButton" href="{{ path('app_rating_new',{'id': series.id}) }}" role='button'>  Noter</a>  
                     {% endif %}
-                {% if allRates != null %}
-                    <h2 >Toutes les notes</h2>
-                <table class="table table-striped ">
-                        <thead class="border-0 thead-light ">
-                            <tr>
-                                <th class="border-0">Utilisateur</th>
-                                <th class="border-0 ">Note</th>
-                                <th class="border-0 ">Commentaire</th>
-                                <th class="border-0 ">Date</th>
-                            </tr>
-                        </thead>
-                        <tbody class=" bg-transparent">
+            {% if allRates != null %}
+                <h2 class="" > Les notes </h2>
+                <div class="container mt-5">
+                    <div class="col-md-8">
                         {% for rate in allRates %}
-                            <tr class="bg-transparent">
-                                <td class="border-0 "><a href="{{ path('app_user_show',{'id': rate.user.id}) }}"> <b>{{ rate.user }}</b></a></td>
-                                <td class="border-0 ">{{ rate.value }}</td>
-                                <td class="border-0 ">{{ rate.comment }}</td>
-                                <td class="border-0">{{ rate.date ? rate.date|date('Y-m-d H:i:s') : '' }}</td>   
-                            </tr>
+                            <div class="rate bg-transparent card p-3 mt-2">
+                                <div class="d-flex justify-content-between align-items-center">
+                                    <div class="user d-flex flex-row align-items-center">
+                                        <img src="" width="30" class="user-img rounded-circle mr-2">
+                                        <span><small class="font-weight-bold text-primary">{{rate.user.name}}</small><br>
+                                         <small class="font-weight-bold ">{{rate.comment}}</small></span>
+                                    </div>
+                                    {% set difference = date(rate.date).diff(date("now"|date("m/d/Y"))) %}
+                                    {% set leftDays = difference.days %}
+                                    <small >{{ leftDays  }} days</small>
+                                </div>
+                                <div class="action d-flex justify-content-between mt-2 align-items-center">
+                                    <div class="reply px-4">
+                                    {% if app.user %}
+                                            {% if app.user.admin == 1 %}
+                                                <small class="">Remove</small>
+                                            {% endif %}   
+                                        {% endif %}
+                                    
+                                    </div>
+                                    <div class="icons align-items-center">
+                                        <i class="fa fa-star text-warning"></i>
+                                        <i class="fa fa-check-circle-o check-icon"></i>
+                                    </div>
+                                </div> 
+                            </div>
                         {% endfor %}
-                        </tbody>
-                    </table>
+                    </div>
+                </div>
                 {% endif %}
              </div>
             </div>

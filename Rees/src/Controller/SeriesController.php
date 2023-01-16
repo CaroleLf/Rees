@@ -254,7 +254,6 @@ class SeriesController extends AbstractController
     #[Route('/{id}', name: 'app_series_show', methods: ['GET','POST'])]
     public function show(EntityManagerInterface $entityManager,Series $series): Response
     {             
-        
         $season = $entityManager->getRepository(Season::class)->findBy(['series' => $series], array('number' => 'ASC'));
         
         $episodes = $entityManager->getRepository(Episode::class)
@@ -277,10 +276,11 @@ class SeriesController extends AbstractController
             ORDER BY r.date DESC"
         )->setParameter('id', $series->getId());  
 
+
         $seriesRating = $query->getResult();
         $isRate = $entityManager
             ->getRepository(Rating::class)
-            ->findOneBy(['series' => $series, 'user' => $this  ->  getUser()]);
+            ->findOneBy(['series' => $series, 'user' => $this ->getUser()]);
             
         $query = $entityManager->createQuery(
             "SELECT AVG(r.value) as rate
@@ -292,6 +292,7 @@ class SeriesController extends AbstractController
         $rate = $query->getResult();
          
 
+        
         return $this->render(
             'series/show.html.twig', [
             'series' => $series,
