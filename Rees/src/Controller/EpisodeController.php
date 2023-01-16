@@ -134,6 +134,21 @@ class EpisodeController extends AbstractController
         return $this->redirectToRoute('app_series_show', ['id' => $serie->getId()]);
     }
 
+    #[Route('/{idSeason}/NoWatchSeason', name: 'app_WatchSeason_remove')]
+    public function seasonNoWatch(Request $request, EntityManagerInterface $entityManager): Response
+    {
+        $season = $request->attributes->get('idSeason');
+        $episodes = $entityManager->getRepository(Episode::class)->findBy(['season' => $season]);
+        foreach ($episodes as $episode) {
+            $serie = $episode->getSeason()->getSeries();
+            $episode->removeUser($this->getUser());
+
+        }
+        $entityManager->flush();
+
+    
+        return $this->redirectToRoute('app_series_show', ['id' => $serie->getId()]);
+    }
 
 
 
