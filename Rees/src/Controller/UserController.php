@@ -10,6 +10,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Knp\Component\Pager\PaginatorInterface; 
 
 
 #[Route('/user')]
@@ -18,18 +19,21 @@ class UserController extends AbstractController
 
     #[Route('/', name: 'app_admin', methods: ['GET'])]
     //#[IsGranted('ROLE_ADMIN')]
-    public function index(EntityManagerInterface $entityManager,Request $request): Response
+    public function index(EntityManagerInterface $entityManager,Request $request, PaginatorInterface $paginator): Response
     {
  
-        $users = $entityManager
-            ->getRepository(User::class)
-            ->findBy(array(), array('registerDate'=>'DESC'));
-
+        $query = $entityManager ->createQuery('Select u from App\Entity\User u order by u.name ASC');
+        $users = $paginator->paginate(
+            $query,
+            $request->query->getInt('page', 1), 
+            10 
+        );
         $user = $this->getUser();
+
         if($user == null){
             return $this->redirectToRoute('app_login');
         }
-      
+        
         return $this->render(
             'user/index.html.twig', [
             'users' => $users,
@@ -38,7 +42,7 @@ class UserController extends AbstractController
     }
 
     #[Route('/search', name: 'app_user_search')]
-    public function search(EntityManagerInterface $entityManager, Request $request): Response
+    public function search(EntityManagerInterface $entityManager,Request $request, PaginatorInterface $paginator): Response
     {
         $mailAdress = $request->query->get('mailAdress');
         $queryBuilder = $entityManager->createQueryBuilder()
@@ -47,11 +51,13 @@ class UserController extends AbstractController
             ->Where("s.email LIKE :mail")
             ->setParameter('mail', "%$mailAdress%");
 
-        $users = $queryBuilder->getQuery()->getResult();
+        $query = $queryBuilder->getQuery();
 
- 
-
-        // TODO: fix pagination problem
+        $users = $paginator->paginate(
+            $query,
+            $request->query->getInt('page', 1), 
+            10 
+        ); 
         return $this->render(
             'user/index.html.twig', [
             'users' => $users,
@@ -83,7 +89,7 @@ class UserController extends AbstractController
     
     #[Route('/{id}', name: 'app_user_show', methods: ['GET'])]
     //#[IsGranted('ROLE_ADMIN')]
-    public function show(EntityManagerInterface $entityManager,User $user): Response
+    public function show(EntityManagerInterface $entityManager,User $user, Request $request, PaginatorInterface $paginator): Response
     {
         $query = $entityManager->createQuery(
             "SELECT r
@@ -92,8 +98,11 @@ class UserController extends AbstractController
             WHERE r.user = u
             AND u.id = :id"
         )->setParameter('id', $user->getId());
-        $ratedSeries = $query->getResult();
-    
+        $ratedSeries = $paginator->paginate(
+            $query,
+            $request->query->getInt('page', 1), 
+            10 
+        );
         return $this->render(
             'user/show.html.twig', [
             'user' => $user,
