@@ -75,7 +75,8 @@ class AppFixtures extends Fixture
                             $comm = "Va falloir que je le regarde une deuxième fois";
                             break;
                         case 10:
-                            $comm = "J'ai rarement vu une série aussi bien faite, mais elle n'arrive même pas à la cheville du Seigneur des Anneaux.";
+                            $comm = "J'ai rarement vu une série aussi bien faite, 
+                            mais elle n'arrive même pas à la cheville du Seigneur des Anneaux.";
                             break;
                     }
                     $value /= 2.0;

@@ -32,8 +32,11 @@ class SeriesController extends AbstractController
     }
 
     #[Route('/search', name: 'app_series_search')]
-    public function search(EntityManagerInterface $entityManager, Request $request, PaginatorInterface $paginator): Response
-    {
+    public function search(
+        EntityManagerInterface $entityManager,
+        Request $request,
+        PaginatorInterface $paginator
+    ): Response {
 
         $QUERY_STRING_SEP = ' ';
 
@@ -69,7 +72,8 @@ class SeriesController extends AbstractController
             ->setParameter('year_start', $yearStart)
             ->setParameter('year_end', $yearEnd);
 
-        // DQL LIKE with multiple values. As of right now, this is only an OR filter. If we want to apply an AND, we must use nested DQL queries.
+        // DQL LIKE with multiple values.
+        //As of right now, this is only an OR filter. If we want to apply an AND, we must use nested DQL queries.
         $i = 0;
         // Keywords
         foreach ($keywords as $kw) {
@@ -125,10 +129,12 @@ class SeriesController extends AbstractController
             ]
         );
     }
-
     #[Route(['/'], name: 'app_series_index', methods: ['GET', 'POST'])]
-    public function index(EntityManagerInterface $entityManager, Request $request, PaginatorInterface $paginator): Response
-    {
+    public function index(
+        EntityManagerInterface $entityManager,
+        Request $request,
+        PaginatorInterface $paginator
+    ): Response {
         $allGenre = $entityManager->getRepository(Genre::class)->findAll();
 
         $query = $entityManager->createQuery('Select s from App\Entity\Series s order by s.id');
@@ -147,10 +153,12 @@ class SeriesController extends AbstractController
             ]
         );
     }
-
     #[Route(['/tracked'], name: 'app_series_tracked', methods: ['GET', 'POST'])]
-    public function tracked(EntityManagerInterface $entityManager, Request $request, PaginatorInterface $paginator): Response
-    {
+    public function tracked(
+        EntityManagerInterface $entityManager,
+        Request $request,
+        PaginatorInterface $paginator
+    ): Response {
         $user = $this->getUser();
         if ($user != null) {
             $userid = $user->getId();
@@ -226,8 +234,12 @@ class SeriesController extends AbstractController
         }
     }
     #[Route('/{id}', name: 'app_series_show', methods: ['GET', 'POST'])]
-    public function show(EntityManagerInterface $entityManager, Series $series, Request $request, PaginatorInterface $paginator): Response
-    {
+    public function show(
+        EntityManagerInterface $entityManager,
+        Series $series,
+        Request $request,
+        PaginatorInterface $paginator
+    ): Response {
         $season = $entityManager->getRepository(Season::class)->findBy(['series' => $series], array('number' => 'ASC'));
         $episodes = $entityManager->getRepository(Episode::class)
             ->createQueryBuilder('e')
@@ -296,8 +308,12 @@ class SeriesController extends AbstractController
     }
 
     #[Route('/{id}/search', name: 'app_series_show_search', methods: ['GET', 'POST'])]
-    public function showSearched(EntityManagerInterface $entityManager, Series $series, Request $request, PaginatorInterface $paginator): Response
-    {
+    public function showSearched(
+        EntityManagerInterface $entityManager,
+        Series $series,
+        Request $request,
+        PaginatorInterface $paginator
+    ): Response {
         $comment = $request->query->get('comment');
         $season = $entityManager->getRepository(Season::class)->findBy(['series' => $series], array('number' => 'ASC'));
         $episodes = $entityManager->getRepository(Episode::class)

@@ -18,8 +18,11 @@ class UserController extends AbstractController
 {
     #[Route('/', name: 'app_admin', methods: ['GET'])]
     //#[IsGranted('ROLE_ADMIN')]
-    public function index(EntityManagerInterface $entityManager, Request $request, PaginatorInterface $paginator): Response
-    {
+    public function index(
+        EntityManagerInterface $entityManager,
+        Request $request,
+        PaginatorInterface $paginator
+    ): Response {
         $user = $this->getUser();
 
         if ($user == null) {
@@ -42,8 +45,11 @@ class UserController extends AbstractController
     }
 
     #[Route('/search', name: 'app_user_search')]
-    public function search(EntityManagerInterface $entityManager, Request $request, PaginatorInterface $paginator): Response
-    {
+    public function search(
+        EntityManagerInterface $entityManager,
+        Request $request,
+        PaginatorInterface $paginator
+    ): Response {
         $mailAdress = $request->query->get('mailAdress');
         $queryBuilder = $entityManager->createQueryBuilder()
             ->select('s')
@@ -91,8 +97,12 @@ class UserController extends AbstractController
 
     #[Route('/{id}', name: 'app_user_show', methods: ['GET'])]
     //#[IsGranted('ROLE_ADMIN')]
-    public function show(EntityManagerInterface $entityManager, User $user, Request $request, PaginatorInterface $paginator): Response
-    {
+    public function show(
+        EntityManagerInterface $entityManager,
+        User $user,
+        Request $request,
+        PaginatorInterface $paginator
+    ): Response {
         $rate = $request->query->get('rate') ?? null;
 
         if ($rate != null) {

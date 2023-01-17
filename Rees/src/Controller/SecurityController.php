@@ -30,16 +30,6 @@ use Symfony\Bundle\SecurityBundle\Security;
  */
 class SecurityController extends AbstractController
 {
-    /**
-    * Handles login requests and displays the login form.
-    *
-    * @param AuthenticationUtils $authenticationUtils
-    *                                                 An instance of the AuthenticationUtils class provided by the Symfony Security component.
-    *
-    * @return REsponse A response containing the rendered login template with last username and error passed as parameters.
-    *
-    * @Route(path="/login", name="app_login")
-    */
     #[Route(path: '/login', name: 'app_login')]
     public function login(AuthenticationUtils $authenticationUtils): Response
     {
@@ -54,13 +44,7 @@ class SecurityController extends AbstractController
         );
     }
 
-    /**
-     * Handles logout requests.
-     *
-     * @throws                LogicException if this method is called. This method can be blank as it will be intercepted by the logout key on your firewall.
-     * @return                void
-     * @Route(path="/logout", name="app_logout")
-     */
+
     #[Route(path: '/logout', name: 'app_logout')]
     public function logout(): void
     {

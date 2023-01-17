@@ -32,8 +32,11 @@ class EpisodeController extends AbstractController
     }
 
     #[Route(['/tracked'], name: 'app_episode_tracked', methods: ['GET', 'POST'])]
-    public function tracked(EntityManagerInterface $entityManager, Request $request, PaginatorInterface $paginator): Response
-    {
+    public function tracked(
+        EntityManagerInterface $entityManager,
+        Request $request,
+        PaginatorInterface $paginator
+    ): Response {
         $query = $entityManager->getRepository(Episode::class)
         ->createQueryBuilder('e')
         ->select('e')

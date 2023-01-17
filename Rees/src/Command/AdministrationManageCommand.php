@@ -38,7 +38,9 @@ class AdministrationManageCommand extends Command
         $users = $this->entityManager->getRepository(User::class)->findAll();
         $output->writeln("<comment>-- ALL USERS IN THE DATABASE --</comment>");
         foreach ($users as $user) {
-            $output->writeln("<comment>USER -> ID: " . $user->getId() . " | E-mail address: " . $user->getEmail() . " | Name: " . $user->getName() . " | Is administrator: " . ($user->isAdmin() ? "yes" : "no") . "</comment>\n");
+            $output->writeln("<comment>USER -> ID: " . $user->getId() . " | E-mail address: " . $user->getEmail() .
+            " | Name: " . $user->getName() .
+            " | Is administrator: " . ($user->isAdmin() ? "yes" : "no") . "</comment>\n");
         }
 
         // Interactive questions

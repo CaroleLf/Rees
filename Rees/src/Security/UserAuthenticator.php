@@ -1,16 +1,5 @@
 <?php
 
-/**
- * User Authenticator
- *
- * @package Security
- * @author  Rees' Team <reesTeam@gmail.com>
- * @license GPL-2.0+
- * @link test
- * Description: Plugin allows to use post's custom fields values in permalink structure by adding %field_fieldname%, for posts, pages and custom post types.
- * Author: Rees' Team
- */
-
 namespace App\Security;
 
 use Symfony\Component\HttpFoundation\RedirectResponse;
