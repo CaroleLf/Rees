@@ -11,7 +11,8 @@ use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 
 #[ORM\Table(
-    name: "user", uniqueConstraints: [
+    name: "user",
+    uniqueConstraints: [
     new ORM\UniqueConstraint(name: "UNIQ_8D93D649E7927C74", columns: ["email"]),
     new ORM\UniqueConstraint(name: "IDX_8D93D649F92F3E70", columns: ["country_id"]),
     ]
@@ -118,7 +119,6 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         if ($this->registerDate != null) {
             return $this->registerDate->format('Y-m-d H:i:s');
         }
-        
     }
 
     public function setRegisterDate($registerDate): self
@@ -221,28 +221,26 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 
     public function getUserIdentifier(): string
     {
-        return $this->getEmail(); 
+        return $this->getEmail();
     }
 
-    public function getRoles(): array 
+    public function getRoles(): array
     {
         $roles = [];
         if ($this->admin) {
             $roles[] = 'ROLE_ADMIN';
-        }
-        else {
+        } else {
             $roles[] =  'ROLE_USER';
         }
         return $roles;
-    } 
+    }
 
     public function __toString()
     {
         return $this->getName();
     }
-    
-    public function eraseCredentials()
-    { 
-    }
 
+    public function eraseCredentials()
+    {
+    }
 }

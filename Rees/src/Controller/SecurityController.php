@@ -1,18 +1,19 @@
 <?php
+
 /**
  * Security Controller Class Doc Comment
  *
  * @category Class
  * @package  Controller
  * @author   ReesTeam <reesTeam@gmail.com>
- * @license  GPL-2.0+  
+ * @license  GPL-2.0+
  * @version  8.2.1
  * @author   "Rees' Team"
- * 
+ *
  * @link
  */
-namespace App\Controller;
 
+namespace App\Controller;
 
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
@@ -22,17 +23,17 @@ use Symfony\Bundle\SecurityBundle\Security;
 
 /**
  * SecurityController handles all actions related to user authentication and authorization.
- * 
+ *
  * @author  ReesTeam
  * @version 8.2.1
- * 
+ *
  */
 class SecurityController extends AbstractController
 {
     /**
     * Handles login requests and displays the login form.
     *
-    * @param AuthenticationUtils $authenticationUtils 
+    * @param AuthenticationUtils $authenticationUtils
     *                                                 An instance of the AuthenticationUtils class provided by the Symfony Security component.
     *
     * @return REsponse A response containing the rendered login template with last username and error passed as parameters.

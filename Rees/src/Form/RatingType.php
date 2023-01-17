@@ -17,7 +17,9 @@ class RatingType extends AbstractType
     {
         $builder
             ->add(
-                'value', ChoiceType::class, [  'choices'  => [
+                'value',
+                ChoiceType::class,
+                [  'choices'  => [
                 '🌑🌑🌑🌑🌑' => 0,
                 '🌗🌑🌑🌑🌑' => 0.5,
                 '🌕🌑🌑🌑🌑' => 1,
@@ -34,7 +36,9 @@ class RatingType extends AbstractType
             )
 
             ->add(
-                'comment', TextareaType::class, ['required'   => false,
+                'comment',
+                TextareaType::class,
+                ['required'   => false,
                 'label' => 'Commentaire',
                 'attr' => ['style' => 'height : auto']]
             );

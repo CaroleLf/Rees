@@ -24,7 +24,6 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 #[Route('/series')]
 class SeriesController extends AbstractController
 {
-
     private $authorizationChecker;
 
     public function __construct(AuthorizationCheckerInterface $authorizationChecker)
@@ -70,7 +69,7 @@ class SeriesController extends AbstractController
             ->setParameter('year_start', $yearStart)
             ->setParameter('year_end', $yearEnd);
 
-        // DQL LIKE with multiple values. As of right now, this is only an OR filter. If we want to apply an AND, we must use nested DQL queries. 
+        // DQL LIKE with multiple values. As of right now, this is only an OR filter. If we want to apply an AND, we must use nested DQL queries.
         $i = 0;
         // Keywords
         foreach ($keywords as $kw) {
@@ -185,7 +184,7 @@ class SeriesController extends AbstractController
                     ->getResult();
                 if (count($episodes) == count($userEpisode)) {
                     array_push($seriesComplete, $serie);
-                } else if (count($userEpisode) == 0) {
+                } elseif (count($userEpisode) == 0) {
                     array_push($seriesJustLike, $serie);
                 } else {
                     array_push($seriesStart, $serie);
@@ -242,7 +241,7 @@ class SeriesController extends AbstractController
 
         $rate = $request->query->get('rate') ?? null;
 
-        if($rate != null){
+        if ($rate != null) {
             $query = $entityManager->createQuery(
                 "SELECT r
                 FROM App\Entity\Rating r
@@ -250,7 +249,8 @@ class SeriesController extends AbstractController
                 WHERE r.series = s
                 AND s.id = :id
                 And r.value = :rate
-                ORDER BY r.date DESC")
+                ORDER BY r.date DESC"
+            )
                 ->setParameter('id', $series->getId())
                 ->setParameter('rate', $rate);
         } else {
@@ -260,7 +260,8 @@ class SeriesController extends AbstractController
                 INNER JOIN App\Entity\Series s
                 WHERE r.series = s
                 AND s.id = :id
-                ORDER BY r.date DESC")
+                ORDER BY r.date DESC"
+            )
                 ->setParameter('id', $series->getId());
         }
 

@@ -23,7 +23,9 @@ class RegistrationFormType extends AbstractType
             ->add('email')
             ->add('country')
             ->add(
-                'plainPassword', PasswordType::class, [
+                'plainPassword',
+                PasswordType::class,
+                [
                 // instead of being set onto the object directly,
                 // this is read and encoded in the controller
                 'mapped' => false,
@@ -47,7 +49,9 @@ class RegistrationFormType extends AbstractType
             )
             ->add('name')
             ->add(
-                'captcha', CaptchaType::class, array(
+                'captcha',
+                CaptchaType::class,
+                array(
                 'invalid_message' => "Le captcha n'est pas valide",
                 'label' => ' ',
                 'text_color' => [255, 0, 0],

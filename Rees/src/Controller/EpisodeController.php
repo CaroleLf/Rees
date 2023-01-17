@@ -7,7 +7,7 @@ use App\Entity\Series;
 use App\Entity\Season;
 use App\Form\EpisodeType;
 use Doctrine\ORM\EntityManagerInterface;
-use Knp\Component\Pager\PaginatorInterface; 
+use Knp\Component\Pager\PaginatorInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -24,7 +24,8 @@ class EpisodeController extends AbstractController
             ->findAll();
 
         return $this->render(
-            'episode/index.html.twig', [
+            'episode/index.html.twig',
+            [
             'episodes' => $episodes,
             ]
         );
@@ -36,21 +37,22 @@ class EpisodeController extends AbstractController
         $query = $entityManager->getRepository(Episode::class)
         ->createQueryBuilder('e')
         ->select('e')
-        ->join('e.user','u')
-        ->join('e.season','s')
-        ->join('s.series','se')
+        ->join('e.user', 'u')
+        ->join('e.season', 's')
+        ->join('s.series', 'se')
         ->Where('u.id = :user')
         ->orderBy('se.id, s.id, e.number')
         ->setParameter('user', $this->getUser())
         ->getQuery();
-        
+
         $episodes = $paginator->paginate(
             $query,
-            $request->query->getInt('page', 1), 
-            10 
+            $request->query->getInt('page', 1),
+            10
         );
         return $this->render(
-            'episode/tracked/index.html.twig', [
+            'episode/tracked/index.html.twig',
+            [
             'episodes' => $episodes
             ]
         );
@@ -72,7 +74,8 @@ class EpisodeController extends AbstractController
         }
 
         return $this->renderForm(
-            'episode/new.html.twig', [
+            'episode/new.html.twig',
+            [
             'episode' => $episode,
             'form' => $form,
             ]
@@ -83,7 +86,8 @@ class EpisodeController extends AbstractController
     public function show(Episode $episode): Response
     {
         return $this->render(
-            'episode/show.html.twig', [
+            'episode/show.html.twig',
+            [
             'episode' => $episode,
             ]
         );
@@ -102,7 +106,8 @@ class EpisodeController extends AbstractController
         }
 
         return $this->renderForm(
-            'episode/edit.html.twig', [
+            'episode/edit.html.twig',
+            [
             'episode' => $episode,
             'form' => $form,
             ]
@@ -111,7 +116,7 @@ class EpisodeController extends AbstractController
     #[Route('/{idEpisode}/watch', name: 'app_watch_add')]
     public function watch(Request $request, EntityManagerInterface $entityManager): Response
     {
-        
+
         $episodeId = $request->attributes->get('idEpisode');
         $episode = $entityManager->getRepository(Episode::class)->find($episodeId);
         $serie = $episode->getSeason()->getSeries();
@@ -121,7 +126,7 @@ class EpisodeController extends AbstractController
         $episode->addUser($this->getUser());
         $entityManager->flush();
 
-    
+
         return $this->redirectToRoute('app_series_show', ['id' => $serie->getId()]);
     }
 
@@ -140,7 +145,7 @@ class EpisodeController extends AbstractController
         }
         $entityManager->flush();
 
-    
+
         return $this->redirectToRoute('app_series_show', ['id' => $serie->getId()]);
     }
 
@@ -152,11 +157,10 @@ class EpisodeController extends AbstractController
         foreach ($episodes as $episode) {
             $serie = $episode->getSeason()->getSeries();
             $episode->removeUser($this->getUser());
-
         }
         $entityManager->flush();
 
-    
+
         return $this->redirectToRoute('app_series_show', ['id' => $serie->getId()]);
     }
 
@@ -177,7 +181,7 @@ class EpisodeController extends AbstractController
     #[Route('/{id}', name: 'app_episode_delete', methods: ['POST'])]
     public function delete(Request $request, Episode $episode, EntityManagerInterface $entityManager): Response
     {
-        if ($this->isCsrfTokenValid('delete'.$episode->getId(), $request->request->get('_token'))) {
+        if ($this->isCsrfTokenValid('delete' . $episode->getId(), $request->request->get('_token'))) {
             $entityManager->remove($episode);
             $entityManager->flush();
         }
@@ -188,7 +192,7 @@ class EpisodeController extends AbstractController
     #[Route('/{numberPrevious}/{season}/watchPrevious', name: 'app_watch_previous_episodes')]
     public function deleteRemovePrevious(Request $request, EntityManagerInterface $entityManager): Response
     {
-        
+
         $season = $request->attributes->get('season');
         $season = $entityManager->getRepository(Season::class)->find($season);
         $serie = $season->getSeries();
@@ -213,9 +217,7 @@ class EpisodeController extends AbstractController
         }
         $entityManager->flush();
 
-    
+
         return $this->redirectToRoute('app_series_show', ['id' => $serie->getId()]);
     }
-
-
 }

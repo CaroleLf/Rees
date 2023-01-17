@@ -8,7 +8,8 @@ use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Table(
-    name: "series", uniqueConstraints: [
+    name: "series",
+    uniqueConstraints: [
     new ORM\UniqueConstraint(name: "UNIQ_3A10012D85489131", columns: ["imdb"])
     ]
 )]
@@ -297,7 +298,6 @@ class Series
             }
         }
         return false;
-
     }
 
     public function setPoster($poster): self
