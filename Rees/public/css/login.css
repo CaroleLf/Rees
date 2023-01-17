@@ -1,16 +1,17 @@
+
+body {
+    align-items: center;
+}
 li a{
     color: white;
     text-decoration: none;
 }
 
 
-body {
-    display: flex;
-    align-items: center;
-}
 main {
     width: 100%;
-    height: 100vh;
+    height: 25vh;
+    margin-top: 35vh;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -29,22 +30,43 @@ ul {
 .form-floating {
     margin: 5%;
 }
+
+
 .boxShadowLogin {
-    padding: 25px;
+    padding: 5%;
     height : auto;
-    width: 350px;
+    width: 30%;
     border-radius: 2.5rem !important;
     box-shadow: 0 0.1rem 1rem rgba(190, 124, 255, 0.64);
 }
 
-.boxShadowRegister{
-    padding: 25px;
-    height : auto;
-    width : 400px;
-    border-radius: 2.5rem !important;
-    box-shadow: 0 0.1rem 1rem rgba(190, 124, 255, 0.64);
-}
 
 .custonHeight {
-    height: 10px;
+    height: 1%;
 }
+
+button {
+    border: solid 2px #FFFFFF;
+}
+
+@media only screen and (max-width: 768px) {
+    
+    body {
+        font-size: 2em;
+    }
+
+    label {
+        font-size: 1.5rem;
+    }
+    main {
+        max-height: 100vh;
+        width: 90%;
+        margin-top: 35vh;
+    }
+    .boxShadowLogin {
+        width: 90%;
+        padding: 2%;
+    }
+}
+
+

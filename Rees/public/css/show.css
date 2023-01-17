@@ -179,3 +179,54 @@ h3 {
     cursor: pointer;
 
 }
+
+@media (max-width: 864px) {  
+    .click {
+       max-width: 75%;
+    } /*1rem = 16px*/
+  }
+
+  @media (max-width: 664px) {  
+    .click {
+       max-width: 50%;
+    } /*1rem = 16px*/
+  }
+
+
+  @media screen and  (max-width: 1800px){
+    
+    .work_container {
+        display: grid;
+        grid-template-columns: repeat(2,330px) ;
+        gap : 1.8rem;
+        justify-content: center;
+        padding-top: 1rem;
+    }
+}
+
+
+
+@media screen and (max-width: 990px){
+    body {
+        font-size: 1.0rem;
+    }
+    .LineOne {
+        display: flex;
+        flex-direction: column;
+    }
+
+    
+}
+
+@media screen and (max-width: 850px){
+    body {font-size:1.5rem;} 
+
+}
+
+@media (max-width: 500px){
+    
+    body {font-size:1.5rem;} /*1rem = 16px*/
+
+
+}
+

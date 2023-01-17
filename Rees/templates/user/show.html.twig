@@ -2,50 +2,79 @@
 
 {% block title %}User{% endblock %}
 {% block stylesheets %}
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.3.1/dist/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.1/jquery.min.js"></script>
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
-	<link rel="shortcut icon" href="img/logo.png" >
-    <link href="{{ asset('/css/show.css') }}" type="text/css" rel="stylesheet">  
-	<link rel="shortcut icon" href="img/logo.png" >
-	<link href='https://css.gg/css' rel='stylesheet'>
-    <link href="https://cdn.jsdelivr.net/npm/remixicon@2.5.0/fonts/remixicon.css" rel="stylesheet">
+     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+	<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-alpha1/dist/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
     <link href="{{ asset('/css/allSeries.css') }}" type="text/css" rel="stylesheet">  
+    <link href="{{ asset('/css/mySeries.css') }}" type="text/css" rel="stylesheet">  
     <link href="{{ asset('/css/paginationSeries.css') }}" type="text/css" rel="stylesheet">  
 {% endblock %}
 {% block body %}
  {{ parent()  }}
- <main class="d-flex flex-wrap" >
+ <main class="d-flex flex-wrap text-white" >
     <div class="info d-flex m-5 flex-column align-items-center" >
         <div class="LineOne d-flex flex-column flex-wrap mt-5  ">
-            <h1 class="mt-5">{{ user.name }} </h1>  
+            <h1 class="mt-5"> {{ user.name }} </h1>  
             {% if user.registerDate  %}
                 <h2>RegisterDate</h2>
                 <h3>{{ user.registerDate ? user.registerDate|date('Y-m-d H:i:s') : '' }}</h3>
             {% endif %}
             {% if rates != null %}
                 <h1>Ses commentaires</h1>
-                <table class="table table-striped">
-                    <thead class="thead-light ">
-                        <tr class="border-0 ">
-                            <th class="border-0 text-center">Serie</th>
-                            <th class="border-0 text-center">Note</th>
-                            <th class="border-0 text-center">Commentaire</th>
-                            <th class="border-0 text-center">Date</th>
-                        </tr>
-                    </thead>
-                    <tbody class="bg-transparent">
+                    <div class="container mt-5">
+								<div class="col-md-8">
                         {% for rate in rates %}
-                            <tr class="border-0 bg-transparent">
-                                <td class="border-0 text-center">{{ rate.series }}</td>
-                                <td class="border-0 text-center">{{ rate.value|number_format(1)}}</td>
-                                <td class="border-0 text-center">{{ rate.comment }}</td>
-                                <td class="border-0 text-center">{{ rate.date ? rate.date|date('Y-m-d H:i:s') : '' }}</td>            
-                            </tr>
+										<div class="rate bg-transparent card p-3 mt-2 w-auto h-auto">
+											<div class="d-flex justify-content-between align-items-center">
+												<div class="user d-flex flex-row align-items-center">
+													<img src="" width="30" class="user-img rounded-circle mr-2">
+													<span>
+														<a href="{{ path('app_user_show', {'id':rate.user.id}) }}"><h5 class="font-weight-bold text-primary">{{rate.user.name}}</h5></a><br>
+														<small class="font-weight-bold ">{{rate.comment}}</small>
+													</span>
+												</div>
+												{% set difference = date(rate.date).diff(date("now"|date("m/d/Y"))) %}
+												{% set leftDays = difference.days %}
+												{% if leftDays == 0 %}
+													<small>
+														{{ difference.i }}
+														minutes
+													</small>
+												{% elseif leftDays > 31 %}
+													<small>
+														{{ difference.m }}
+														mois
+													</small>
+												{% elseif leftDays > 365 %}
+													<small>
+														{{ difference.y }}
+														ans
+													</small>
+												{% else %}
+													<small>
+														{{ leftDays }}
+														jours
+													</small>
+												{% endif %}
+											</div>
+											<div class="action d-flex justify-content-between mt-2 align-items-center">
+												<div class="reply px-4">
+													{% if app.user %}
+														{% if app.user.admin == 1 %}
+															
+														{% endif %}
+													{% endif %}
+												</div>
+												<div class="icons align-items-center">
+													<p>
+														{{ rate.value|number_format(1) }}</p>
+													<i class="fa fa-check-circle-o check-icon"></i>
+												</div>
+											</div>
+										</div>
                         {% endfor %}
                         {{ knp_pagination_render(rates) }}
-                    </tbody>
-                </table>
+ 
                 <form class="searchBar text-white d-flex flex-row align-items-center "  method="get" action="{{ path('app_user_show', {'id': user.id})}}">
                     <div class="d-flex flex-column align-items-center">
                         <label class="m-2 w-auto" >Trie :</label>
