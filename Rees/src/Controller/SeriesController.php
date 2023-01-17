@@ -9,6 +9,7 @@ use App\Entity\Series;
 use App\Entity\Genre;
 use App\Form\Series1Type;
 use Doctrine\ORM\EntityManagerInterface;
+use Doctrine\ORM\Query\Expr\Join;
 use Doctrine\ORM\Tools\Pagination\Paginator;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -76,14 +77,14 @@ class SeriesController extends AbstractController
                 "(s.yearEnd >= :year_start and s.yearStart <= :year_end)
             or (s.yearEnd is null and s.yearStart <= :year_end and s.yearStart >= :year_start)"
             )
-            ->innerJoin(Rating::class, 'r')
+            ->innerJoin(Rating::class, 'r', JOIN::WITH, 'r.series = s')
             ->setParameter('year_start', $yearStart)
             ->setParameter('year_end', $yearEnd);
 
         // DQL LIKE with multiple values. As of right now, this is only an OR filter. If we want to apply an AND, we must use nested DQL queries. 
         $i = 0;
         // Keywords
-        foreach ($keywords as $kw) {
+        foreach ($queryBuilder as $kw) {
             $queryBuilder->andWhere("s.title LIKE :kw$i")
                 ->setParameter(
                     "kw$i",
@@ -91,6 +92,7 @@ class SeriesController extends AbstractController
                 );
             $i++;
         }
+        
         $i = 0;
         // User ratings
         foreach ($userRatingFilters as $userRating) {
@@ -106,6 +108,8 @@ class SeriesController extends AbstractController
             $queryBuilder->andWhere('g.name IN (:genres)');
             $queryBuilder->setParameter("genres", $genres);
         }
+
+        echo $queryBuilder->getQuery()->getSQL();
 
         // Series
         $series = $queryBuilder->getQuery()
