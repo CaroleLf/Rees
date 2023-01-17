@@ -108,7 +108,7 @@ class SeriesController extends AbstractController
     {
         $allGenre = $entityManager->getRepository(Genre::class)->findAll();
 
-        $query = $entityManager->createQuery('Select s from App\Entity\Series s');
+        $query = $entityManager->createQuery('Select s from App\Entity\Series s order by s.id');
         
         $series = $paginator->paginate(
             $query,

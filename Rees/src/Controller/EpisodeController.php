@@ -37,7 +37,10 @@ class EpisodeController extends AbstractController
         ->createQueryBuilder('e')
         ->select('e')
         ->join('e.user','u')
+        ->join('e.season','s')
+        ->join('s.series','se')
         ->Where('u.id = :user')
+        ->orderBy('se.id, s.id, e.number')
         ->setParameter('user', $this->getUser())
         ->getQuery();
         
