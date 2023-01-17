@@ -54,11 +54,11 @@ class SeriesController extends AbstractController
         $yearStart = $request->query->get('yearStart');
         $yearEnd = $request->query->get('yearEnd');
         $genres = $request->query->get('genres');
-        $userRatingFilters = $request->query->get('userRatings');
+        $minUserRating = $request->get('minUserRating');
+        $maxUserRating = $request->get('maxUserRating');
 
         // Get keywords and user ratings in arrays which are separated by whitespace
         $keywords = explode($QUERY_STRING_SEP, $keywords);
-        $userRatingFilters = explode($QUERY_STRING_SEP, $userRatingFilters);
 
         // Check user entries
         // Case: if years are not entered
@@ -77,27 +77,18 @@ class SeriesController extends AbstractController
                 "(s.yearEnd >= :year_start and s.yearStart <= :year_end)
             or (s.yearEnd is null and s.yearStart <= :year_end and s.yearStart >= :year_start)"
             )
-            ->innerJoin(Rating::class, 'r', JOIN::WITH, 'r.series = s')
             ->setParameter('year_start', $yearStart)
             ->setParameter('year_end', $yearEnd);
 
         // DQL LIKE with multiple values. As of right now, this is only an OR filter. If we want to apply an AND, we must use nested DQL queries. 
         $i = 0;
         // Keywords
-        foreach ($queryBuilder as $kw) {
+        foreach ($keywords as $kw) {
             $queryBuilder->andWhere("s.title LIKE :kw$i")
                 ->setParameter(
                     "kw$i",
                     "%$kw%"
                 );
-            $i++;
-        }
-        
-        $i = 0;
-        // User ratings
-        foreach ($userRatingFilters as $userRating) {
-            $queryBuilder->andWhere("r.value = :rating$i")
-                ->setParameter("rating$i", $userRating);
             $i++;
         }
 
@@ -109,11 +100,19 @@ class SeriesController extends AbstractController
             $queryBuilder->setParameter("genres", $genres);
         }
 
-        echo $queryBuilder->getQuery()->getSQL();
-
-        // Series
-        $series = $queryBuilder->getQuery()
-            ->getResult();
+        // Case: user rating entries. We need at least one user rating filter to include this filter into DQL statement
+        if ($minUserRating != null || $maxUserRating != null) {
+            if ($minUserRating == null) {
+                $minUserRating = 0;
+            }
+            if ($maxUserRating == null) {
+                $maxUserRating = 5;
+            }
+            $queryBuilder->innerJoin(Rating::class, 'r', JOIN::WITH, 'r.series = s')
+                ->andHaving('AVG(r.value) >= :minUserRating AND AVG(r.value) <= :maxUserRating')
+                ->setParameter('minUserRating', $minUserRating)
+                ->setParameter('maxUserRating', $maxUserRating);
+        }
 
         // Posts
         $posts = $this->paginate($queryBuilder, $page);
@@ -124,7 +123,6 @@ class SeriesController extends AbstractController
         $maxPages = ceil($posts->count() / $limit);
         $thisPage = $page;
 
-        // TODO: fix pagination problem
         return $this->render(
             'series/index.html.twig',
             [
