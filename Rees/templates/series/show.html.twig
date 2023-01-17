@@ -157,7 +157,7 @@
                                 <div class="d-flex justify-content-between align-items-center">
                                     <div class="user d-flex flex-row align-items-center">
                                         <img src="" width="30" class="user-img rounded-circle mr-2">
-                                        <span><h5 class="font-weight-bold text-primary">{{myRate.user.name}}</h5><br>
+                                        <span><a href="{{path('app_user_show',{'id': myRate.user.id})}}"><h5 class="font-weight-bold text-primary">{{myRate.user.name}}</h5></a><br>
                                          <small class="mt-5 font-weight-bold ">{{myRate.comment}}</small></span>
                                     </div>
                                      {% set difference = date(myRate.date).diff(date("now"|date("m/d/Y"))) %}
@@ -199,7 +199,7 @@
                                 <div class="d-flex justify-content-between align-items-center">
                                     <div class="user d-flex flex-row align-items-center">
                                         <img src="" width="30" class="user-img rounded-circle mr-2">
-                                        <span><h5 class="font-weight-bold text-primary">{{rate.user.name}}</h5><br>
+                                        <span><a href="{{path('app_user_show',{'id': rate.user.id})}}"><h5 class="font-weight-bold text-primary">{{rate.user.name}}</h5></a><br>
                                          <small class="font-weight-bold ">{{rate.comment}}</small></span>
                                     </div>
                                     {% set difference = date(rate.date).diff(date("now"|date("m/d/Y"))) %}

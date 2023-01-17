@@ -172,7 +172,28 @@ class SeriesController extends AbstractController
                     array_push($seriesStart , $serie);
                 }
             }
-    
+            
+            $seriesJustLike = $paginator->paginate(
+                $seriesJustLike,
+                $request->query->getInt('page', 1), 
+                10 
+            );
+
+            $seriesStart = $paginator->paginate(
+                $seriesStart,
+                $request->query->getInt('pageStart', 1), 
+                10,
+                ['pageParameterName' => 'pageStart'] 
+            );            
+            
+            $seriesComplete = $paginator->paginate(
+                $seriesComplete,
+                $request->query->getInt('pageComplete', 1), 
+                10,
+                ['pageParameterName' => 'pageComplete']  
+            );
+
+
             return $this->render(
                 'series/tracked/index.html.twig', [
                 'user' => $user,

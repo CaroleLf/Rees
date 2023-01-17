@@ -2,6 +2,7 @@
 
 namespace App\Controller;
 
+use App\Entity\Series;
 use App\Entity\User;
 use App\Form\UserType;
 use Doctrine\ORM\EntityManagerInterface;
@@ -21,19 +22,19 @@ class UserController extends AbstractController
     //#[IsGranted('ROLE_ADMIN')]
     public function index(EntityManagerInterface $entityManager,Request $request, PaginatorInterface $paginator): Response
     {
- 
+        $user = $this->getUser();
+
+        if($user == null){
+            return $this->redirectToRoute('app_login');
+        }
+
         $query = $entityManager ->createQuery('Select u from App\Entity\User u order by u.registerDate DESC');
         $users = $paginator->paginate(
             $query,
             $request->query->getInt('page', 1), 
             10 
         );
-        $user = $this->getUser();
 
-        if($user == null){
-            return $this->redirectToRoute('app_login');
-        }
-        
         return $this->render(
             'user/index.html.twig', [
             'users' => $users,
@@ -98,15 +99,34 @@ class UserController extends AbstractController
             WHERE r.user = u
             AND u.id = :id"
         )->setParameter('id', $user->getId());
+
         $ratedSeries = $paginator->paginate(
             $query,
             $request->query->getInt('page', 1), 
             10 
         );
+
+        $query = $entityManager->getRepository(Series::class)
+        ->createQueryBuilder('s')
+        ->select('s')
+        ->join('s.user','u')
+        ->Where('u.id = :user')
+        ->orderBy('s.id')
+        ->setParameter('user', $user)
+        ->getQuery();
+        
+        $series = $paginator->paginate(
+            $query,
+            $request->query->getInt('pageLike', 1), 
+            10,
+            ['pageParameterName' => 'pageLike'] 
+        );
+
         return $this->render(
             'user/show.html.twig', [
             'user' => $user,
-            'rates' => $ratedSeries
+            'rates' => $ratedSeries,
+            'series' => $series
             ]
         );
     }
