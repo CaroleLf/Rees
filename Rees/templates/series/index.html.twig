@@ -42,7 +42,25 @@
                     <option value="{{i}}"> {{i}}</option>
                 {% endfor %}
             </select>
-        </div>    
+        </div>
+        <div class="d-flex flex-column align-items-center">
+            <label class="m-2 w-auto" >Note min</label>
+            <select class="form-control  m-2   w-auto" data-mdb-filter="true" name="minUserRating">
+                <option value=""> -- Note -- </option>
+                {% for i in 0..5 %}
+                    <option value="{{i}}"> {{i}}</option>
+                {% endfor %}
+            </select>
+        </div>
+        <div class="d-flex flex-column align-items-center">
+            <label class="m-2 w-auto" >Note max</label>
+            <select class="form-control  m-2   w-auto" data-mdb-filter="true" name="maxUserRating">
+                <option value=""> -- Note -- </option>
+                {% for i in 0..5 %}
+                    <option value="{{i}}"> {{i}}</option>
+                {% endfor %}
+            </select>
+        </div>       
         <div class="d-flex flex-column align-items-center">
             <label class="m-2">Mots-clés : </label>
             <input class="form-control w-auto m-2" type="text" name="keywords"  placeholder="Mots-clés">
