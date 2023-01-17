@@ -14,36 +14,34 @@ use Symfony\Component\Security\Http\Event\SwitchUserEvent;
 class WelcomeController extends AbstractController
 {
     #[Route('/', name: 'app_welcome')]
-    public function index(EntityManagerInterface $entityManager,Request $request): Response
+    public function index(EntityManagerInterface $entityManager, Request $request): Response
     {
-        $SeriesFinal = [];
-        
-        for ($i=0; $i < 3; $i++) { 
+        $finalSeries = [];
+
+        for ($i = 0; $i < 3; $i++) {
+            // TODO put actual values from the database
             $randomSeries = rand(1, 234);
-            $rand= $entityManager
+            $rand = $entityManager
                 ->getRepository(Series::class)
-                ->findOneBy(array('id'=>$randomSeries));
-            if($rand!=null) {
-                $SeriesFinal[$i] = $rand;
-            }
-            else {
-                while ($rand==null){
+                ->findOneBy(array('id' => $randomSeries));
+            if ($rand != null) {
+                $finalSeries[$i] = $rand;
+            } else {
+                while ($rand == null) {
                     $randomSeries = rand(1, 234);
                     $rand =  $entityManager
                         ->getRepository(Series::class)
-                        ->findOneBy(array('id'=>$randomSeries));
+                        ->findOneBy(array('id' => $randomSeries));
                 }
-                $SeriesFinal[$i] = $rand;
+                $finalSeries[$i] = $rand;
             }
         }
-        
+
         return $this->render(
-            'welcome/index.html.twig', [
-            'series'=> $SeriesFinal,
+            'welcome/index.html.twig',
+            [
+                'series' => $finalSeries,
             ]
         );
     }
-
-
-
 }

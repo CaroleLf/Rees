@@ -11,6 +11,8 @@ use Doctrine\ORM\Query\Parameter;
 use Doctrine\Common\Collections\ArrayCollection;
 use App\Form\Series1Type;
 use Doctrine\ORM\EntityManagerInterface;
+use Doctrine\ORM\Query\Expr\Join;
+use Doctrine\ORM\Tools\Pagination\Paginator;
 use Knp\Component\Pager\PaginatorInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -34,15 +36,19 @@ class SeriesController extends AbstractController
     public function search(EntityManagerInterface $entityManager, Request $request, PaginatorInterface $paginator): Response
     {
 
+        $QUERY_STRING_SEP = ' ';
+
         $allGenre = $entityManager->getRepository(Genre::class)->findAll();
 
         $keywords = $request->query->get('keywords');
         $yearStart = $request->query->get('yearStart');
         $yearEnd = $request->query->get('yearEnd');
-        $queryGenres = $request->query->get('genres');
+        $genres = $request->query->get('genres');
+        $minUserRating = $request->get('minUserRating');
+        $maxUserRating = $request->get('maxUserRating');
 
-        // Get keywords in array which are separated by whitespace
-        $keywords = explode(' ', $keywords);
+        // Get keywords and user ratings in arrays which are separated by whitespace
+        $keywords = explode($QUERY_STRING_SEP, $keywords);
 
         // Check user entries
         // Case: if years are not entered
@@ -64,8 +70,9 @@ or (s.yearEnd is null and s.yearStart <= :year_end and s.yearStart >= :year_star
             ->setParameter('year_start', $yearStart)
             ->setParameter('year_end', $yearEnd);
 
-        // SQL LIKE with multiple values. As of right now, this is only an OR filter. If we want to apply an AND, we must use nested DQL queries. 
+        // DQL LIKE with multiple values. As of right now, this is only an OR filter. If we want to apply an AND, we must use nested DQL queries. 
         $i = 0;
+        // Keywords
         foreach ($keywords as $kw) {
             $queryBuilder->andWhere("s.title LIKE :kw$i")
                 ->setParameter(
@@ -83,8 +90,20 @@ or (s.yearEnd is null and s.yearStart <= :year_end and s.yearStart >= :year_star
             $queryBuilder->setParameter("genres", $genres);
         }
 
-        // Series
-        $series = $queryBuilder->getQuery();
+        // Case: user rating entries. We need at least one user rating filter to include this filter into DQL statement
+        if ($minUserRating != null || $maxUserRating != null) {
+            if ($minUserRating == null) {
+                $minUserRating = 0;
+            }
+            if ($maxUserRating == null) {
+                $maxUserRating = 5;
+            }
+            $queryBuilder->innerJoin(Rating::class, 'r', JOIN::WITH, 'r.series = s')
+                ->andHaving('AVG(r.value) >= :minUserRating AND AVG(r.value) <= :maxUserRating')
+                ->setParameter('minUserRating', $minUserRating)
+                ->setParameter('maxUserRating', $maxUserRating);
+        }
+
         // Posts
         $series = $paginator->paginate(
             $series,
@@ -92,7 +111,6 @@ or (s.yearEnd is null and s.yearStart <= :year_end and s.yearStart >= :year_star
             10
         );
 
-        // TODO: fix pagination problem
         return $this->render(
             'series/index.html.twig',
             [
