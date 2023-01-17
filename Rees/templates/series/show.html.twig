@@ -91,13 +91,13 @@
                                 {% set watchedEpisodes = seasonEpisodes|filter(e => e.isWatchByUser(app.user)) %}
                                 {% if watchedEpisodes|length == seasonEpisodes|length %}
                                 <a href="{{ path('app_WatchSeason_remove', {'idSeason': season.id}) }}">
-                                    <label> Saison {{season.number}} non vue ? </label>
-                                    <i class="fa-solid fa-xmark"></i>
+                                    <label> Saison {{season.number}} vue ? </label>
+                                    <i class="fa-solid fa-check"></i>
                                 </a>    
                                 {% else %}
                                 <a href="{{ path('app_watchSeason_add', {'idSeason': season.id}) }}">
                                     <label> Saison {{season.number}}  vue ?  </label>
-                                    <i class="fa-solid fa-check"> </i>
+                                    <i class="fa-solid fa-xmark"> </i>
                                 </a>
 
                                 {% endif %}
@@ -118,7 +118,8 @@
                                                             {% if app.user %}
                                                                 <div class="d-flex justify-content-between align-items-center">
                                                                     {% if episode.isWatchByUser(app.user) %}
-                                                                        <a  href="{{ path('app_watch_remove', { 'idEpisode' : episode.id }) }}" class="btn btn-danger">  <i class="eye fa-solid fa-eye-slash text-light " > Not Watched </i> </a>
+                                                                        <a  href="{{ path('app_watch_remove', { 'idEpisode' : episode.id }) }}" class="btn btn-success">     
+                                                                        <i class="eye fa-solid fa-eye text-light"> Watched </i> </a>
                                                                         {% if watchEpisode == false %}
                                                                             {% set watchEpisode = true %}
                                                                             <div class="previous-episodes-question">
@@ -129,8 +130,8 @@
                                                                         {% endif %}
                                                                     {% else %} 
                                                                         {% set watchEpisode = false %}
-                                                                        <a href="{{ path('app_watch_add', { 'idEpisode' : episode.id}) }} " class="btn btn-success">        
-                                                                        <i class="eye fa-solid fa-eye text-light"> Watched </i>
+                                                                        <a href="{{ path('app_watch_add', { 'idEpisode' : episode.id}) }} " class="btn btn-danger">   
+                                                                        <i class="eye fa-solid fa-eye-slash text-light " > Not Watched </i>  
                                                                         </a>
                                                                     {% endif %}
                                                                 </div>
