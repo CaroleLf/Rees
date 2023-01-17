@@ -9,6 +9,7 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Form\Extension\Core\Type\HiddenType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
+use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 
 class RatingType extends AbstractType
 {
@@ -17,14 +18,14 @@ class RatingType extends AbstractType
         $builder
             ->add(
                 'value', ChoiceType::class, [  'choices'  => [
-                '0 🌑🌑🌑🌑🌑' => 0,
-                '0.5 🌗🌑🌑🌑🌑' => 0.5,
-                '1 🌕🌑🌑🌑🌑' => 1,
-                '1.5 🌕🌗🌑🌑🌑' => 1.5,
-                '2 ⭐' => 2,
-                '2.5 ⭐' => 2.5,
-                '3' => 3,
-                '3.5' => 3.5,
+                '🌑🌑🌑🌑🌑' => 0,
+                '🌗🌑🌑🌑🌑' => 0.5,
+                '🌕🌑🌑🌑🌑' => 1,
+                '🌕🌗🌑🌑🌑' => 1.5,
+                '🌕🌕🌑🌑🌑' => 2,
+                '🌕🌕🌗🌑🌑' => 2.5,
+                '🌕🌕🌕🌑🌑' => 3,
+                '🌕🌕🌕🌗🌑' => 3.5,
                 '🌕🌕🌕🌕🌑' => 4,
                 '🌕🌕🌕🌕🌗' => 4.5,
                 '🌕🌕🌕🌕🌕' => 5]
@@ -33,8 +34,9 @@ class RatingType extends AbstractType
             )
 
             ->add(
-                'comment', TextType::class, ['required'   => false,
-                'label' => 'Commentaire']
+                'comment', TextareaType::class, ['required'   => false,
+                'label' => 'Commentaire',
+                'attr' => ['style' => 'height : auto']]
             );
     }
 

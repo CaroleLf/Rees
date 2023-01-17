@@ -1,17 +1,13 @@
 {{ form_start(form) }}
 
-                {{ form_start(form) }}
-                    {{ form_row(form.value,  { 
-                     'attr': { 'class' : 'm-2 form-control'}
-                    },{
-                        label: 'Valeur'
-                    }) }}
-                    
-                    {{ form_row(form.comment, { 
-                     'attr': { 'class' : 'm-2 form-control'}
-                    },{
-                        label: 'Commentaire'
-                    }) }}
+            <div class="form-floating">
+                {{ form_widget(form.value, {'attr': {'class': 'form-select mb-3', 'id': 'floatingInput', 'placeholder': 'Votre note' }}) }}
+                <label class="text-dark fs-6" for="floatingInput">Votre note</label>
+            </div>
+            <div class="form-floating">
+                {{ form_widget(form.comment, {'attr': {'class': 'form-control mb-3 customHeight', 'id': 'floatingTextarea','placeholder': 'Votre commentaire'}}) }}
+                <label class="text-dark fs-6" for="floatingTextarea">Votre commentaire</label>
+            </div>
     <button class="btn btn-outline-light btn-lg px-4" type="submit">Envoyer</button>
 {{ form_end(form) }}
 
