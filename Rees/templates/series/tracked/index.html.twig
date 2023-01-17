@@ -8,6 +8,8 @@
 	<link href='https://css.gg/css' rel='stylesheet'>
     <link href="https://cdn.jsdelivr.net/npm/remixicon@2.5.0/fonts/remixicon.css" rel="stylesheet">
     <link href="{{ asset('/css/mySeries.css') }}" type="text/css" rel="stylesheet">  
+    <link href="{{ asset('/css/paginationSeries.css') }}" type="text/css" rel="stylesheet"> 
+
 {% endblock %}
 
 {% block body %}
@@ -32,8 +34,9 @@
                     </td>
                 </div>
             {% endfor %}
-            {{ knp_pagination_render(start) }}
+            
         </div>
+        {{ knp_pagination_render(start) }}
         <h1 class="text-white" style="padding-top:10rem;"> Séries Finies </h1> 
         <div id="series" class="work_container container grid " style="padding-top:10rem;"> 
             {% for serieComplete in complete %}
@@ -55,8 +58,9 @@
 
                 </div>
             {% endfor %}
-            {{ knp_pagination_render(complete) }}
+            
         </div>
+        {{ knp_pagination_render(complete) }}
         <h1 class="text-white" style="padding-top:10rem;"> Ma watch list </h1> 
         <div id="series" class="work_container container grid " style="padding-top:10rem;"> 
             {% for serieLike in likes %}
@@ -77,6 +81,6 @@
                     </td>
                 </div>
             {% endfor %}
-            {{ knp_pagination_render(likes) }}
         </div>
+        {{ knp_pagination_render(likes) }}
 {% endblock %}

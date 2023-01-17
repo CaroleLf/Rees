@@ -76,6 +76,7 @@ a {
 
 .theGenre {
     margin: 0.2rem;
+    border : 1px solid #f8f9fa;
 }
 
 div.series__filter:hover  {

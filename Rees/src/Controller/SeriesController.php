@@ -240,14 +240,29 @@ class SeriesController extends AbstractController
             ->getQuery()
             ->getResult();
 
-        $query = $entityManager->createQuery(
-            "SELECT r
-FROM App\Entity\Rating r
-INNER JOIN App\Entity\Series s
-WHERE r.series = s
-AND s.id = :id
-ORDER BY r.date DESC"
-        )->setParameter('id', $series->getId());
+        $rate = $request->query->get('rate') ?? null;
+
+        if($rate != null){
+            $query = $entityManager->createQuery(
+                "SELECT r
+                FROM App\Entity\Rating r
+                INNER JOIN App\Entity\Series s
+                WHERE r.series = s
+                AND s.id = :id
+                And r.value = :rate
+                ORDER BY r.date DESC")
+                ->setParameter('id', $series->getId())
+                ->setParameter('rate', $rate);
+        } else {
+            $query = $entityManager->createQuery(
+                "SELECT r
+                FROM App\Entity\Rating r
+                INNER JOIN App\Entity\Series s
+                WHERE r.series = s
+                AND s.id = :id
+                ORDER BY r.date DESC")
+                ->setParameter('id', $series->getId());
+        }
 
         $seriesRating = $paginator->paginate(
             $query,
@@ -259,10 +274,10 @@ ORDER BY r.date DESC"
             ->findOneBy(['series' => $series, 'user' => $this->getUser()]);
         $query = $entityManager->createQuery(
             "SELECT AVG(r.value) as rate
-FROM App\Entity\Rating r
-INNER JOIN App\Entity\Series s
-WHERE r.series = s
-AND s.id = :id"
+            FROM App\Entity\Rating r
+            INNER JOIN App\Entity\Series s
+            WHERE r.series = s
+            AND s.id = :id"
         )->setParameter('id', $series->getId());
         $rate = $query->getResult();
 
@@ -316,10 +331,10 @@ AND s.id = :id"
 
         $query = $entityManager->createQuery(
             "SELECT AVG(r.value) as rate
-FROM App\Entity\Rating r
-INNER JOIN App\Entity\Series s
-WHERE r.series = s
-AND s.id = :id"
+            FROM App\Entity\Rating r
+            INNER JOIN App\Entity\Series s
+            WHERE r.series = s
+            AND s.id = :id"
         )->setParameter('id', $series->getId());
         $rate = $query->getResult();
 

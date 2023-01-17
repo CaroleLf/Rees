@@ -74,9 +74,9 @@ name : varchar(255)       &lt;&lt;M&gt;&gt;
 0,n</panel_attributes><additional_attributes>10;20;170;20</additional_attributes></element><element><id>UMLUseCase</id><coordinates><x>360</x><y>344</y><w>88</w><h>32</h></coordinates><panel_attributes>rating_series</panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLUseCase</id><coordinates><x>640</x><y>232</y><w>88</w><h>32</h></coordinates><panel_attributes>user_rating</panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLClass</id><coordinates><x>600</x><y>328</y><w>144</w><h>72</h></coordinates><panel_attributes>rating
 --
 __id: int(11)                       &lt;&lt;pk,M&gt;&gt;__
-value : int(11)               &lt;&lt;M&gt;&gt;
-comment : longtext
-date : datetime            &lt;&lt;M&gt;&gt;
+value : double               &lt;&lt;M&gt;&gt;
+comment : longtext	    &lt;&lt;M&gt;&gt;
+date : datetime             &lt;&lt;M&gt;&gt;
 </panel_attributes><additional_attributes></additional_attributes></element><element><id>Relation</id><coordinates><x>392</x><y>368</y><w>40</w><h>128</h></coordinates><panel_attributes>lt=-
 0,n</panel_attributes><additional_attributes>10;140;10;10</additional_attributes></element><element><id>Relation</id><coordinates><x>440</x><y>344</y><w>176</w><h>32</h></coordinates><panel_attributes>lt=-
 1,1</panel_attributes><additional_attributes>10;20;200;20</additional_attributes></element><element><id>Relation</id><coordinates><x>672</x><y>256</y><w>32</w><h>88</h></coordinates><panel_attributes>lt=-
