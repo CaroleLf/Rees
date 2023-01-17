@@ -88,7 +88,9 @@
                             {% set watchEpisode = true %}
                             <div class="ouais d-flex flex-column justify-content-center m-1 mr-3 w-100 h-100">
                                 {% set seasonEpisodes = episodes|filter(e => e.season.id == season.id) %}
-                                {% set watchedEpisodes = seasonEpisodes|filter(e => e.isWatchByUser(app.user)) %}
+                                {% if app.user %}
+                                    {% set watchedEpisodes = seasonEpisodes|filter(e => e.isWatchByUser(app.user)) %}
+                                
                                 {% if watchedEpisodes|length == seasonEpisodes|length %}
                                 <a href="{{ path('app_WatchSeason_remove', {'idSeason': season.id}) }}">
                                     <label> Saison {{season.number}} vue ? </label>
@@ -99,8 +101,8 @@
                                     <label> Saison {{season.number}}  vue ?  </label>
                                     <i class="fa-solid fa-xmark"> </i>
                                 </a>
-
                                 {% endif %}
+                            {% endif %}
                             </div>
                             <button class="click btn " 
                                 type="button"  data-mdb-toggle="collapse"  data-mdb-target="#collapseWidthExample"  aria-expanded="false" data-toggle="collapse" 
