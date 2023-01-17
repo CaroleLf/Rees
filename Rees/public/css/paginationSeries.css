@@ -16,6 +16,7 @@
 }
 .pagination span {
     padding: 8px 8px;
+    max-height: 37px;
 }
 
 /* Current page link */
