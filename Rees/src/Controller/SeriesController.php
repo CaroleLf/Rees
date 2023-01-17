@@ -43,7 +43,7 @@ class SeriesController extends AbstractController
         $keywords = $request->query->get('keywords');
         $yearStart = $request->query->get('yearStart');
         $yearEnd = $request->query->get('yearEnd');
-        $genres = $request->query->get('genres');
+        $queryGenres = $request->query->get('genres');
         $minUserRating = $request->get('minUserRating');
         $maxUserRating = $request->get('maxUserRating');
 
@@ -103,6 +103,8 @@ or (s.yearEnd is null and s.yearStart <= :year_end and s.yearStart >= :year_star
                 ->setParameter('minUserRating', $minUserRating)
                 ->setParameter('maxUserRating', $maxUserRating);
         }
+        
+        $series = $queryBuilder->getQuery();
 
         // Posts
         $series = $paginator->paginate(
