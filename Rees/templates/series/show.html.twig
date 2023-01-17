@@ -5,41 +5,38 @@
 {% endblock %}
 
 {% block stylesheets %}
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-alpha1/dist/css/bootstrap.min.css">
-    <script> href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-alpha1/dist/js/bootstrap.bundle.min.js" </script>
-    <script> href="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js" </script>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
-    <link href="{{ asset('/css/pagination.css') }}" type="text/css" rel="stylesheet">   
-
-	<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.3.1/dist/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-alpha1/dist/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.3.1/dist/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
 	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
-	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.1/jquery.min.js"></script>
 	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+	    <script src="https://kit.fontawesome.com/2b4594a491.js" crossorigin="anonymous"></script>
+
+
+    <link href="{{ asset('/css/pagination.css') }}" type="text/css" rel="stylesheet">   
 	<link href="{{ asset('/css/show.css') }}" type="text/css" rel="stylesheet">
-	<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
-	<script src="https://kit.fontawesome.com/2b4594a491.js" crossorigin="anonymous"></script>
 {% endblock %}
 {% block body %}
 	{{ parent() }}
 	<main class="d-flex flex-wrap">
-		<div class="info d-flex m-5 flex-column align-items-center">
+		<div class="info d-flex m-5  flex-wrap flex-column align-items-center">
 			<div class="LineOne d-flex flex-wrap m-5 align-items-center ">
-				<div class="firstPart m-5">
+				<div class="firstPart d-flex flex-wrapm-5">
 					<img src="{{ path('app_poster',{'id':series.id}) }}">
 				</div>
-				<div class="d-flex flex-column secondPart">
-					<div class="title d-flex justify-content-center">
-						<h1 class="titleTxt ">
+				<div class="d-flex flex-column flex-wrap secondPart">
+					<div class="title d-flex flex-wrap w-auto justify-content-center">
+						<h1 class="titleTxt w-auto">
 							{{ series.title }}
 						</h1>
 					</div>
-					<div class="m-2 d-flex flex-column">
+					<div class="m-2 d-flex flex-wrap flex-column">
 						<h3 class="border-0">Description
 						</h3>
-						<p class="border-0">{{ series.plot }}</p>
+						<p class="border-0 w-auto h-auto">{{ series.plot }}</p>
 						{% if series.imdb %}
 							<h3 class="border-0">
-								Rating
+								Note(s)
 							</h3>
 							<a href="https://www.imdb.com/title/{{ series.imdb }}" target="_blank">
 								<h4>
@@ -62,7 +59,7 @@
 							{% endif %}
 						{% endif %}
 						{% if series.director %}
-							<h3 class="border-0">Director</h3>
+							<h3 class="border-0">Directeur</h3>
 							<p class="border-0">{{ series.director }}</p>
 						{% endif %}
 					</div>
@@ -71,15 +68,15 @@
 			<div class="LineOne d-flex flex-wrap">
 				<div class="ThreePart m-5">
 					{% if series.awards %}
-						<h3 class="border-0">Awards</h3>
+						<h3 class="border-0"> Récompense(s)</h3>
 						<p class="border-0">{{ series.awards }}</p>
 					{% endif %}
 					{% if series.yearStart %}
-						<h3 class="border-0">Year Start</h3>
+						<h3 class="border-0"> Année de début</h3>
 						<p class="border-0">{{ series.yearStart }}</p>
 					{% endif %}
 					{% if series.yearEnd %}
-						<h3 class="border-0">Year End</h3>
+						<h3 class="border-0">Année de fin</h3>
 						<p class="border-0">{{ series.yearEnd }}</p>
 					{% endif %}
 					{% if not is_granted('IS_AUTHENTICATED_FULLY') %}
@@ -118,16 +115,16 @@
 												{{season.number}}
 												vue ?
 											</label>
-											<i class="fa-solid fa-check"></i>
+											<i class="fa-solid fa-check text-light"></i>
 										</a>
 									{% else %}
 										<a href="{{ path('app_watchSeason_add', {'idSeason': season.id}) }}">
 											<label>
 												Saison
 												{{season.number}}
-												vue ?
+												pas vue ?
 											</label>
-											<i class="fa-solid fa-xmark"></i>
+											<i class="fa-solid fa-xmark  "></i>
 										</a>
 									{% endif %}
 								{% endif %}
@@ -154,7 +151,7 @@
 																{% if episode.isWatchByUser(app.user) %}
 																	<a href="{{ path('app_watch_remove', { 'idEpisode' : episode.id }) }}" class="btn btn-success">
 																		<i class="eye fa-solid fa-eye text-light">
-																			Watched
+																			Vu
 																		</i>
 																	</a>
 																	{% if watchEpisode == false %}
@@ -169,7 +166,7 @@
 																	{% set watchEpisode = false %}
 																	<a href="{{ path('app_watch_add', { 'idEpisode' : episode.id}) }} " class="btn btn-danger">
 																		<i class="eye fa-solid fa-eye-slash text-light ">
-																			Not Watched
+																			Pas vu
 																		</i>
 																	</a>
 																{% endif %}
@@ -183,9 +180,9 @@
 								</div>
 							</div>
 						{% endfor %}
-						{% if series.youtubeTrailer %}
-							<iframe width="800" height="500" src={{ series.youtubeTrailer }}></iframe>
-						{% endif %}
+						 {% if series.youtubeTrailer %}
+                        <iframe width="auto" height="500" src={{ series.youtubeTrailer }} ></iframe>
+                    {% endif %}
 					</div>
 					<div class="lastPart m-5">
 						{% if myRate != null and is_granted('IS_AUTHENTICATED_FULLY')%}
@@ -229,7 +226,6 @@
 									<div class="reply px-4">
 										{% if app.user %}
 											{% if app.user.admin == 1 %}
-												<small class="">Remove</small>
 											{% endif %}
 										{% endif %}
 									</div>
@@ -259,10 +255,10 @@
 									<button type="submit" class="btn btn-primary mt-3 ">Recherche</button>
 								</div>
 							</form>
-							<div class="container mt-5">
+							<div class="container mt-5 mb-5">
 								<div class="col-md-8">
 									{% for rate in allRates %}
-										<div class="rate bg-transparent card p-3 mt-2">
+										<div class="rate bg-transparent card p-3 mt-2 w-auto h-auto">
 											<div class="d-flex justify-content-between align-items-center">
 												<div class="user d-flex flex-row align-items-center">
 													<img src="" width="30" class="user-img rounded-circle mr-2">
@@ -299,7 +295,6 @@
 												<div class="reply px-4">
 													{% if app.user %}
 														{% if app.user.admin == 1 %}
-															<small class="">Remove</small>
 														{% endif %}
 													{% endif %}
 												</div>
@@ -313,7 +308,7 @@
 									{% endfor %}
 								</tbody>
 							</table>
-							<form class="searchBar text-white d-flex flex-row align-items-center "  method="get" action="{{ path('app_series_show', {'id': series.id})}}">
+							<form class="searchBar text-white d-flex flex-row align-items-center w-auto h-auto"  method="get" action="{{ path('app_series_show', {'id': series.id})}}">
 								<div class="d-flex flex-column align-items-center">
 									<label class="m-2 w-auto" >Note :</label>
 									<select class="form-control m-2  w-auto" data-mdb-filter="true" name="rate">

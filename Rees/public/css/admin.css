@@ -16,7 +16,7 @@ h5 {
 }
 
 .searchBar {
-    margin-top: 10vh;
+    margin-top: 15vh;
 }
 main {
     padding-top: 7rem;
@@ -30,20 +30,8 @@ main {
     flex-wrap: wrap;
 }
 
-.test {
-    display: flex;
-    max-width: 100vw;
-    flex-direction: column;
-    align-content: center;
-}   
 
-th,td {
-    width: 80%;
-}
 
-tr,td {
-    margin: 0%;
-}
 
 a {
     display: flex;
@@ -52,3 +40,6 @@ a {
 .inlineButton {
     display: flex;
 }
+
+
+

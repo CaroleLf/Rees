@@ -1,5 +1,4 @@
 body {
-    display: flex;
     align-items: center;
 }
 
@@ -40,7 +39,9 @@ ul {
     box-shadow: 0 0.1rem 1rem rgba(190, 124, 255, 0.64);
 }
 
-
+button {
+    border: solid 2px #FFFFFF;
+}
 .registration {
     color: #91D7F2; 
 }
@@ -49,3 +50,31 @@ li {
     color: red;
     list-style: none;
 }
+
+@media screen and (max-width: 990px){
+
+    body {
+        font-size: 2em;
+    }
+
+    label {
+        font-size: 1.5rem;
+    }
+
+}
+
+
+
+@media screen and (max-width: 850px){
+    body {font-size:2rem;} 
+    label {
+        font-size: 1.5rem;
+    }
+
+}
+
+@media (max-width: 500px){
+    body {font-size:2.5rem;} /*1rem = 16px*/
+
+}
+
