@@ -65,7 +65,7 @@ class SeriesController extends AbstractController
             ->from(Series::class, 's')
             ->where(
                 "(s.yearEnd >= :year_start and s.yearStart <= :year_end)
-or (s.yearEnd is null and s.yearStart <= :year_end and s.yearStart >= :year_start)"
+                or (s.yearEnd is null and s.yearStart <= :year_end and s.yearStart >= :year_start)"
             )
             ->setParameter('year_start', $yearStart)
             ->setParameter('year_end', $yearEnd);
@@ -235,14 +235,29 @@ or (s.yearEnd is null and s.yearStart <= :year_end and s.yearStart >= :year_star
             ->getQuery()
             ->getResult();
 
-        $query = $entityManager->createQuery(
-            "SELECT r
-FROM App\Entity\Rating r
-INNER JOIN App\Entity\Series s
-WHERE r.series = s
-AND s.id = :id
-ORDER BY r.date DESC"
-        )->setParameter('id', $series->getId());
+        $rate = $request->query->get('rate') ?? null;
+
+        if($rate != null){
+            $query = $entityManager->createQuery(
+                "SELECT r
+                FROM App\Entity\Rating r
+                INNER JOIN App\Entity\Series s
+                WHERE r.series = s
+                AND s.id = :id
+                And r.value = :rate
+                ORDER BY r.date DESC")
+                ->setParameter('id', $series->getId())
+                ->setParameter('rate', $rate);
+        } else {
+            $query = $entityManager->createQuery(
+                "SELECT r
+                FROM App\Entity\Rating r
+                INNER JOIN App\Entity\Series s
+                WHERE r.series = s
+                AND s.id = :id
+                ORDER BY r.date DESC")
+                ->setParameter('id', $series->getId());
+        }
 
         $seriesRating = $paginator->paginate(
             $query,
