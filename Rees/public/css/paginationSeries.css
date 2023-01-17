@@ -14,6 +14,9 @@
     color: #fff;
     transition: all 0.3s ease-in-out;
 }
+.pagination span {
+    padding: 8px 8px;
+}
 
 /* Current page link */
 .pagination .current {

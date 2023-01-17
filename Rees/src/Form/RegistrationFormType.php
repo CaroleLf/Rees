@@ -48,8 +48,9 @@ class RegistrationFormType extends AbstractType
             ->add('name')
             ->add(
                 'captcha', CaptchaType::class, array(
-                'invalid_message' => "The captcha is invalid",
-                'label' => ' '
+                'invalid_message' => "Le captcha n'est pas valide",
+                'label' => ' ',
+                'text_color' => [255, 0, 0],
                 )
             );
     }

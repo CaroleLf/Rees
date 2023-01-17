@@ -9,7 +9,7 @@ body {
 
 
 /** header **/
-li {
+.itemList {
     list-style-type: none;
     color: white;
 
