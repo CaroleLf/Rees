@@ -17,6 +17,7 @@ main {
 }
 
 ul {
+    list-style: none;
     padding-left : 0;
     color: red;
 }
@@ -42,4 +43,9 @@ ul {
 
 .registration {
     color: #91D7F2; 
+}
+
+li {
+    color: red;
+    list-style: none;
 }
