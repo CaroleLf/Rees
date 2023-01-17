@@ -34,8 +34,9 @@
                     </td>
                 </div>
             {% endfor %}
-            {{ knp_pagination_render(start) }}
+            
         </div>
+        {{ knp_pagination_render(start) }}
         <h1 class="text-white" style="padding-top:10rem;"> Séries Finies </h1> 
         <div id="series" class="work_container container grid " style="padding-top:10rem;"> 
             {% for serieComplete in complete %}
@@ -57,8 +58,9 @@
 
                 </div>
             {% endfor %}
-            {{ knp_pagination_render(complete) }}
+            
         </div>
+        {{ knp_pagination_render(complete) }}
         <h1 class="text-white" style="padding-top:10rem;"> Ma watch list </h1> 
         <div id="series" class="work_container container grid " style="padding-top:10rem;"> 
             {% for serieLike in likes %}
@@ -79,8 +81,6 @@
                     </td>
                 </div>
             {% endfor %}
-            <div class="d-flex justify-content-center">
-                {{ knp_pagination_render(likes) }}
-            </div>
         </div>
+        {{ knp_pagination_render(likes) }}
 {% endblock %}
