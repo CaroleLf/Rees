@@ -18,14 +18,15 @@ class EpisodeType extends AbstractType
             ->add('imdbrating')
             ->add('number')
             ->add('season')
-            ->add('user')
-        ;
+            ->add('user');
     }
 
     public function configureOptions(OptionsResolver $resolver): void
     {
-        $resolver->setDefaults([
+        $resolver->setDefaults(
+            [
             'data_class' => Episode::class,
-        ]);
+            ]
+        );
     }
 }

@@ -10,7 +10,7 @@ li a{
     color: white;
     text-decoration: none;
 }
-.series {
+.personnalSeries {
     color :  #91D7F2;
 }
 
@@ -91,7 +91,7 @@ div.series__filter:hover  {
 }
 
 .searchBar {
-    margin-bottom: 2vh;
+
     margin-top: 15vh;
     margin-left: 4vh;
 }

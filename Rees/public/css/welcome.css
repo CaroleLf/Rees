@@ -1,4 +1,3 @@
-
 /** header **/
 .selectWindow {
     display: flex;
@@ -7,21 +6,33 @@
 
 }
 
+li a {
+    color: white;
+    text-decoration: none;
+}
+
 a {
     font-weight: bold;
 }
+
 .selectWindow h2 {
-    padding-left: 2vw;   
-    padding-right: 2vw; 
+    padding-left: 2vw;
+    padding-right: 2vw;
+}
+
+.welcome {
+    color :  #91D7F2;
+    text-decoration: none;
 }
 
 /** Arrow down **/
-.scroll-down{
+.scroll-down {
     position: absolute;
     bottom: 6%;
     right: 9%;
 }
-.scroll-down i{
+
+.scroll-down i {
     display: block;
     padding: 12px;
     font-size: 40px;
@@ -30,7 +41,8 @@ a {
     border-radius: 30px;
     transition: all .50s ease;
 }
-.scroll-down i:hover{
+
+.scroll-down i:hover {
     transform: translateY(-5px);
 }
 
@@ -50,17 +62,18 @@ main {
 
 main h1 {
     font-size: 4rem;
-    color : #ffffff;
-}
-main h2 {
-    font-size: 2rem;
-    color : rgb(255, 255, 255);
+    color: #ffffff;
 }
 
-.welcome , .societyName {
+main h2 {
+    font-size: 2rem;
+    color: rgb(255, 255, 255);
+}
+
+.welcome,
+.societyName {
     margin: 0 auto;
     max-width: 950px;
-    padding: 50px 0;
     position: relative;
     text-align: center;
     width: 100%;
@@ -72,8 +85,8 @@ main h2 {
     display: flex;
     padding: 0 19%;
     display: grid;
-    grid-template-columns: repeat(3,330px) ;
-    gap : 1.8rem;
+    grid-template-columns: repeat(3, 330px);
+    gap: 1.8rem;
     justify-content: center;
     padding-top: 1rem;
 }
@@ -81,7 +94,7 @@ main h2 {
 
 .series__filter {
     display: flex;
-    justify-content : center;
+    justify-content: center;
     align-items: center;
     column-gap: .75rem;
     margin-bottom: 2rem;
@@ -100,7 +113,7 @@ main h2 {
 }
 
 
-div.series__filter:hover  {
+div.series__filter:hover {
     -webkit-filter: grayscale(0);
     filter: grayscale(0);
 }
@@ -109,12 +122,16 @@ div.series__filter:hover  {
 
 .pag {
     flex-wrap: wrap;
-    
+
 }
 
 
 
-.page, .first , .previous, .next , .last { 
+.page,
+.first,
+.previous,
+.next,
+.last {
     margin: 0 7%;
 }
 
@@ -123,120 +140,123 @@ div.series__filter:hover  {
     color: #604174;
 }
 
-.pagination a{
+.pagination a {
     font-size: medium;
     color: white;
     text-decoration: none;
 }
 
 
-@media (max-width: 990px){
-    .pagination a{
+@media (max-width: 990px) {
+    .pagination a {
         font-size: medium;
         color: white;
         text-decoration: none;
     }
+
     main {
         display: flex;
     }
+
     #logoSociety {
         display: none;
     }
-    
+
     .work_container {
         display: grid;
-        grid-template-columns: repeat(2,330px) ;
-        gap : 1.8rem;
+        grid-template-columns: repeat(2, 330px);
+        gap: 1.8rem;
         justify-content: center;
         padding-top: 1rem;
     }
 }
 
-@media (max-width: 850px){
+@media (max-width: 850px) {
     .work_container {
         display: grid;
-        grid-template-columns: repeat(2,330px) ;
-        gap : 1.8rem;
+        grid-template-columns: repeat(2, 330px);
+        gap: 1.8rem;
         justify-content: center;
         padding-top: 1rem;
     }
 }
 
-@media (max-width: 500px){
+@media (max-width: 500px) {
     .work_container {
         display: grid;
-        grid-template-columns: repeat(1,330px) ;
-        gap : 1.8rem;
+        grid-template-columns: repeat(1, 330px);
+        gap: 1.8rem;
         justify-content: center;
         padding-top: 1rem;
     }
 }
 
-
-
-
-.pagination a{
+.pagination a {
     font-size: medium;
     color: white;
     text-decoration: none;
 }
 
-@media (max-width: 900px){
-    .pagination a{
+@media (max-width: 900px) {
+    .pagination a {
         font-size: medium;
         color: white;
         text-decoration: none;
     }
+
     main {
         display: flex;
     }
+
     #logoSociety {
         display: none;
     }
-    
+
     .work_container {
         display: grid;
-        grid-template-columns: repeat(2,330px) ;
-        gap : 1.8rem;
+        grid-template-columns: repeat(2, 330px);
+        gap: 1.8rem;
         justify-content: center;
         padding-top: 1rem;
     }
 }
 
-@media (max-width: 990px){
-    .pagination a{
+@media (max-width: 990px) {
+    .pagination a {
         font-size: medium;
         color: white;
         text-decoration: none;
     }
+    
     main {
         display: flex;
     }
+
     #logoSociety {
         display: none;
     }
-    
+
     .work_container {
         display: grid;
-        grid-template-columns: repeat(2,330px) ;
-        gap : 1.8rem;
+        grid-template-columns: repeat(2, 330px);
+        gap: 1.8rem;
         justify-content: center;
         padding-top: 1rem;
     }
 }
 
-@media (max-width: 850px){
+@media (max-width: 850px) {
     .work_container {
         display: grid;
-        grid-template-columns: repeat(1,330px) ;
-        gap : 1.8rem;
+        grid-template-columns: repeat(1, 330px);
+        gap: 1.8rem;
         justify-content: center;
         padding-top: 1rem;
     }
 }
 
-@media (max-width: 500px){
-    .pagination a{
+@media (max-width: 500px) {
+    .pagination a {
         font-size: large;
         color: white;
         text-decoration: none;
@@ -244,11 +264,9 @@ div.series__filter:hover  {
 
     .work_container {
         display: grid;
-        grid-template-columns: repeat(auto,330px) ;
-        gap : 1.8rem;
+        grid-template-columns: repeat(auto, 330px);
+        gap: 1.8rem;
         justify-content: center;
         padding-top: 1rem;
     }
 }
-
-

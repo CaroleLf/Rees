@@ -4,8 +4,10 @@ namespace App\Controller;
 
 use App\Entity\Episode;
 use App\Entity\Series;
+use App\Entity\Season;
 use App\Form\EpisodeType;
 use Doctrine\ORM\EntityManagerInterface;
+use Knp\Component\Pager\PaginatorInterface; 
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -29,12 +31,27 @@ class EpisodeController extends AbstractController
     }
 
     #[Route(['/tracked'], name: 'app_episode_tracked', methods: ['GET', 'POST'])]
-    public function tracked(): Response
+    public function tracked(EntityManagerInterface $entityManager, Request $request, PaginatorInterface $paginator): Response
     {
-        $user = $this->getUser();
+        $query = $entityManager->getRepository(Episode::class)
+        ->createQueryBuilder('e')
+        ->select('e')
+        ->join('e.user','u')
+        ->join('e.season','s')
+        ->join('s.series','se')
+        ->Where('u.id = :user')
+        ->orderBy('se.id, s.id, e.number')
+        ->setParameter('user', $this->getUser())
+        ->getQuery();
+        
+        $episodes = $paginator->paginate(
+            $query,
+            $request->query->getInt('page', 1), 
+            10 
+        );
         return $this->render(
             'episode/tracked/index.html.twig', [
-            'user' => $user
+            'episodes' => $episodes
             ]
         );
     }
@@ -94,13 +111,55 @@ class EpisodeController extends AbstractController
     #[Route('/{idEpisode}/watch', name: 'app_watch_add')]
     public function watch(Request $request, EntityManagerInterface $entityManager): Response
     {
+        
         $episodeId = $request->attributes->get('idEpisode');
         $episode = $entityManager->getRepository(Episode::class)->find($episodeId);
         $serie = $episode->getSeason()->getSeries();
+        if (!$this->getUser()->getSeries()->contains($serie)) {
+            $this->getUser()->addSeries($serie);
+        }
         $episode->addUser($this->getUser());
         $entityManager->flush();
+
+    
         return $this->redirectToRoute('app_series_show', ['id' => $serie->getId()]);
     }
+
+
+    #[Route('/{idSeason}/watchSeason', name: 'app_watchSeason_add')]
+    public function seasonWatch(Request $request, EntityManagerInterface $entityManager): Response
+    {
+        $season = $request->attributes->get('idSeason');
+        $episodes = $entityManager->getRepository(Episode::class)->findBy(['season' => $season]);
+        foreach ($episodes as $episode) {
+            $serie = $episode->getSeason()->getSeries();
+            if (!$this->getUser()->getSeries()->contains($serie)) {
+                $this->getUser()->addSeries($serie);
+            }
+            $episode->addUser($this->getUser());
+        }
+        $entityManager->flush();
+
+    
+        return $this->redirectToRoute('app_series_show', ['id' => $serie->getId()]);
+    }
+
+    #[Route('/{idSeason}/NoWatchSeason', name: 'app_WatchSeason_remove')]
+    public function seasonNoWatch(Request $request, EntityManagerInterface $entityManager): Response
+    {
+        $season = $request->attributes->get('idSeason');
+        $episodes = $entityManager->getRepository(Episode::class)->findBy(['season' => $season]);
+        foreach ($episodes as $episode) {
+            $serie = $episode->getSeason()->getSeries();
+            $episode->removeUser($this->getUser());
+
+        }
+        $entityManager->flush();
+
+    
+        return $this->redirectToRoute('app_series_show', ['id' => $serie->getId()]);
+    }
+
 
 
     #[Route('/{idEpisode}/unwatch', name: 'app_watch_remove')]
@@ -126,6 +185,37 @@ class EpisodeController extends AbstractController
         return $this->redirectToRoute('app_episode_index', [], Response::HTTP_SEE_OTHER);
     }
 
+    #[Route('/{numberPrevious}/{season}/watchPrevious', name: 'app_watch_previous_episodes')]
+    public function deleteRemovePrevious(Request $request, EntityManagerInterface $entityManager): Response
+    {
+        
+        $season = $request->attributes->get('season');
+        $season = $entityManager->getRepository(Season::class)->find($season);
+        $serie = $season->getSeries();
+        $episodeToAdd = $request->attributes->get('numberPrevious');
+        $episodes = $entityManager->createQueryBuilder()
+                                ->select('e')
+                                ->from(Episode::class, 'e')
+                                ->where('e.season = :season')
+                                ->andWhere('e.number >= :first')
+                                ->andWhere('e.number < :last')
+                                ->setParameter('season', $season)
+                                ->setParameter('first', 1)
+                                ->setParameter('last', $episodeToAdd)
+                                ->getQuery()
+                                ->getResult();
+
+        foreach ($episodes as $episode) {
+            if (!$this->getUser()->getSeries()->contains($serie)) {
+                $this->getUser()->addSeries($serie);
+            }
+            $episode->addUser($this->getUser());
+        }
+        $entityManager->flush();
+
+    
+        return $this->redirectToRoute('app_series_show', ['id' => $serie->getId()]);
+    }
 
 
 }

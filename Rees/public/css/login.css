@@ -1,3 +1,9 @@
+li a{
+    color: white;
+    text-decoration: none;
+}
+
+
 body {
     display: flex;
     align-items: center;
@@ -11,6 +17,11 @@ main {
     flex-direction: column;
 }
 
+
+
+.login {
+    color : #91D7F2;
+}
 ul {
     padding-left : 0;
     color: red;
@@ -32,4 +43,8 @@ ul {
     width : 400px;
     border-radius: 2.5rem !important;
     box-shadow: 0 0.1rem 1rem rgba(190, 124, 255, 0.64);
+}
+
+.custonHeight {
+    height: 10px;
 }
