@@ -30,44 +30,44 @@
 							<a class="ComeBackAdmin text-white text-decoration-none" href="{{ impersonation_exit_path(path('app_welcome')) }}">
 								Revenir en administrateur</a>
 						{% endif %}
-						<li>
+						<li class="itemList">
 							<a href="{{ path('app_welcome')}}" class="welcome  text-decoration-none">
 								Accueil</a>
 						</li>
 						{% if is_granted('ROLE_ADMIN') and not is_granted('ROLE_PREVIOUS_ADMIN') %}
-							<li>
+							<li class="itemList">
 								<a href="{{ path('app_admin')}}" class="ListUsers  text-decoration-none ">
 									Utilisateurs</a>
 							</li>
 						{% endif %}
-						<li>
+						<li class="itemList">
 							<a href="{{ path('app_series_index')}}" class="series  text-decoration-none">
 								Séries</a>
 						</li>
-						<li>
+						<li class="itemList">
 							<a href="{{ path('app_episode_tracked')}}" class="personalEpisodes text-decoration-none ">
 								Mes épisodes</a>
 						</li>
-						<li>
+						<li class="itemList">
 							<a href="{{ path('app_series_tracked')}}" class="personnalSeries  text-decoration-none ">
 								Mes séries</a>
 						</li>
-						<li>
+						<li class="itemList">
 							<a href="{{ path('app_logout') }} " class="logout text-white text-decoration-none ">Déconnexion</a>
 						</li>
 					{% else %}
-						<li>
+						<li class="itemList">
 							<a href="{{ path('app_welcome')}}" class="welcome  text-decoration-none">
 								Accueil</a>
 						</li>
-						<li>
+						<li class="itemList">
 							<a href="{{ path('app_series_index')}}" class=" series  text-decoration-none">
 								Les séries</a>
 						</li>
-						<li>
+						<li class="itemList">
 							<a href="{{ path('app_register') }}" class="registration  text-decoration-none">Inscription</a>
 						</li>
-						<li>
+						<li class="itemList">
 							<a href="{{ path('app_login') }}" class="login  text-decoration-none ">Connexion</a>
 						</li>
 					{% endif %}
