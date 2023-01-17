@@ -65,7 +65,7 @@ class SeriesController extends AbstractController
             ->from(Series::class, 's')
             ->where(
                 "(s.yearEnd >= :year_start and s.yearStart <= :year_end)
-or (s.yearEnd is null and s.yearStart <= :year_end and s.yearStart >= :year_start)"
+                or (s.yearEnd is null and s.yearStart <= :year_end and s.yearStart >= :year_start)"
             )
             ->setParameter('year_start', $yearStart)
             ->setParameter('year_end', $yearEnd);
@@ -98,19 +98,24 @@ or (s.yearEnd is null and s.yearStart <= :year_end and s.yearStart >= :year_star
             if ($maxUserRating == null) {
                 $maxUserRating = 5;
             }
-            $queryBuilder->innerJoin(Rating::class, 'r', JOIN::WITH, 'r.series = s')
-                ->andHaving('AVG(r.value) >= :minUserRating AND AVG(r.value) <= :maxUserRating')
-                ->setParameter('minUserRating', $minUserRating)
-                ->setParameter('maxUserRating', $maxUserRating);
+            if ($minUserRating > -1 && $maxUserRating > -1 && $minUserRating <= $maxUserRating) {
+                $queryBuilder->innerJoin(Rating::class, 'r', JOIN::WITH, 'r.series = s')
+                    ->groupBy('s.id')
+                    ->having('AVG(r.value) >= :minUserRating AND AVG(r.value) <= :maxUserRating')
+                    ->setParameter('minUserRating', $minUserRating)
+                    ->setParameter('maxUserRating', $maxUserRating);
+            }
         }
-        
+
+
         $series = $queryBuilder->getQuery();
 
         // Posts
         $series = $paginator->paginate(
             $series,
             $request->query->getInt('page', 1),
-            10
+            10,
+            array('wrap-queries' => true)
         );
 
         return $this->render(
@@ -186,25 +191,25 @@ or (s.yearEnd is null and s.yearStart <= :year_end and s.yearStart >= :year_star
                     array_push($seriesStart, $serie);
                 }
             }
-            
+
             $seriesJustLike = $paginator->paginate(
                 $seriesJustLike,
-                $request->query->getInt('page', 1), 
-                10 
+                $request->query->getInt('page', 1),
+                10
             );
 
             $seriesStart = $paginator->paginate(
                 $seriesStart,
-                $request->query->getInt('pageStart', 1), 
+                $request->query->getInt('pageStart', 1),
                 10,
-                ['pageParameterName' => 'pageStart'] 
-            );            
-            
+                ['pageParameterName' => 'pageStart']
+            );
+
             $seriesComplete = $paginator->paginate(
                 $seriesComplete,
-                $request->query->getInt('pageComplete', 1), 
+                $request->query->getInt('pageComplete', 1),
                 10,
-                ['pageParameterName' => 'pageComplete']  
+                ['pageParameterName' => 'pageComplete']
             );
 
 
@@ -235,14 +240,29 @@ or (s.yearEnd is null and s.yearStart <= :year_end and s.yearStart >= :year_star
             ->getQuery()
             ->getResult();
 
-        $query = $entityManager->createQuery(
-            "SELECT r
-FROM App\Entity\Rating r
-INNER JOIN App\Entity\Series s
-WHERE r.series = s
-AND s.id = :id
-ORDER BY r.date DESC"
-        )->setParameter('id', $series->getId());
+        $rate = $request->query->get('rate') ?? null;
+
+        if($rate != null){
+            $query = $entityManager->createQuery(
+                "SELECT r
+                FROM App\Entity\Rating r
+                INNER JOIN App\Entity\Series s
+                WHERE r.series = s
+                AND s.id = :id
+                And r.value = :rate
+                ORDER BY r.date DESC")
+                ->setParameter('id', $series->getId())
+                ->setParameter('rate', $rate);
+        } else {
+            $query = $entityManager->createQuery(
+                "SELECT r
+                FROM App\Entity\Rating r
+                INNER JOIN App\Entity\Series s
+                WHERE r.series = s
+                AND s.id = :id
+                ORDER BY r.date DESC")
+                ->setParameter('id', $series->getId());
+        }
 
         $seriesRating = $paginator->paginate(
             $query,

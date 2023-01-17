@@ -92,13 +92,27 @@ class UserController extends AbstractController
     //#[IsGranted('ROLE_ADMIN')]
     public function show(EntityManagerInterface $entityManager,User $user, Request $request, PaginatorInterface $paginator): Response
     {
-        $query = $entityManager->createQuery(
-            "SELECT r
-            FROM App\Entity\Rating r
-            INNER JOIN App\Entity\User u
-            WHERE r.user = u
-            AND u.id = :id"
-        )->setParameter('id', $user->getId());
+        $rate = $request->query->get('rate') ?? null;
+
+        if($rate != null){
+            $query = $entityManager->createQuery(
+                "SELECT r
+                FROM App\Entity\Rating r
+                INNER JOIN App\Entity\User u
+                WHERE r.user = u
+                AND u.id = :id
+                And r.value = :rate")
+                ->setParameter('id', $user->getId())
+                ->setParameter('rate', $rate);
+        } else {
+            $query = $entityManager->createQuery(
+                    "SELECT r
+                    FROM App\Entity\Rating r
+                    INNER JOIN App\Entity\User u
+                    WHERE r.user = u
+                    AND u.id = :id"
+                )->setParameter('id', $user->getId());
+        }
 
         $ratedSeries = $paginator->paginate(
             $query,
@@ -130,7 +144,7 @@ class UserController extends AbstractController
             ]
         );
     }
-   
+
     #[Route('/{id}/edit', name: 'app_user_edit', methods: ['GET', 'POST'])]
     //#[IsGranted('ROLE_ADMIN')]
     public function edit(Request $request, User $user, EntityManagerInterface $entityManager): Response
