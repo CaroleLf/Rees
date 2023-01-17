@@ -77,6 +77,12 @@ Veuillez compléter cette ligne de la manière suivante :
 DATABASE_URL=mysql://***nom_de_l'utilisateur*** :***mot_de_passe***@info-titania:3306/***nom_de_la_base***
 
 Vous pourrez ainsi utiliser votre base de donnée pour votre projet symfony.
+
+Comme le projet a initialement besoin de faire une légère modification sur la base de donnée, vous aurez besoin d'écrire dans votre terminal la commande suivante (vous pouvez aussi utiliser cette commande si vous la modifiez) :
+
+```
+symfony console doctrine:schema:update --force
+```
 ___
 
 ## Nomage d'un administrateur 
