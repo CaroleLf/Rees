@@ -162,10 +162,10 @@ class Episode
         return $this->title;
     }
 
-    public function isWatchByUser(User $user): bool
+    public function isWatchByUser(): bool
     {
         foreach ($this->user as $userWatch) {
-            if ($userWatch->getId() === $user->getId()) {
+            if ($userWatch->getId() === $this->getId()) {
                 return true;
             }
         }
