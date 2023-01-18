@@ -1,4 +1,7 @@
-
+body {
+    max-width: 90vw;
+    margin: 0 auto;
+}
 .nav-link  {
     color: white;
     text-decoration: none;
@@ -13,16 +16,7 @@ main {
     margin-top: 15vh;
 }
 
-
 /** Series display **/
-.work_container {
-    padding: 0 19%;
-    display: grid;
-    grid-template-columns: repeat(5,330px) ;
-    gap : 1.8rem;
-    justify-content: center;
-}
-
 
 .series__filter {
     display: flex;
@@ -77,7 +71,6 @@ div.series__filter:hover  {
 
 /** Series display **/
 .work_container {
-    padding: 0 5%;
     display: grid;
     grid-template-columns: repeat(5,330px) ;
     gap : 1.8rem;

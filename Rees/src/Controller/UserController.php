@@ -55,6 +55,7 @@ class UserController extends AbstractController
             ->select('s')
             ->from(User::class, 's')
             ->Where("s.email LIKE :mail")
+            ->orderBy('s.registerDate', 'DESC')
             ->setParameter('mail', "%$mailAdress%");
 
         $query = $queryBuilder->getQuery();
