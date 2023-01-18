@@ -2,10 +2,8 @@ main {
     margin-top: 15vh;
 }
 
-.nav-link  {
-    color: white;
-    text-decoration: none;
-
+.work_container {
+    padding: 0 0;
 }
 
 .allGenre {
