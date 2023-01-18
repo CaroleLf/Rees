@@ -22,8 +22,8 @@
 
 			<div class="scrollbar"></div>
 			<div class="clickScrollbar"></div>
-			<nav class="nav navbar navbar-expand-lg navbar-dark bg-transparence position-fixed">
-				<a class="navbar-brand" href="{{ path('app_welcome')}}">Rees</a>
+			<nav class="nav navbar navbar-expand-lg bg-transparence position-fixed">
+				<a class="navbar-brand text-white" href="{{ path('app_welcome')}}">Rees</a>
 				<button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
 					<span class="navbar-toggler-icon"></span>
 				</button>
@@ -32,61 +32,61 @@
 						{% if app.user %}
 							{% if is_granted('ROLE_PREVIOUS_ADMIN') %}
 								<li class="nav-item active m-1 text-center">
-									<a class=" text-end ComeBackAdmin nav-link text-white text-decoration-none" href="{{ impersonation_exit_path(path('app_welcome')) }}">
+									<a class=" text-end ComeBackAdmin nav-link  text-white  text-decoration-none" href="{{ impersonation_exit_path(path('app_welcome')) }}">
 									Revenir en administrateur
 									</a>
 								</li>
 							{% endif %}
 							<li class="nav-item active m-1">
-								<a  href="{{ path('app_welcome')}}" class="welcome nav-link text-white text-decoration-none">
+								<a  href="{{ path('app_welcome')}}" class="welcome nav-link  text-decoration-none">
 									Accueil
 								</a>
 							</li>
 							<li class="nav-item active m-1">
-								<a  href="{{ path('app_user_show', {'id' : app.user.id} )}}" class="profil nav-link text-white text-decoration-none">
+								<a  href="{{ path('app_user_show', {'id' : app.user.id} )}}" class="profil nav-link  text-decoration-none">
 									Mon profil
 								</a>
 							</li>
 							{% if is_granted('ROLE_ADMIN') and not is_granted('ROLE_PREVIOUS_ADMIN') %}
-								<li class="nav-item active text-white m-1">
-									<a href="{{ path('app_admin')}}" class="ListUsers nav-link text-white text-decoration-none ">
+								<li class="nav-item active  m-1">
+									<a href="{{ path('app_admin')}}" class="ListUsers nav-link  text-decoration-none ">
 										Utilisateurs
 									</a>
 								</li>
 							{% endif %}
 								<li class="nav-item active m-1" >
-									<a  href="{{ path('app_series_index')}}" class="nav-link series  text-white text-decoration-none">
+									<a  href="{{ path('app_series_index')}}" class="nav-link series   text-decoration-none">
 											Séries
 									</a>
 								</li>
 								<li class="nav-item active m-1" >
-									<a href="{{ path('app_episode_tracked')}}" class="personalEpisodes nav-link text-white text-decoration-none ">
+									<a href="{{ path('app_episode_tracked')}}" class="personalEpisodes nav-link  text-decoration-none ">
 										Mes épisodes
 									</a>
 								</li>
 								<li class="nav-item active m-1">
-									<a  href="{{ path('app_series_tracked')}}" class="personnalSeries text-white nav-link text-decoration-none ">
+									<a  href="{{ path('app_series_tracked')}}" class="personnalSeries  nav-link text-decoration-none ">
 											Mes séries</a>
 								</li>
 								<li class="nav-item active m-1">
-									<a  href="{{ path('app_logout') }} " class="logout nav-link text-white text-decoration-none ">Déconnexion</a>
+									<a  href="{{ path('app_logout') }} " class="logout nav-link  text-decoration-none ">Déconnexion</a>
 								</li>
 						{% else %}
 							<li class="nav-item active m-1">
-								<a  href="{{ path('app_welcome')}}" class="welcome nav-link text-white text-decoration-none">
+								<a  href="{{ path('app_welcome')}}" class="welcome nav-link  text-decoration-none">
 									Accueil
 								</a>
 							</li>
 							<li class="nav-item active m-1">
-								<a  href="{{ path('app_series_index')}}" class=" series  nav-link text-white text-decoration-none">
+								<a  href="{{ path('app_series_index')}}" class=" series  nav-link  text-decoration-none">
 									Les séries
 								</a>
 							</li>
 							<li class="nav-item active m-1"> 
-								<a  href="{{ path('app_register') }}" class="registration nav-link text-white text-decoration-none">Inscription</a>
+								<a  href="{{ path('app_register') }}" class="registration nav-link  text-decoration-none">Inscription</a>
 							</li>
 							<li class="nav-item active m-1">
-								<a   href="{{ path('app_login') }}" class="login nav-link  text-white text-decoration-none ">Connexion</a>
+								<a   href="{{ path('app_login') }}" class="login nav-link   text-decoration-none ">Connexion</a>
 							</li>
 						{% endif %}
 					</ul>

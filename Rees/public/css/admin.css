@@ -2,6 +2,13 @@
     border: none;
     color: white;
 }
+
+
+.nav-link  {
+    color: white;
+    text-decoration: none;
+
+}
 li a{
     color: white;
     text-decoration: none;
