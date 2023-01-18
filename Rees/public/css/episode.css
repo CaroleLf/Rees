@@ -32,6 +32,10 @@ main {
     align-content: center;
 }   
 
+.pagination {
+    display: flex ;
+    flex-wrap: wrap;
+}
 
 tr,td {
     margin: 0%;

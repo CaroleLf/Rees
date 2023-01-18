@@ -37,6 +37,9 @@ class EpisodeController extends AbstractController
         Request $request,
         PaginatorInterface $paginator
     ): Response {
+        if ($this->getUser() == null) {
+            return $this->redirectToRoute('app_login');
+        }
         $query = $entityManager->getRepository(Episode::class)
         ->createQueryBuilder('e')
         ->select('e')
