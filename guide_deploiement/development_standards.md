@@ -26,10 +26,6 @@ Nous avons décider de respecter la norme  PSR-12 qui est un ensemble de directi
 Symfony check:security : permet de vérifier les failles de sécuritées
     - Vérifie le fichier composer.lock des dépendances installées 
 
-PhpStan :  PHPStan analyse l'ensemble de votre base de code     et  recherche les bogues les plus évidents et les plus délicats. 
-
-Twigcs : Il vérifie la base de code pour les violations des normes de codage.
-
 PHPCodeSniffer : 
 - PHP_CodeSniffer est un ensemble de deux scripts PHP ;   </br>
 - Le script principal phpcs qui tokenise les fichiers PHP, JavaScript et CSS pour détecter les violations d'une norme de codage définie. </br>
