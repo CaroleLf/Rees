@@ -160,6 +160,10 @@ class SeriesController extends AbstractController
         PaginatorInterface $paginator
     ): Response {
         $user = $this->getUser();
+        if ($user == null) {
+            return $this->redirectToRoute('app_login');
+        }
+        
         if ($user != null) {
             $userid = $user->getId();
             $userSeries = $user->getSeries();

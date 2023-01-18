@@ -1,17 +1,6 @@
 <?php
 
-/**
- * Security Controller Class Doc Comment
- *
- * @category Class
- * @package  Controller
- * @author   ReesTeam <reesTeam@gmail.com>
- * @license  GPL-2.0+
- * @version  8.2.1
- * @author   "Rees' Team"
- *
- * @link
- */
+
 
 namespace App\Controller;
 
@@ -21,13 +10,7 @@ use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Http\Authentication\AuthenticationUtils;
 use Symfony\Bundle\SecurityBundle\Security;
 
-/**
- * SecurityController handles all actions related to user authentication and authorization.
- *
- * @author  ReesTeam
- * @version 8.2.1
- *
- */
+
 class SecurityController extends AbstractController
 {
     #[Route(path: '/login', name: 'app_login')]
