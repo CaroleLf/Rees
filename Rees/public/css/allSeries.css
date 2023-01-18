@@ -99,7 +99,9 @@ div.series__filter:hover  {
     margin-left: 4vh;
 }
 
-
+.navbar-toggler-icon {
+    color : white;
+}
 
 @media screen and  (max-width: 1800px){
     
