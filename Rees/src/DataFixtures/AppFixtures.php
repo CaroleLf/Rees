@@ -27,6 +27,7 @@ class AppFixtures extends Fixture
              $usersToCreate[$i]->setEmail($this->faker->email);
              $usersToCreate[$i]->setPassword($this->faker->password);
              $usersToCreate[$i]->setAdmin(0);
+             $usersToCreate[$i]->setRegisterDate(new DateTime('now'));
              $manager->persist($usersToCreate[$i]);
         }
         $users = $manager->getRepository(User::class)->findAll();
