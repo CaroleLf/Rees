@@ -5,8 +5,7 @@
 ### Membres de l'équipe : El Mesaoudi Meftah Younes, Le Flohic Carole, Crispel Clément, Noyer Émilien, Briend Donovan
 
 ## Pour le développement de notre application, nous allons utiliser les standards de développement suivants : 
-Nous avons décider de respecter la norme  PSR-12 qui est un ensemble de directives de style de codage pour PHP. Il s'appuie sur PSR-1 (Basic Coding Standard) et PSR-2 (Coding Style Guide) et ajoute des recommandations supplémentaires concernant les conventions de nommage, l'indentation et d'autres détails. Voici les points clés de PSR-12 :
-
+Nous avons décidé de respecter la norme PSR-12, qui est un ensemble de directives de style de codage pour PHP. Il s'appuie sur PSR-1 (Basic Coding Standard) et PSR-2 (Coding Style Guide), et ajoute des recommandations supplémentaires concernant les conventions de nommage, l'indentation et d'autres détails. Voici les points clés de PSR-12 :
 
 - Les noms de fichiers doivent utiliser uniquement des lettres minuscules et des traits d'union, avec une extension de fichier .php.
 - Les espaces de nommage doivent être en majuscules (PascalCase) et les classes en minuscules (CamelCase).
@@ -23,8 +22,12 @@ Nous avons décider de respecter la norme  PSR-12 qui est un ensemble de directi
 
 ## Les outils choisies pour tester nos standards 
 
-Symfony check:security : permet de vérifier les failles de sécuritées
-    - Vérifie le fichier composer.lock des dépendances installées 
+```
+Symfony check:security 
+```
+ permet de vérifier les failles de sécurité.
+ 
+ Vérifie le fichier composer.lock des dépendances installées 
 
 PHPCodeSniffer : 
 - PHP_CodeSniffer est un ensemble de deux scripts PHP ;   </br>
@@ -32,11 +35,14 @@ PHPCodeSniffer :
 - Un second script phpcbf pour corriger automatiquement les violations de la norme de codage.   </br>
 - PHP_CodeSniffer est un outil de développement essentiel qui garantit que votre code reste propre et cohérent.  </br>
 
-## Les commandes à effectuées pour tester nos standards 
+## Les commandes à effectuer pour tester nos standards 
 
 Symfony security : 
-  - symfony check:security 
-
+```
+symfony check:security 
+```
 PHPCodeSniffer : 
+```
 -vendor/bin/phpcbf -v --standard=PSR12 src/
+```
 
