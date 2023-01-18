@@ -18,7 +18,6 @@ use Symfony\Component\Console\Question\Question;
 )]
 class AdministrationManageCommand extends Command
 {
-
     protected static $defaultName = 'administration:manage';
 
     private $entityManager;
@@ -39,7 +38,9 @@ class AdministrationManageCommand extends Command
         $users = $this->entityManager->getRepository(User::class)->findAll();
         $output->writeln("<comment>-- ALL USERS IN THE DATABASE --</comment>");
         foreach ($users as $user) {
-            $output->writeln("<comment>USER -> ID: " . $user->getId() . " | E-mail address: " . $user->getEmail() . " | Name: " . $user->getName() . " | Is administrator: " . ($user->isAdmin() ? "yes" : "no") . "</comment>\n");
+            $output->writeln("<comment>USER -> ID: " . $user->getId() . " | E-mail address: " . $user->getEmail() .
+            " | Name: " . $user->getName() .
+            " | Is administrator: " . ($user->isAdmin() ? "yes" : "no") . "</comment>\n");
         }
 
         // Interactive questions
@@ -56,16 +57,14 @@ class AdministrationManageCommand extends Command
                 if ($promote == 'y') {
                     $isAdmin = 1;
                     $outputMsg = "\n<info>User successfully promoted to administrator.</info>";
-                }
-                else if ($promote == 'n') {
+                } elseif ($promote == 'n') {
                     $isAdmin = 0;
                     $outputMsg = "\n<info>Administrator successfully retrograted to user.</info>";
-                }
-                else {
+                } else {
                     $output->writeln("\n<error>[ERROR] Promotion value incorrect.</error>");
                     return Command::FAILURE;
                 }
-    
+
                 // SQL
                 $sql = "UPDATE user SET admin = :is_admin WHERE id = :id;";
                 $statement = $this->entityManager->getConnection()->prepare($sql);

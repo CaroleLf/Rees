@@ -5,9 +5,9 @@
      <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
 	<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-alpha1/dist/css/bootstrap.min.css">
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
-    <link href="{{ asset('/css/allSeries.css') }}" type="text/css" rel="stylesheet">  
-    <link href="{{ asset('/css/mySeries.css') }}" type="text/css" rel="stylesheet">  
     <link href="{{ asset('/css/paginationSeries.css') }}" type="text/css" rel="stylesheet">  
+    <link href="{{ asset('/css/myProfil.css') }}" type="text/css" rel="stylesheet">   
+
 {% endblock %}
 {% block body %}
  {{ parent()  }}
@@ -102,9 +102,9 @@
     </div>
     {% if user.series != null %}
         <h1>Ses Séries</h1>
-        <div id="series" class="work_container j grid " style="padding-top:10rem;"> 
+        <div id="series" class="work_container grid " style="padding-top:10rem;"> 
             {% for serie in series %}
-                <div class=" d-block p-2  text-white">
+                <div class=" d-flex flex-column text-white">
                     <td> 
                         <div class="series__filter AllPoster"> 
                             <a href="{{ path('app_series_show', {'id': serie.id}) }}">

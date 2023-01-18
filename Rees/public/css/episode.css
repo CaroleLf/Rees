@@ -2,9 +2,11 @@
     border: none;
     color: white;
 }
-li a{
+
+.nav-link  {
     color: white;
     text-decoration: none;
+
 }
 .personalEpisodes{
     color :  #91D7F2;
@@ -32,6 +34,10 @@ main {
     align-content: center;
 }   
 
+.pagination {
+    display: flex ;
+    flex-wrap: wrap;
+}
 
 tr,td {
     margin: 0%;

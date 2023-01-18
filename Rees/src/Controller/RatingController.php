@@ -22,7 +22,8 @@ class RatingController extends AbstractController
             ->findAll();
 
         return $this->render(
-            'rating/index.html.twig', [
+            'rating/index.html.twig',
+            [
             'ratings' => $ratings,
             ]
         );
@@ -31,6 +32,7 @@ class RatingController extends AbstractController
     #[Route('/new', name: 'app_rating_new', methods: ['GET', 'POST'])]
     public function new(Request $request, EntityManagerInterface $entityManager): Response
     {
+
         $serie = $entityManager
             ->getRepository(Series::class)
             ->findOneBy(['id' => $request->query->getInt('id')]);
@@ -39,7 +41,7 @@ class RatingController extends AbstractController
             ->getRepository(Rating::class)
             ->findOneBy(['user' => $this->getUser(),'series' => $serie]);
 
-        if($haveRate == null) {
+        if ($haveRate == null) {
             $rating = new Rating();
             $form = $this->createForm(RatingType::class, $rating);
             $form->handleRequest($request);
@@ -49,11 +51,17 @@ class RatingController extends AbstractController
                 $rating->setSeries($serie);
                 $entityManager->persist($rating);
                 $entityManager->flush();
-                return $this->redirectToRoute('app_series_show', ['id'  => $rating->getSeries()->getId()], Response::HTTP_SEE_OTHER);
+                return
+                $this->redirectToRoute(
+                    'app_series_show',
+                    ['id'  => $rating->getSeries()->getId()],
+                    Response::HTTP_SEE_OTHER
+                );
             }
 
             return $this->renderForm(
-                'rating/new.html.twig', [
+                'rating/new.html.twig',
+                [
                 'rating' => $rating,
                 'form' => $form,
                 ]
@@ -61,7 +69,8 @@ class RatingController extends AbstractController
         }
 
         return $this->redirectToRoute(
-            'app_series_show', [
+            'app_series_show',
+            [
             'id' => $request->query->getInt('id')
             ]
         );
@@ -71,27 +80,37 @@ class RatingController extends AbstractController
     public function show(Rating $rating): Response
     {
         return $this->render(
-            'rating/show.html.twig', [
+            'rating/show.html.twig',
+            [
             'rating' => $rating,
             ]
         );
     }
 
     #[Route('/{id}/edit', name: 'app_rating_edit', methods: ['GET', 'POST'])]
-    public function edit(Request $request, Rating $rating, EntityManagerInterface $entityManager): Response
-    {
+    public function edit(
+        Request $request,
+        Rating $rating,
+        EntityManagerInterface $entityManager
+    ): Response {
         $form = $this->createForm(RatingType::class, $rating);
         $form->handleRequest($request);
-
+        if ($user == null) {
+            return $this->redirectToRoute('app_login');
+        }
         if ($form->isSubmitted() && $form->isValid()) {
             $rating->setDate(new \DateTime());
             $entityManager->flush();
-
-            return $this->redirectToRoute('app_series_show', ['id'  => $rating->getSeries()->getId()], Response::HTTP_SEE_OTHER);
+            return $this->redirectToRoute(
+                'app_series_show',
+                ['id'  => $rating->getSeries()->getId()],
+                Response::HTTP_SEE_OTHER
+            );
         }
 
         return $this->renderForm(
-            'rating/edit.html.twig', [
+            'rating/edit.html.twig',
+            [
             'rating' => $rating,
             'form' => $form,
             ]
@@ -99,13 +118,19 @@ class RatingController extends AbstractController
     }
 
     #[Route('/{id}', name: 'app_rating_delete', methods: ['POST'])]
-    public function delete(Request $request, Rating $rating, EntityManagerInterface $entityManager): Response
-    {
-        if ($this->isCsrfTokenValid('delete'.$rating->getId(), $request->request->get('_token'))) {
+    public function delete(
+        Request $request,
+        Rating $rating,
+        EntityManagerInterface $entityManager
+    ): Response {
+        if ($this->isCsrfTokenValid('delete' . $rating->getId(), $request->request->get('_token'))) {
             $entityManager->remove($rating);
             $entityManager->flush();
         }
-
-        return $this->redirectToRoute('app_series_show', ['id'  => $rating->getSeries()->getId()], Response::HTTP_SEE_OTHER);
+        return $this->redirectToRoute(
+            'app_series_show',
+            ['id'  => $rating->getSeries()->getId()],
+            Response::HTTP_SEE_OTHER
+        );
     }
 }

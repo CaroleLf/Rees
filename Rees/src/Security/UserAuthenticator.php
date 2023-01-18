@@ -1,14 +1,5 @@
 <?php
-/**
- * User Authenticator
- *
- * @package Security
- * @author  Rees' Team <reesTeam@gmail.com>
- * @license GPL-2.0+
- * @link test
- * Description: Plugin allows to use post's custom fields values in permalink structure by adding %field_fieldname%, for posts, pages and custom post types.
- * Author: Rees' Team
- */
+
 namespace App\Security;
 
 use Symfony\Component\HttpFoundation\RedirectResponse;
@@ -45,20 +36,23 @@ class UserAuthenticator extends AbstractLoginFormAuthenticator
             new PasswordCredentials($request->request->get('password', '')),
             [
                 new CsrfTokenBadge(
-                    'authenticate', 
+                    'authenticate',
                     $request->request->get('_csrf_token')
                 ),
             ]
         );
     }
 
-    public function onAuthenticationSuccess(Request $request, 
-        TokenInterface $token, string $firewallName
+    public function onAuthenticationSuccess(
+        Request $request,
+        TokenInterface $token,
+        string $firewallName
     ): ?Response {
-        if ($targetPath = $this->getTargetPath(
-            $request->getSession(),
-            $firewallName
-        )
+        if (
+            $targetPath = $this->getTargetPath(
+                $request->getSession(),
+                $firewallName
+            )
         ) {
             return new RedirectResponse($targetPath);
         }

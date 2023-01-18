@@ -10,7 +10,6 @@ use App\Entity\Series;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Security\Http\Event\SwitchUserEvent;
 
-
 class WelcomeController extends AbstractController
 {
     #[Route('/', name: 'app_welcome')]

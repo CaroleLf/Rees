@@ -5,32 +5,29 @@
 ### Membres de l'équipe : El Mesaoudi Meftah Younes, Le Flohic Carole, Crispel Clément, Noyer Émilien, Briend Donovan
 
 ## Pour le développement de notre application, nous allons utiliser les standards de développement suivants : 
-- code (noms des variables et fonctions en anglais) ;
-- éviter les "grands" commits ;
-- supprimer les branches inutiles ;
-- au moins 1 branche par User Story ;
-- notation : camel case ;
-- dépôt GitLab en anglais (commits, issues…) ;
-- charte graphique prédéfinie :
-  - couleurs : white, #be7cff, #ffffff, #000000, #292929, #604174, #302336, #91d7f2 ;
-  - police d’écriture : Verdana, sans-serif ;
-  - apparence des pages Web prédéfinie selon des maquettes ;
-- Architecture MVC (modèle-vue-contrôleur) ;
-- Tabulation de 4 caractères ;
-- Variable de sécurité préfixé par un underscore
-- variables contenant des informations importantes, alors utilisation de la méthode
-POST (exemple : variables contenant des informations que seul
-l'administrateur peut avoir accès).
+Nous avons décidé de respecter la norme PSR-12, qui est un ensemble de directives de style de codage pour PHP. Il s'appuie sur PSR-1 (Basic Coding Standard) et PSR-2 (Coding Style Guide), et ajoute des recommandations supplémentaires concernant les conventions de nommage, l'indentation et d'autres détails. Voici les points clés de PSR-12 :
+
+- Les noms de fichiers doivent utiliser uniquement des lettres minuscules et des traits d'union, avec une extension de fichier .php.
+- Les espaces de nommage doivent être en majuscules (PascalCase) et les classes en minuscules (CamelCase).
+- Les constantes, propriétés et méthodes des classes doivent être en minuscules (camelCase).
+- L'indentation doit être de 4 espaces, sans tabulation.
+- Il doit y avoir une ligne vide après la déclaration de l'espace de noms et une ligne vide avant la définition de la classe.
+- Il doit y avoir une ligne vierge entre les méthodes d'une classe.
+- Les accolades doivent être sur la même ligne que la déclaration à laquelle elles sont associées.
+- Il ne doit pas y avoir d'espace à la fin d'une ligne.
+- Utilisez des guillemets simples pour les chaînes de caractères, sauf si vous devez utiliser une variable dans la chaîne ou si vous devez échapper à un guillemet simple.
+- Un espace doit être ajouté après le mot clé de structure de contrôle et avant la parenthèse ouvrante, et il ne doit pas y avoir d'espace entre la parenthèse fermante et l'accolade ouvrante.
+
 
 
 ## Les outils choisies pour tester nos standards 
 
-Symfony check:security : permet de vérifier les failles de sécuritées
-    - Vérifie le fichier composer.lock des dépendances installées 
-
-PhpStan :  PHPStan analyse l'ensemble de votre base de code     et  recherche les bogues les plus évidents et les plus délicats. 
-
-Twigcs : Il vérifie la base de code pour les violations des normes de codage.
+```
+Symfony check:security 
+```
+ permet de vérifier les failles de sécurité.
+ 
+ Vérifie le fichier composer.lock des dépendances installées 
 
 PHPCodeSniffer : 
 - PHP_CodeSniffer est un ensemble de deux scripts PHP ;   </br>
@@ -38,18 +35,14 @@ PHPCodeSniffer :
 - Un second script phpcbf pour corriger automatiquement les violations de la norme de codage.   </br>
 - PHP_CodeSniffer est un outil de développement essentiel qui garantit que votre code reste propre et cohérent.  </br>
 
-## Les commandes à effectuées pour tester nos standards 
+## Les commandes à effectuer pour tester nos standards 
 
 Symfony security : 
-  - symfony check:security 
-
-PhpStan : 
-  - vendor/bin/phpstan analyse le/chemin/de/votre/choix
-
-Twigcs : 
-  - vendor/bin/twigcs le/chemin/de/votre/choix
-
+```
+symfony check:security 
+```
 PHPCodeSniffer : 
-  <p> <b> Code Correcteur : </b></p>
-- vendor/bin/phpcs src/Controller/
+```
+-vendor/bin/phpcbf -v --standard=PSR12 src/
+```
 

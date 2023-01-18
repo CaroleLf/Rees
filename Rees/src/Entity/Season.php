@@ -5,7 +5,8 @@ namespace App\Entity;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Table(
-    name: "season", indexes: [
+    name: "season",
+    indexes: [
     new ORM\Index(name: "IDX_F0E45BA95278319C", columns: ["series_id"])
     ]
 )]
@@ -45,13 +46,11 @@ class Season
     {
         return $this->series;
     }
-    
+
     public function setSeries(?Series $series): self
     {
         $this->series = $series;
 
         return $this;
     }
-
-
 }
