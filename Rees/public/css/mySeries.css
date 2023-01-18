@@ -2,6 +2,9 @@ main {
     margin-top: 15vh;
 }
 
+.work_container {
+    padding: 0 0;
+}
 
 .allGenre {
     max-width: 330px;
