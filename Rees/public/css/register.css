@@ -2,9 +2,11 @@ body {
     align-items: center;
 }
 
-li a{
+
+.nav-link  {
     color: white;
     text-decoration: none;
+
 }
 main {
     width: 100%;

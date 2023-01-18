@@ -6,9 +6,10 @@
 
 }
 
-li a{
+.nav-link  {
     color: white;
     text-decoration: none;
+
 }
 .series {
     color :  #91D7F2;
