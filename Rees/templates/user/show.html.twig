@@ -102,9 +102,9 @@
     </div>
     {% if user.series != null %}
         <h1>Ses Séries</h1>
-        <div id="series" class="work_container container grid " style="padding-top:10rem;"> 
+        <div id="series" class="work_container grid " style="padding-top:10rem;"> 
             {% for serie in series %}
-                <div class=" d-block p-2  text-white">
+                <div class=" d-flex flex-column text-white">
                     <td> 
                         <div class="series__filter AllPoster"> 
                             <a href="{{ path('app_series_show', {'id': serie.id}) }}">
