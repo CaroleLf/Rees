@@ -308,7 +308,7 @@
 									{% endfor %}
 								</tbody>
 							</table>
-							<form class="searchBar text-white d-flex flex-row align-items-center w-auto h-auto"  method="get" action="{{ path('app_series_show', {'id': series.id})}}">
+							<form class="searchBar text-white d-flex flex-row align-items-center m-5 w-auto h-auto"  method="get" action="{{ path('app_series_show', {'id': series.id})}}">
 								<div class="d-flex flex-column align-items-center">
 									<label class="m-2 w-auto" >Note :</label>
 									<select class="form-control m-2  w-auto" data-mdb-filter="true" name="rate">
@@ -340,7 +340,7 @@
 	<footer>
 		<div class="action">
 			<a class="btn btn-outline-light btn-lg px-4 followButton" href="{{ path('app_series_index') }}" role='button'>
-				Back to list</a>
+				Retour à la liste</a>
 		</div>
 	</footer>
 

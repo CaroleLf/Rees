@@ -5,9 +5,9 @@
 >## Sommaire
 >[1. Contexte](#contexte)  
 >[2. Prérequis](#prérequis)  
->[3. Rappel des fonctionnalités disponibles par un administrateur](#rappel-des-fonctionnalités-disponibles-par-un-administrateur)  
->[4. Rappel des fonctionnalités disponibles par un super-administrateur](#rappel-des-fonctionnalités-disponibles-par-un-super-administrateur)  
->[5. Installation de la Base de Données](#installation-de-la-base-de-données)  
+>[3. Installation de la Base de Données](#installation-de-la-base-de-données)  
+>[4. Rappel des fonctionnalités disponibles par un administrateur](#rappel-des-fonctionnalités-disponibles-par-un-administrateur)  
+>[5. Rappel des fonctionnalités disponibles par un super-administrateur](#rappel-des-fonctionnalités-disponibles-par-un-super-administrateur)  
 >[6. Nomage d'un administrateur ](#nomage-dun-administrateur )
 ___
 
@@ -33,23 +33,6 @@ Afin de pouvoir travailler sur ce projet, vous aurez besoin d'avoir sur votre or
 
 ___
 
-## Rappel des fonctionnalités disponibles par un administrateur
-
-Tout d’abord, voici un rappel des fonctionnalités supplémentaires qu’a un administrateur par rapport à un utilisateur lambda. 
-Un administrateur peut : 
-- Consulter la liste des utilisateurs inscrits
-- Incarner un utilisateur (**attention** : cette fonctionnalité a été prévue afin qu’un administrateur puisse observer la vue d’un utilisateur, et donc vérifier que la vue est conforme aux souhaits des gérants du site. Si l’administrateur a modifié des données de son incarnation, l’administrateur devra donc être responsable de remettre par lui-même les données de l’utilisateur incarné à son état d’origine à la fin de son incarnation.) 
-- Pouvoir faire des modifications sur le compte d'un autre utilisateur
-
-___
-
-## Rappel des fonctionnalités disponibles par un super-administrateur
-
-Le super-administrateur a aussi accès aux fonctionnalités précédentes, ainsi qu’à la fonctionnalité supplémentaire : ajouter des administrateurs. 
-
-Cela se fait à partir de son terminal, depuis le dossier du projet symfony.
-___
-
 ## Installation de la Base de Données
 
 Avant de pouvoir utiliser votre site, il est possible que vous n'ayez pas accès à votre propre base de données. Si votre est déjà mis en place et utilisable, alors vous n'avez pas à vous inquiéter pour cette partie.
@@ -70,12 +53,13 @@ Il est possible que phpMyAdmin refuse de créer votre base de données si vous a
 
 Maintenant que vous avez mis en place votre base de données, veuillez aller dans le fichier .env de votre projet symfony. Complétez la ligne suivante : 
 
-**#DATABASE_URL=mysql://root:@127.0.0.1:3306/shows**
-
+```
+#DATABASE_URL=mysql://root:@127.0.0.1:3306/shows**
+```
 Veuillez compléter cette ligne de la manière suivante : 
-
+```
 DATABASE_URL=mysql://***nom_de_l'utilisateur*** :***mot_de_passe***@info-titania:3306/***nom_de_la_base***
-
+```
 Vous pourrez ainsi utiliser votre base de donnée pour votre projet symfony.
 
 Comme le projet a initialement besoin de faire une légère modification sur la base de donnée, vous aurez besoin d'écrire dans votre terminal la commande suivante (vous pouvez aussi utiliser cette commande si vous la modifiez) :
@@ -84,6 +68,25 @@ Comme le projet a initialement besoin de faire une légère modification sur la 
 symfony console doctrine:schema:update --force
 ```
 ___
+
+
+## Rappel des fonctionnalités disponibles par un administrateur
+
+Tout d’abord, voici un rappel des fonctionnalités supplémentaires qu’a un administrateur par rapport à un utilisateur lambda. 
+Un administrateur peut : 
+- Consulter la liste des utilisateurs inscrits
+- Incarner un utilisateur (**attention** : cette fonctionnalité a été prévue afin qu’un administrateur puisse observer la vue d’un utilisateur, et donc vérifier que la vue est conforme aux souhaits des gérants du site. Si l’administrateur a modifié des données de son incarnation, l’administrateur devra donc être responsable de remettre par lui-même les données de l’utilisateur incarné à son état d’origine à la fin de son incarnation.) 
+- Pouvoir faire des modifications sur le compte d'un autre utilisateur
+
+___
+
+## Rappel des fonctionnalités disponibles par un super-administrateur
+
+Le super-administrateur a aussi accès aux fonctionnalités précédentes, ainsi qu’à la fonctionnalité supplémentaire : ajouter des administrateurs. 
+
+Cela se fait à partir de son terminal, depuis le dossier du projet symfony.
+___
+
 
 ## Nomage d'un administrateur 
 

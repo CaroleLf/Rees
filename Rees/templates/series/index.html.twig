@@ -58,7 +58,15 @@
                     <option value="{{i}}"> {{i}}</option>
                 {% endfor %}
             </select>
-        </div>       
+        </div>    
+        <div class="d-flex flex-column align-items-center">
+            <label class="m-2 w-auto" >Ordre Notes</label>
+            <select class="form-control  m-2   w-auto" data-mdb-filter="true" name="orderRate">
+                <option value=""> Aucun ordre </option>
+                <option value="ASC"> Ordre croissant</option>
+                <option value="DESC"> Ordre décroissant</option>
+            </select>
+        </div>    
         <div class="d-flex flex-column align-items-center">
             <label class="m-2">Mots-clés : </label>
             <input class="form-control w-auto m-2" type="text" name="keywords"  placeholder="Mots-clés">
@@ -67,6 +75,14 @@
               <button type="submit" class="btn btn-primary mt-3 ">Recherche</button>
         </div>
     </form>
+    <div class="action">
+		<a class="btn btn-light btn-lg m-5 px-4 followButton" href="{{ path('app_series_asc') }}" role='button'>
+		       Séries par ordre croissant
+        </a>
+		<a class="btn btn-light btn-lg m-5 px-4 followButton" href="{{ path('app_series_desc') }}" role='button'>
+		       Séries par ordre décroissant
+        </a>
+	</div>
     </div>
         {{ knp_pagination_render(series) }}
         <div id="series" class="work_container  grid ">
