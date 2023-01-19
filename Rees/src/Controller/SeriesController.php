@@ -115,34 +115,28 @@ class SeriesController extends AbstractController
             if ($minUserRating != null || $maxUserRating != null) {
                 if ($minUserRating > -1 && $maxUserRating > -1 && $minUserRating <= $maxUserRating) {
                     if ($orderRate == 'DESC') {
-                    $queryBuilder
-                    ->orderBy('AVG(r.value)', 'DESC');
-                    }
-                    else {
+                        $queryBuilder
+                        ->orderBy('AVG(r.value)', 'DESC');
+                    } else {
                         $queryBuilder
                         ->orderBy('AVG(r.value)', 'ASC');
                     }
                 }
-            } 
-            else {
+            } else {
                 if ($orderRate == 'DESC') {
                     $queryBuilder
                     ->innerJoin(Rating::class, 'r', JOIN::WITH, 'r.series = s')
                     ->groupBy('s.id')
                     ->orderBy('AVG(r.value)', 'DESC');
-                }
-                else {
+                } else {
                     $queryBuilder
                     ->innerJoin(Rating::class, 'r', JOIN::WITH, 'r.series = s')
                     ->groupBy('s.id')
                     ->orderBy('AVG(r.value)', 'ASC');
-
                 }
-                
             }
- 
         }
-        
+
         $series = $queryBuilder->getQuery();
 
         // Posts
@@ -153,7 +147,7 @@ class SeriesController extends AbstractController
             array('wrap-queries' => true)
         );
 
-        
+
         return $this->render(
             'series/index.html.twig',
             [

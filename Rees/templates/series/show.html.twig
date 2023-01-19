@@ -109,23 +109,18 @@
 								{% if app.user %}
 									{% set watchedEpisodes = seasonEpisodes|filter(e => e.isWatchByUser(app.user)) %}
 									{% if watchedEpisodes|length == seasonEpisodes|length %}
-										<a href="{{ path('app_WatchSeason_remove', {'idSeason': season.id}) }}">
-											<label>
-												Saison
-												{{season.number}}
-												vue ?
+									<label class="switch">
+											<input type="checkbox" id="season{{ season.id }}" onchange="location.href='{{ path('app_WatchSeason_remove', {'idSeason': season.id}) }}'" checked>
+											<span class="slider round"></span>
 											</label>
-											<i class="fa-solid fa-check text-light"></i>
-										</a>
+											<label for="season{{ season.id }}">Saison {{ season.number }} </label>
 									{% else %}
-										<a href="{{ path('app_watchSeason_add', {'idSeason': season.id}) }}">
-											<label>
-												Saison
-												{{season.number}}
-												pas vue ?
-											</label>
-											<i class="fa-solid fa-xmark  "></i>
-										</a>
+										<label class="switch">
+										<input type="checkbox" id="season{{ season.id }}" onchange="location.href='{{ path('app_watchSeason_add', {'idSeason': season.id}) }}'">
+										<span class="slider round"></span>
+										</label>
+										<label for="season{{ season.id }}">Saison {{ season.number }} </label>
+
 									{% endif %}
 								{% endif %}
 							</div>
@@ -149,26 +144,26 @@
 														{% if app.user %}
 															<div class="d-flex justify-content-between align-items-center">
 																{% if episode.isWatchByUser(app.user) %}
-																	<a href="{{ path('app_watch_remove', { 'idEpisode' : episode.id }) }}" class="btn btn-success">
-																		<i class="eye fa-solid fa-eye text-light">
-																			Vu
-																		</i>
-																	</a>
+																	<label class="switch">
+																		<input type="checkbox" id="episode{{ episode.id }}" onchange="location.href='{{ path('app_watch_remove', { 'idEpisode' : episode.id }) }}'" checked>
+																		<span class="slider round"></span>
+																		</label>
+																		<label for="episode{{ episode.id }}">Vu</label>
 																	{% if watchEpisode == false %}
 																		{% set watchEpisode = true %}
 																		<div class="previous-episodes-question">
 																			<p class="text-dark">Voulez-vous marquer les épisodes précédents comme vu ?</p>
-																			<a href="{{ path('app_watch_previous_episodes', { 'numberPrevious': episode.number, 'season' : season.id}) }}" class="btn btn-primary">Yes</a>
-																			<button class="btn btn-light" onclick="$(this).parent().hide()">No</button>
+																			<a href="{{ path('app_watch_previous_episodes', { 'numberPrevious': episode.number, 'season' : season.id}) }}" class="btn btn-primary">Oui</a>
+																			<button class="btn btn-light" onclick="$(this).parent().hide()">Non</button>
 																		</div>
 																	{% endif %}
 																{% else %}
 																	{% set watchEpisode = false %}
-																	<a href="{{ path('app_watch_add', { 'idEpisode' : episode.id}) }} " class="btn btn-danger">
-																		<i class="eye fa-solid fa-eye-slash text-light ">
-																			Pas vu
-																		</i>
-																	</a>
+																	<label class="switch">
+																		<input type="checkbox" id="episode{{ episode.id }}" onchange="location.href='{{ path('app_watch_add', { 'idEpisode' : episode.id}) }}'">
+																		<span class="slider round"></span>
+																		</label>
+																	<label for="episode{{ episode.id }}">Pas vu</label>
 																{% endif %}
 															</div>
 														{% endif %}
