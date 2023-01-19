@@ -148,7 +148,7 @@
 																		<input type="checkbox" id="episode{{ episode.id }}" onchange="location.href='{{ path('app_watch_remove', { 'idEpisode' : episode.id }) }}'" checked>
 																		<span class="slider round"></span>
 																		</label>
-																		<label for="episode{{ episode.id }}">Vu</label>
+																		<label for="episode{{ episode.id }}"></label>
 																	{% if watchEpisode == false %}
 																		{% set watchEpisode = true %}
 																		<div class="previous-episodes-question">
@@ -163,7 +163,7 @@
 																		<input type="checkbox" id="episode{{ episode.id }}" onchange="location.href='{{ path('app_watch_add', { 'idEpisode' : episode.id}) }}'">
 																		<span class="slider round"></span>
 																		</label>
-																	<label for="episode{{ episode.id }}">Pas vu</label>
+																	<label for="episode{{ episode.id }}"></label>
 																{% endif %}
 															</div>
 														{% endif %}
@@ -220,6 +220,8 @@
 								<div class="action d-flex justify-content-between mt-2 align-items-center">
 									<div class="reply px-4">
 										{% if app.user %}
+										<a class="btn btn-outline-light btn-lg px-4 m-2 followButton" href="{{ path('app_rating_edit', {'id': myRate.id}) }}" role='button'>  Editer ou Supprimer</a>    
+
 											{% if app.user.admin == 1 %}
 											{% endif %}
 										{% endif %}
@@ -288,6 +290,7 @@
 											</div>
 											<div class="action d-flex justify-content-between mt-2 align-items-center">
 												<div class="reply px-4">
+
 													{% if app.user %}
 														{% if app.user.admin == 1 %}
 														{% endif %}

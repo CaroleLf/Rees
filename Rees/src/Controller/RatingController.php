@@ -95,6 +95,7 @@ class RatingController extends AbstractController
     ): Response {
         $form = $this->createForm(RatingType::class, $rating);
         $form->handleRequest($request);
+        $user = $this->getUser();
         if ($user == null) {
             return $this->redirectToRoute('app_login');
         }
