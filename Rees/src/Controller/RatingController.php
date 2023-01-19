@@ -100,6 +100,7 @@ class RatingController extends AbstractController
             return $this->redirectToRoute('app_login');
         }
         if ($form->isSubmitted() && $form->isValid()) {
+            
             $rating->setDate(new \DateTime());
             $entityManager->flush();
             return $this->redirectToRoute(

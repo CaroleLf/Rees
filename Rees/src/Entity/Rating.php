@@ -107,6 +107,7 @@ class Rating
 
     public function __toString()
     {
+        
         return "$this->id, $this->value, $this->comment, $this->series";
     }
 }
