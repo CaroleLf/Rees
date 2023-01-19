@@ -50,6 +50,11 @@ class UserController extends AbstractController
         Request $request,
         PaginatorInterface $paginator
     ): Response {
+        $user = $this->getUser();
+
+        if ($user == null) {
+            return $this->redirectToRoute('app_login');
+        }
         $mailAdress = $request->query->get('mailAdress');
         $queryBuilder = $entityManager->createQueryBuilder()
             ->select('s')
