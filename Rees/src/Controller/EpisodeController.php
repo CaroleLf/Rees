@@ -16,6 +16,9 @@ use Symfony\Component\Routing\Annotation\Route;
 #[Route('/episode')]
 class EpisodeController extends AbstractController
 {
+    /**
+     * Display all the episodes
+     */
     #[Route('/', name: 'app_episode_index', methods: ['GET'])]
     public function index(EntityManagerInterface $entityManager): Response
     {
@@ -31,6 +34,9 @@ class EpisodeController extends AbstractController
         );
     }
 
+    /**
+     * Display all the episodes tracked by the user
+     */
     #[Route(['/tracked'], name: 'app_episode_tracked', methods: ['GET', 'POST'])]
     public function tracked(
         EntityManagerInterface $entityManager,
@@ -65,6 +71,9 @@ class EpisodeController extends AbstractController
     }
 
 
+    /**
+     * Page to create an episode
+     */
     #[Route('/new', name: 'app_episode_new', methods: ['GET', 'POST'])]
     public function new(Request $request, EntityManagerInterface $entityManager): Response
     {
@@ -88,6 +97,9 @@ class EpisodeController extends AbstractController
         );
     }
 
+    /**
+     * Page to display an episode
+     */
     #[Route('/{id}', name: 'app_episode_show', methods: ['GET'])]
     public function show(Episode $episode): Response
     {
@@ -99,6 +111,9 @@ class EpisodeController extends AbstractController
         );
     }
 
+    /**
+     * Page to edit an episode
+     */
     #[Route('/{id}/edit', name: 'app_episode_edit', methods: ['GET', 'POST'])]
     public function edit(Request $request, Episode $episode, EntityManagerInterface $entityManager): Response
     {
@@ -119,6 +134,10 @@ class EpisodeController extends AbstractController
             ]
         );
     }
+
+    /**
+     * Route to add an episode to the user's watched episodes
+     */
     #[Route('/{idEpisode}/watch', name: 'app_watch_add')]
     public function watch(Request $request, EntityManagerInterface $entityManager): Response
     {
@@ -137,6 +156,9 @@ class EpisodeController extends AbstractController
     }
 
 
+    /**
+     * Route to add a season from the user's watched episodes
+     */
     #[Route('/{idSeason}/watchSeason', name: 'app_watchSeason_add')]
     public function seasonWatch(Request $request, EntityManagerInterface $entityManager): Response
     {
@@ -155,6 +177,9 @@ class EpisodeController extends AbstractController
         return $this->redirectToRoute('app_series_show', ['id' => $serie->getId()]);
     }
 
+    /**
+     * Route to remove a season from the user's watched episodes
+     */
     #[Route('/{idSeason}/NoWatchSeason', name: 'app_WatchSeason_remove')]
     public function seasonNoWatch(Request $request, EntityManagerInterface $entityManager): Response
     {
@@ -171,7 +196,9 @@ class EpisodeController extends AbstractController
     }
 
 
-
+    /**
+     * Route to remove an episode from the user's watched episodes
+     */
     #[Route('/{idEpisode}/unwatch', name: 'app_watch_remove')]
     public function unWatch(Request $request, EntityManagerInterface $entityManager): Response
     {
@@ -183,7 +210,9 @@ class EpisodeController extends AbstractController
         return $this->redirectToRoute('app_series_show', ['id' => $serie->getId()]);
     }
 
-
+    /**
+     * Route to remove an episode
+     */
     #[Route('/{id}', name: 'app_episode_delete', methods: ['POST'])]
     public function delete(Request $request, Episode $episode, EntityManagerInterface $entityManager): Response
     {
