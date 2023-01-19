@@ -48,7 +48,7 @@ class SeriesController extends AbstractController
         $queryGenres = $request->query->get('genres');
         $minUserRating = $request->get('minUserRating');
         $maxUserRating = $request->get('maxUserRating');
-
+        $orderRate = $request->get('orderRate');
         // Get keywords and user ratings in arrays which are separated by whitespace
         $keywords = explode($QUERY_STRING_SEP, $keywords);
 
@@ -110,7 +110,39 @@ class SeriesController extends AbstractController
             }
         }
 
+        /* */
+        if ($orderRate != null) {
+            if ($minUserRating != null || $maxUserRating != null) {
+                if ($minUserRating > -1 && $maxUserRating > -1 && $minUserRating <= $maxUserRating) {
+                    if ($orderRate == 'DESC') {
+                    $queryBuilder
+                    ->orderBy('AVG(r.value)', 'DESC');
+                    }
+                    else {
+                        $queryBuilder
+                        ->orderBy('AVG(r.value)', 'ASC');
+                    }
+                }
+            } 
+            else {
+                if ($orderRate == 'DESC') {
+                    $queryBuilder
+                    ->innerJoin(Rating::class, 'r', JOIN::WITH, 'r.series = s')
+                    ->groupBy('s.id')
+                    ->orderBy('AVG(r.value)', 'DESC');
+                }
+                else {
+                    $queryBuilder
+                    ->innerJoin(Rating::class, 'r', JOIN::WITH, 'r.series = s')
+                    ->groupBy('s.id')
+                    ->orderBy('AVG(r.value)', 'ASC');
 
+                }
+                
+            }
+ 
+        }
+        
         $series = $queryBuilder->getQuery();
 
         // Posts
@@ -121,6 +153,7 @@ class SeriesController extends AbstractController
             array('wrap-queries' => true)
         );
 
+        
         return $this->render(
             'series/index.html.twig',
             [
@@ -153,6 +186,76 @@ class SeriesController extends AbstractController
             ]
         );
     }
+
+
+    #[Route(['/asc'], name: 'app_series_asc', methods: ['GET', 'POST'])]
+    public function indexAsc(
+        EntityManagerInterface $entityManager,
+        Request $request,
+        PaginatorInterface $paginator
+    ): Response {
+
+        $allGenre = $entityManager->getRepository(Genre::class)->findAll();
+        $queryBuilder = $entityManager->createQueryBuilder()
+        ->select('s')
+        ->from(Series::class, 's')
+        ->innerJoin(Rating::class, 'r', JOIN::WITH, 'r.series = s')
+        ->groupBy('s.id')
+        ->orderBy('AVG(r.value)', 'ASC');
+
+        $series = $queryBuilder->getQuery();
+        $series = $paginator->paginate(
+            $queryBuilder,
+            $request->query->getInt('page', 1),
+            10
+        );
+
+
+        return $this->render(
+            'series/index.html.twig',
+            [
+                'series' => $series,
+                'allGenre' => $allGenre,
+                'query' => null
+            ]
+        );
+    }
+
+    #[Route(['/desc'], name: 'app_series_desc', methods: ['GET', 'POST'])]
+    public function indexdesc(
+        EntityManagerInterface $entityManager,
+        Request $request,
+        PaginatorInterface $paginator
+    ): Response {
+
+        $allGenre = $entityManager->getRepository(Genre::class)->findAll();
+        $queryBuilder = $entityManager->createQueryBuilder()
+        ->select('s')
+        ->from(Series::class, 's')
+        ->innerJoin(Rating::class, 'r', JOIN::WITH, 'r.series = s')
+        ->groupBy('s.id')
+        ->orderBy('AVG(r.value)', 'DESC');
+
+        $series = $queryBuilder->getQuery();
+        $series = $paginator->paginate(
+            $queryBuilder,
+            $request->query->getInt('page', 1),
+            10
+        );
+
+
+        return $this->render(
+            'series/index.html.twig',
+            [
+                'series' => $series,
+                'allGenre' => $allGenre,
+                'query' => null
+            ]
+        );
+    }
+
+
+
     #[Route(['/tracked'], name: 'app_series_tracked', methods: ['GET', 'POST'])]
     public function tracked(
         EntityManagerInterface $entityManager,
