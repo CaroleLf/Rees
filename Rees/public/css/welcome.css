@@ -204,16 +204,7 @@ div.series__filter:hover {
         padding-top: 1rem;
     }
 }
-@media (max-width: 1535px){
-    
-    
-}
 
-@media (max-width: 1195px){
-
-
-	
-}
 @media (max-width: 900px) {
 
     .pagination a {

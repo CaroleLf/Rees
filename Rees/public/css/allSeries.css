@@ -103,6 +103,10 @@ div.series__filter:hover  {
     color : white;
 }
 
+
+.navbar-toggler {
+    color: white;
+}
 @media screen and  (max-width: 1800px){
     
     .work_container {

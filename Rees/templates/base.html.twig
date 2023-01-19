@@ -8,6 +8,8 @@
 		<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-alpha1/dist/css/bootstrap.min.css">
 		<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.1/jquery.min.js"></script>
 		<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+		<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.1/css/all.min.css" integrity="sha512-+4zCK9k+qNFUR5X+cKL9EIR+ZOhtIloNl9GIKS57V1MyNsYpYcUrUeQc9vNfzsWfV28IaLL3i96P9sdNyeRssA==" crossorigin="anonymous" />
+
 		<link href="{{ asset('/css/base.css') }}" type="text/css" rel="stylesheet">
 		{% block stylesheets %}
 			{{ encore_entry_link_tags('app') }}
@@ -22,10 +24,10 @@
 
 			<div class="scrollbar"></div>
 			<div class="clickScrollbar"></div>
-			<nav class="nav navbar navbar-expand-lg navbar-dark bg-transparence position-fixed">
+			<nav class="nav navbar navbar-expand-lg  bg-transparence position-fixed">
 				<a class="navbar-brand text-white" href="{{ path('app_welcome')}}">Rees</a>
-				<button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-					<span class="navbar-toggler-icon"></span>
+				<button style=" background-color: transparent;" class="navbar-toggler" class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+					<span  style ="color: white;" class="navbar-toggler-icon ">     <i class="fas fa-bars" style="color: white;"></i> </span>
 				</button>
 				<div class=" collapse navbar-collapse " id="navbarSupportedContent">
 					<ul class="navbar-nav m-5 ml-auto text-center  justify-content-center">
